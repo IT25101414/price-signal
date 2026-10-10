@@ -10,10 +10,18 @@ into fragments, so splitting a line on spaces assigns prices to the wrong market
 We bin every token by its x-position instead, and we read each section's market
 names from the PDF's own header rows (also by x-position) rather than hard-coding them.
 
-Parser version "table-layout-v2" was developed on reports from June 2021 to
+Parser version "table-layout-v3" was developed on reports from Nov 2020 to
 October 2026 (2-page, 5-column layout). Reports in other layouts (for example June
 2020: 4 pages, 6 price columns, no Unit column) are REJECTED with a clear message
 and are never guessed at.
+
+Changes in v3:
+  * the section header row (V E G E T A B L E S) is no longer cut off when it sits
+    directly under the "Today" header row (Nov 2020 reports)
+  * a report with no extracted rows is a FAILURE, not a silent success
+  * comparison header accepts "Friday" / "last Friday" / "Last Friday" and derives the
+    weekday from the date when only the date is printed
+  * the full failure and warning lists are written to failed_files.txt / warnings.txt
 
 Output: one row per (report, item, market):
   report_date, section, item, unit, price_type, market, market_assumed,
@@ -39,9 +47,10 @@ import pdfplumber
 logging.getLogger("pdfminer").setLevel(logging.ERROR)
 logging.getLogger("pdfplumber").setLevel(logging.ERROR)
 
-PARSER_VERSION = "table-layout-v2"
+PARSER_VERSION = "table-layout-v3"
 MONTHS = ["January", "February", "March", "April", "May", "June", "July",
           "August", "September", "October", "November", "December"]
+WEEKDAYS = "Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday"
 MARKET_NAMES = {"Pettah", "Dambulla", "Narahenpita", "Peliyagoda", "Negombo", "Marandagahamula"}
 # Five price columns: first two are wholesale, last three retail (checked against the
 # narrative text of each report in test_extract_prices.py).
@@ -59,6 +68,7 @@ class UnsupportedLayout(ValueError):
 
 def parse_cell(text):
     t = text.replace(",", "").strip()
+    t = re.sub(r"\([a-zA-Z]\)$", "", t)          # footnote marker, e.g. "150.00(a)"
     if not t:
         return None, ""
     if t.lower().startswith("n.a"):
@@ -110,7 +120,15 @@ def parse_pdf(path):
     if fm and datetime.strptime(fm.group(1), "%Y%m%d").date() != report_date:
         warnings.append(f"{path.name}: date in file name differs from date in report ({report_date})")
 
-    header = [w for w in words if w["top"] < 100]
+    # The header ends where the first section row ("V E G E T A B L E S") begins. A fixed
+    # cut-off does not work: the "Today" row sits at y=57 to 107 depending on the report.
+    letter_rows = {}
+    for w in words:
+        if len(w["text"]) == 1 and w["text"].isalpha() and w["x0"] > 150:
+            letter_rows.setdefault(round(w["top"]), []).append(w)
+    sec_tops = [t for t, ws in letter_rows.items() if len(ws) >= 3]
+    header_limit = (min(sec_tops) - 1) if sec_tops else 100
+    header = [w for w in words if w["top"] < header_limit]
     today_c = sorted((w["x0"] + w["x1"]) / 2 for w in header if w["text"] == "Today")
     unit_hdr = [w for w in header if w["text"] == "Unit"]
     if len(today_c) != 5 or not unit_hdr:
@@ -118,14 +136,16 @@ def parse_pdf(path):
                                 f"{'a' if unit_hdr else 'no'} 'Unit' column (expected 5 and a Unit column)")
     header_bottom = max(w["bottom"] for w in header if w["text"] == "Today")
 
-    # Comparison basis: "Yesterday" normally, "Last Friday dd.mm.yyyy" (or Monday) otherwise.
+    # Comparison basis: "Yesterday" normally; otherwise a weekday and a date, printed as
+    # "Last Friday dd.mm.yyyy", "last Friday dd.mm.yyyy" or just "Friday dd.mm.yyyy".
     htxt = " ".join(w["text"] for w in header if w["x0"] > 150 and w["top"] > 60)
-    lm = re.search(r"Last\s+([A-Za-z]+)", htxt)
+    lm = re.search(r"(?:last\s+)?(%s)" % WEEKDAYS, htxt, re.I)
     dm = re.search(r"(\d{2})\.(\d{2})\.(\d{4})", htxt)
-    if lm and dm:
-        prior_label = f"Last {lm.group(1)}"
+    if dm:
         prior_date = date(int(dm.group(3)), int(dm.group(2)), int(dm.group(1)))
-    elif lm or dm:
+        prior_label = (f"Last {lm.group(1).capitalize()}" if lm
+                       else f"Last {prior_date.strftime('%A')}")
+    elif lm:
         raise ValueError(f"ambiguous comparison header: {htxt!r}")
     else:
         prior_label, prior_date = "Yesterday", None
@@ -136,10 +156,15 @@ def parse_pdf(path):
              if re.search(r"not in operation|not available|were not|was not", ln, re.I)]
     report_notes = " | ".join(n for n in notes if n)
 
-    label_max = unit_hdr[0]["x0"] - 10
-    num_start = today_c[0] - 60
-    split = [t - 21 for t in today_c]                 # prior | today boundary inside each pair
-    pair_edges = [(today_c[i] + today_c[i + 1] - 42) / 2 for i in range(4)]
+    # Some reports (Jan-Feb 2021) are drawn ~1.55x larger than the usual ones, so the fixed
+    # offsets below are scaled by the real column spacing. Normal-size pages stay at 1.0.
+    scale = ((today_c[-1] - today_c[0]) / 4) / 92.3
+    if 0.9 <= scale <= 1.1:
+        scale = 1.0
+    label_max = unit_hdr[0]["x0"] - 10 * scale
+    num_start = today_c[0] - 60 * scale
+    split = [t - 21 * scale for t in today_c]         # prior | today boundary inside each pair
+    pair_edges = [(today_c[i] + today_c[i + 1] - 42 * scale) / 2 for i in range(4)]
 
     def pair_of(c):
         return sum(c > e for e in pair_edges)
@@ -155,7 +180,9 @@ def parse_pdf(path):
 
     out = []
     section, sub, has_data = None, None, False
-    body = [w for w in words if w["top"] > header_bottom + 2]
+    # Nov 2020 reports put the section header row directly under the "Today" row, so keep
+    # everything below the header (not 2pt further down). Rows without a unit are skipped.
+    body = [w for w in words if w["top"] > header_bottom]
     for row in group_rows(body):
         letters = [w["text"] for w in row if w["x0"] > 150]
         if letters and all(len(t) == 1 and t.isalpha() for t in letters) and len(letters) >= 3:
@@ -210,7 +237,7 @@ def parse_pdf(path):
                             narrative_basis=narrative_basis, report_notes=report_notes,
                             source_file=path.name, parser_version=PARSER_VERSION))
     if not out:
-        warnings.append(f"{path.name}: no price rows extracted")
+        raise ValueError("no price rows extracted")
     return out, warnings
 
 
@@ -245,9 +272,16 @@ def main(argv):
     src, dest = Path(argv[1]), Path(argv[2])
     pdfs = sorted(src.glob("*.pdf")) if src.is_dir() else [src]
     rows, all_warn, failed = [], [], []
+    seen_dates = {}                                  # report_date -> first file that gave it
     for p in pdfs:
         try:
             r, w = parse_pdf(p)
+            rd = r[0]["report_date"]
+            if rd in seen_dates:                     # same report published under two names
+                failed.append((p.name, f"DuplicateReport: report date {rd} already read "
+                                       f"from {seen_dates[rd]}; this copy skipped"))
+                continue
+            seen_dates[rd] = p.name
             rows += r
             all_warn += w
         except Exception as e:                       # quarantine, never guess
@@ -270,6 +304,12 @@ def main(argv):
     if failed:
         latest = max(failed)
         print(f"  most recent failure: {latest[0]} - {latest[1]}")
+    # full lists, so nothing is hidden by the short on-screen preview
+    with open("failed_files.txt", "w", encoding="utf-8") as fh:
+        for n, e in failed:
+            fh.write(f"{n}\t{e}\n")
+    with open("warnings.txt", "w", encoding="utf-8") as fh:
+        fh.write("\n".join(all_warn))
     for n, e in failed[:5]:
         print("  FAILED", n, "-", e)
     for w in all_warn[:20]:
