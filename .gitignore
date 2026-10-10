@@ -21,3 +21,11 @@ year_test*
 a_test*
 samples/
 warnings.txt
+extract_prices_old.py
+extract_prices_v3*.py
+prices_all_v*.csv
+fix_test*
+year_test*
+a_test*
+samples/
+warnings.txt
