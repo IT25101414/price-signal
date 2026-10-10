@@ -1,0 +1,318 @@
+section,item,price_type,market,days_with_price,pct_of_days,first_price,last_price,longest_gap_days
+VEGETABLES,Brinjal,wholesale,Dambulla,1452,97.8,2020-07-28,2026-10-09,7
+OTHER,Potato (Imp),wholesale,Pettah,1452,97.8,2020-07-28,2026-10-09,20
+OTHER,Big Onion (Imp),wholesale,Pettah,1451,97.7,2020-07-28,2026-10-09,20
+VEGETABLES,Beans,wholesale,Dambulla,1450,97.6,2020-07-28,2026-10-09,8
+VEGETABLES,Tomato,wholesale,Dambulla,1450,97.6,2020-07-28,2026-10-09,8
+VEGETABLES,Cabbage,wholesale,Dambulla,1449,97.6,2020-07-28,2026-10-09,7
+VEGETABLES,Pumpkin,wholesale,Dambulla,1447,97.4,2020-07-28,2026-10-09,7
+VEGETABLES,Carrot,wholesale,Dambulla,1444,97.2,2020-07-28,2026-10-09,7
+OTHER,Big Onion (Imp),wholesale,Dambulla,1444,97.2,2020-07-28,2026-10-09,7
+VEGETABLES,Tomato,retail,Narahenpita,1440,97.0,2020-07-28,2026-10-09,10
+VEGETABLES,Carrot,retail,Narahenpita,1439,96.9,2020-07-28,2026-10-09,10
+VEGETABLES,Brinjal,retail,Narahenpita,1439,96.9,2020-07-28,2026-10-09,10
+VEGETABLES,Pumpkin,retail,Narahenpita,1439,96.9,2020-07-28,2026-10-09,10
+VEGETABLES,Snake gourd,retail,Narahenpita,1439,96.9,2020-07-28,2026-10-09,10
+VEGETABLES,Beans,retail,Narahenpita,1438,96.8,2020-07-28,2026-10-09,10
+VEGETABLES,Cabbage,retail,Narahenpita,1438,96.8,2020-07-28,2026-10-09,10
+FRUITS,Banana (Sour),retail,Narahenpita,1437,96.8,2020-07-28,2026-10-09,10
+VEGETABLES,Snake gourd,wholesale,Dambulla,1436,96.7,2020-07-28,2026-10-09,7
+FRUITS,Papaw,retail,Narahenpita,1435,96.6,2020-07-28,2026-10-09,10
+FRUITS,Pineapple,retail,Narahenpita,1435,96.6,2020-07-28,2026-10-09,10
+VEGETABLES,Beans,wholesale,Pettah,1426,96.0,2020-07-28,2026-10-09,38
+VEGETABLES,Carrot,wholesale,Pettah,1426,96.0,2020-07-28,2026-10-09,38
+VEGETABLES,Tomato,wholesale,Pettah,1426,96.0,2020-07-28,2026-10-09,38
+VEGETABLES,Brinjal,wholesale,Pettah,1426,96.0,2020-07-28,2026-10-09,38
+VEGETABLES,Pumpkin,wholesale,Pettah,1426,96.0,2020-07-28,2026-10-09,38
+OTHER,Coconut oil,wholesale,Pettah,1426,96.0,2020-07-28,2026-10-09,21
+VEGETABLES,Cabbage,wholesale,Pettah,1425,96.0,2020-07-28,2026-10-09,38
+VEGETABLES,Snake gourd,wholesale,Pettah,1425,96.0,2020-07-28,2026-10-09,38
+RICE,Nadu,wholesale,Pettah,1421,95.7,2020-07-28,2026-10-09,20
+VEGETABLES,Brinjal,retail,Dambulla,1420,95.6,2020-07-28,2026-10-09,29
+VEGETABLES,Beans,retail,Dambulla,1418,95.5,2020-07-28,2026-10-09,29
+VEGETABLES,Cabbage,retail,Dambulla,1417,95.4,2020-07-28,2026-10-09,29
+VEGETABLES,Tomato,retail,Dambulla,1417,95.4,2020-07-28,2026-10-09,29
+VEGETABLES,Pumpkin,retail,Dambulla,1415,95.3,2020-07-28,2026-10-09,29
+OTHER,Coconut oil,retail,Narahenpita,1414,95.2,2020-07-28,2026-10-09,10
+FRUITS,Banana (Sour),wholesale,Pettah,1414,95.2,2020-07-28,2026-10-09,48
+FRUITS,Papaw,wholesale,Pettah,1413,95.2,2020-07-28,2026-10-09,49
+OTHER,Sugar (White),wholesale,Pettah,1413,95.2,2020-09-22,2026-10-09,38
+VEGETABLES,Carrot,retail,Dambulla,1412,95.1,2020-07-28,2026-10-09,29
+OTHER,Big Onion (Imp),retail,Dambulla,1412,95.1,2020-07-28,2026-10-09,29
+OTHER,Potato (Local),wholesale,Pettah,1409,94.9,2020-09-22,2026-10-09,38
+VEGETABLES,Snake gourd,retail,Dambulla,1405,94.6,2020-07-28,2026-10-09,29
+RICE,Samba,wholesale,Pettah,1405,94.6,2020-07-28,2026-10-09,21
+FISH,Kelawalla,wholesale,Negombo,1404,94.5,2020-07-28,2026-10-09,25
+FRUITS,Banana (Sour),wholesale,Dambulla,1402,94.4,2020-09-30,2026-10-09,44
+OTHER,Coconut (Avg.),wholesale,Dambulla,1401,94.3,2020-09-30,2026-10-09,44
+FRUITS,Pineapple,wholesale,Dambulla,1400,94.3,2020-09-30,2026-10-09,44
+FRUITS,Papaw,wholesale,Dambulla,1399,94.2,2020-09-30,2026-10-09,44
+OTHER,Big Onion (Imp),retail,Narahenpita,1397,94.1,2020-07-28,2026-09-16,17
+OTHER,Sugar (White),retail,Narahenpita,1395,93.9,2020-09-22,2026-10-09,38
+RICE,Samba,wholesale,Marandagahamula,1393,93.8,2020-10-29,2026-10-09,64
+OTHER,Coconut (Avg.),retail,Narahenpita,1392,93.7,2020-09-30,2026-10-09,44
+RICE,Nadu,wholesale,Marandagahamula,1392,93.7,2020-10-29,2026-10-09,64
+OTHER,Dried Chilli (Imp),wholesale,Pettah,1391,93.7,2020-11-04,2026-10-09,67
+RICE,Nadu,retail,Dambulla,1389,93.5,2020-07-28,2026-10-09,33
+OTHER,Potato (Imp),retail,Narahenpita,1388,93.5,2020-07-28,2026-10-09,10
+FISH,Kelawalla,retail,Negombo,1385,93.3,2020-07-28,2026-10-09,25
+RICE,Kekulu (White),wholesale,Pettah,1383,93.1,2020-09-22,2026-10-09,38
+VEGETABLES,Beans,retail,Pettah,1382,93.1,2020-07-28,2026-10-09,77
+VEGETABLES,Carrot,retail,Pettah,1382,93.1,2020-07-28,2026-10-09,77
+VEGETABLES,Tomato,retail,Pettah,1382,93.1,2020-07-28,2026-10-09,77
+VEGETABLES,Brinjal,retail,Pettah,1382,93.1,2020-07-28,2026-10-09,77
+VEGETABLES,Pumpkin,retail,Pettah,1382,93.1,2020-07-28,2026-10-09,77
+VEGETABLES,Snake gourd,retail,Pettah,1382,93.1,2020-07-28,2026-10-09,77
+VEGETABLES,Cabbage,retail,Pettah,1381,93.0,2020-07-28,2026-10-09,77
+OTHER,Potato (Imp),retail,Pettah,1380,92.9,2020-07-28,2026-10-09,77
+FRUITS,Banana (Sour),retail,Pettah,1379,92.9,2020-07-28,2026-10-09,80
+FRUITS,Papaw,retail,Pettah,1379,92.9,2020-07-28,2026-10-09,80
+FRUITS,Pineapple,retail,Pettah,1378,92.8,2020-07-28,2026-10-09,80
+FISH,Salaya,retail,Narahenpita,1376,92.7,2020-07-28,2026-10-09,23
+OTHER,Coconut oil,retail,Pettah,1375,92.6,2020-07-28,2026-10-09,78
+OTHER,Big Onion (Imp),retail,Pettah,1374,92.5,2020-07-28,2026-10-09,77
+RICE,Kekulu (Red),wholesale,Pettah,1369,92.2,2020-09-22,2026-10-09,38
+OTHER,Coconut (Avg.),retail,Dambulla,1369,92.2,2020-09-30,2026-10-09,44
+FRUITS,Banana (Sour),retail,Dambulla,1368,92.1,2020-09-30,2026-10-09,44
+OTHER,Dried Chilli (Imp),retail,Narahenpita,1368,92.1,2020-10-29,2026-10-09,64
+FRUITS,Papaw,retail,Dambulla,1365,91.9,2020-09-30,2026-10-09,44
+FRUITS,Pineapple,retail,Dambulla,1365,91.9,2020-09-30,2026-10-09,44
+VEGETABLES,Lime,wholesale,Pettah,1365,91.9,2020-12-16,2026-10-09,97
+RICE,Kekulu (White),wholesale,Marandagahamula,1364,91.9,2020-10-29,2026-10-09,64
+RICE,Nadu,retail,Narahenpita,1362,91.7,2020-07-28,2026-10-09,27
+VEGETABLES,Green Chilli,wholesale,Pettah,1361,91.6,2020-12-16,2026-10-09,97
+VEGETABLES,Green Chilli,wholesale,Dambulla,1356,91.3,2020-12-16,2026-10-09,97
+VEGETABLES,Lime,wholesale,Dambulla,1355,91.2,2020-12-16,2026-10-09,97
+RICE,Kekulu (White),retail,Dambulla,1350,90.9,2020-09-22,2026-10-09,38
+VEGETABLES,Green Chilli,retail,Narahenpita,1347,90.7,2020-12-16,2026-10-09,97
+VEGETABLES,Lime,retail,Narahenpita,1345,90.6,2020-12-16,2026-10-09,97
+FISH,Salaya,wholesale,Negombo,1342,90.4,2020-07-28,2026-10-09,25
+FISH,Kelawalla,retail,Narahenpita,1340,90.2,2020-07-28,2026-10-09,23
+OTHER,Egg (White),retail,Narahenpita,1340,90.2,2020-09-22,2026-10-09,38
+FISH,Salaya,wholesale,Peliyagoda,1338,90.1,2020-07-28,2026-10-09,41
+OTHER,Potato (Local),retail,Narahenpita,1337,90.0,2020-09-22,2026-10-09,38
+FRUITS,Apple (Imp),retail,Pettah,1334,89.8,2020-07-28,2026-10-09,80
+RICE,Kekulu (Red),wholesale,Marandagahamula,1327,89.4,2020-10-29,2026-10-09,64
+FISH,Salaya,retail,Negombo,1325,89.2,2020-07-28,2026-10-09,25
+OTHER,Potato (Local),retail,Pettah,1325,89.2,2020-09-22,2026-10-09,80
+VEGETABLES,Green Chilli,retail,Dambulla,1324,89.2,2020-12-16,2026-10-09,97
+VEGETABLES,Lime,retail,Dambulla,1324,89.2,2020-12-16,2026-10-09,97
+VEGETABLES,Green Chilli,retail,Pettah,1322,89.0,2021-02-16,2026-10-09,136
+VEGETABLES,Lime,retail,Pettah,1322,89.0,2021-02-16,2026-10-09,136
+FRUITS,Orange (Imp),retail,Pettah,1317,88.7,2020-07-28,2026-10-09,80
+OTHER,Sugar (White),retail,Pettah,1316,88.6,2020-09-22,2026-10-09,77
+OTHER,Dried Chilli (Imp),retail,Pettah,1315,88.6,2021-02-16,2026-10-09,136
+RICE,Kekulu (Red),retail,Narahenpita,1304,87.8,2020-09-22,2026-10-09,38
+OTHER,Egg (White),wholesale,Pettah,1302,87.7,2020-09-22,2026-10-09,62
+OTHER,Coconut (Avg.),wholesale,Pettah,1297,87.3,2020-10-08,2026-10-09,61
+FISH,Thalapath,retail,Narahenpita,1294,87.1,2020-07-28,2026-10-09,23
+RICE,Samba,retail,Dambulla,1289,86.8,2020-07-28,2026-10-09,33
+RICE,Kekulu (White),retail,Narahenpita,1283,86.4,2020-09-22,2026-10-09,38
+OTHER,Red Onion (Local),wholesale,Pettah,1272,85.7,2020-09-22,2026-10-09,40
+OTHER,Coconut (Avg.),retail,Pettah,1267,85.3,2020-09-30,2026-10-09,80
+RICE,Samba,retail,Pettah,1264,85.1,2020-07-28,2026-10-09,77
+RICE,Nadu,retail,Pettah,1262,85.0,2020-07-28,2026-10-09,77
+OTHER,Red Onion (lmp),wholesale,Pettah,1261,84.9,2020-07-28,2026-10-09,57
+RICE,Kekulu (Red),retail,Dambulla,1252,84.3,2020-09-22,2026-10-09,38
+OTHER,Red Onion (Local),wholesale,Dambulla,1247,84.0,2020-09-22,2026-10-09,38
+OTHER,Egg (White),retail,Pettah,1247,84.0,2020-09-22,2026-10-09,78
+FISH,Kelawalla,wholesale,Peliyagoda,1243,83.7,2020-07-28,2026-10-09,38
+RICE,Kekulu (Red),retail,Pettah,1239,83.4,2020-09-22,2026-10-09,77
+FISH,Balaya,wholesale,Peliyagoda,1238,83.4,2020-07-28,2026-10-09,38
+OTHER,Red Onion (Local),retail,Dambulla,1218,82.0,2020-09-22,2026-10-09,38
+FRUITS,Apple (Imp),retail,Narahenpita,1214,81.8,2021-06-23,2026-10-09,214
+RICE,Kekulu (White),retail,Pettah,1208,81.3,2020-09-22,2026-10-09,77
+FRUITS,Orange (Imp),retail,Narahenpita,1193,80.3,2021-06-23,2026-10-09,214
+FISH,Thalapath,wholesale,Negombo,1185,79.8,2020-07-28,2026-10-09,32
+OTHER,Potato (Imp),wholesale,Dambulla,1178,79.3,2021-10-01,2026-10-09,282
+OTHER,Potato (Imp),retail,Dambulla,1176,79.2,2021-10-04,2026-10-09,283
+FISH,Thalapath,retail,Negombo,1173,79.0,2020-07-28,2026-10-09,32
+OTHER,Dried Chilli (Imp),wholesale,Dambulla,1169,78.7,2020-10-29,2026-10-09,64
+FISH,Linna,wholesale,Peliyagoda,1151,77.5,2021-09-16,2026-10-09,272
+OTHER,Dried Chilli (Imp),retail,Dambulla,1147,77.2,2020-10-29,2026-10-09,64
+FISH,Linna,wholesale,Negombo,1147,77.2,2021-09-16,2026-10-09,272
+FISH,Linna,retail,Negombo,1147,77.2,2021-09-16,2026-10-09,272
+FISH,Linna,retail,Narahenpita,1137,76.6,2021-09-27,2026-10-09,278
+FISH,Hurulla,wholesale,Negombo,1124,75.7,2020-07-28,2026-10-09,31
+OTHER,Red Onion (lmp),retail,Narahenpita,1112,74.9,2020-07-28,2026-08-13,126
+FISH,Hurulla,retail,Negombo,1111,74.8,2020-07-28,2026-10-09,31
+OTHER,Potato (Local),wholesale,Dambulla,1105,74.4,2020-09-23,2026-10-09,39
+FISH,Paraw,wholesale,Peliyagoda,1097,73.9,2020-07-28,2026-10-09,43
+FISH,Hurulla,wholesale,Peliyagoda,1084,73.0,2020-07-28,2026-10-09,41
+FISH,Balaya,retail,Narahenpita,1082,72.9,2020-07-28,2026-10-08,23
+OTHER,Sprat (Imp),wholesale,Pettah,1082,72.9,2022-03-25,2026-10-09,396
+OTHER,Sprat (Imp),retail,Pettah,1082,72.9,2022-03-25,2026-10-09,396
+OTHER,Potato (Local),retail,Dambulla,1074,72.3,2020-09-23,2026-10-09,39
+FISH,Thalapath,wholesale,Peliyagoda,1051,70.8,2020-07-28,2026-10-09,39
+FISH,Paraw,retail,Narahenpita,1030,69.4,2020-07-28,2026-10-09,23
+OTHER,Red Onion (lmp),retail,Pettah,987,66.5,2020-07-28,2026-10-09,106
+RICE,Ponni Samba (Imp),wholesale,Pettah,972,65.5,2021-11-17,2026-10-09,312
+OTHER,Red Onion (lmp),wholesale,Dambulla,942,63.4,2020-08-04,2026-10-09,102
+OTHER,Sprat (Imp),retail,Narahenpita,937,63.1,2022-03-25,2026-10-09,396
+OTHER,Red Onion (lmp),retail,Dambulla,935,63.0,2020-08-04,2026-10-09,85
+FISH,Hurulla,retail,Narahenpita,933,62.8,2020-07-28,2026-10-09,23
+RICE,Samba,retail,Narahenpita,927,62.4,2020-07-28,2026-10-09,187
+RICE,Ponni Samba (Imp),retail,Narahenpita,918,61.8,2021-12-21,2026-10-09,335
+RICE,Ponni Samba (Imp),retail,Pettah,913,61.5,2021-12-23,2026-10-09,337
+OTHER,Red Dhal,wholesale,Pettah,913,61.5,2022-12-16,2026-10-09,569
+OTHER,Red Dhal,retail,Pettah,911,61.3,2022-12-16,2026-10-09,569
+FISH,Paraw,wholesale,Negombo,908,61.1,2020-07-28,2026-10-09,29
+OTHER,Red Dhal,retail,Narahenpita,903,60.8,2022-12-16,2026-10-09,569
+FISH,Paraw,retail,Negombo,897,60.4,2020-07-28,2026-10-09,29
+OTHER,Red Onion (Local),retail,Pettah,770,51.9,2020-09-22,2026-10-09,81
+OTHER,Katta,retail,Narahenpita,768,51.7,2020-07-28,2023-12-22,667
+OTHER,Katta,wholesale,Pettah,763,51.4,2020-07-28,2023-12-22,667
+OTHER,Katta,retail,Pettah,718,48.4,2020-07-28,2023-12-22,667
+OTHER,Katta (Imp),wholesale,Pettah,662,44.6,2023-12-27,2026-10-09,818
+OTHER,Katta (Imp),retail,Pettah,662,44.6,2023-12-27,2026-10-09,818
+FISH,Balaya,wholesale,Negombo,583,39.3,2020-07-28,2026-10-09,31
+FISH,Balaya,retail,Negombo,581,39.1,2020-07-28,2026-10-09,31
+RICE,Kekulu (White) (Imp),retail,Narahenpita,569,38.3,2021-12-21,2025-11-11,335
+RICE,Kekulu (White) (Imp),wholesale,Pettah,565,38.0,2021-11-17,2025-10-21,362
+RICE,Nadu (Imp),wholesale,Pettah,544,36.6,2021-11-17,2025-10-21,392
+RICE,Kekulu (White) (Imp),retail,Pettah,518,34.9,2021-12-23,2025-12-18,412
+OTHER,Dhal,wholesale,Pettah,498,33.5,2020-09-22,2022-12-14,917
+OTHER,Dhal,retail,Narahenpita,496,33.4,2020-09-22,2022-12-14,917
+OTHER,Big Onion (Local),wholesale,Dambulla,478,32.2,2020-09-22,2026-10-09,183
+RICE,Nadu (Imp),retail,Pettah,474,31.9,2022-01-28,2025-12-18,433
+OTHER,Big Onion (Local),retail,Dambulla,458,30.8,2020-09-22,2026-10-09,205
+OTHER,Red Onion (Local),retail,Narahenpita,432,29.1,2020-09-22,2026-10-09,291
+RICE,Nadu (Imp),retail,Narahenpita,422,28.4,2021-12-21,2025-07-11,408
+OTHER,Dhal,retail,Pettah,401,27.0,2020-09-22,2022-12-14,917
+OTHER,Katta (Imp),retail,Narahenpita,362,24.4,2023-12-27,2026-06-01,818
+OTHER,Sprat,retail,Narahenpita,353,23.8,2020-07-28,2022-03-23,1090
+OTHER,Big Onion (Local),wholesale,Pettah,349,23.5,2020-09-22,2026-10-09,192
+OTHER,Sprat,wholesale,Pettah,345,23.2,2020-07-28,2022-03-24,1089
+RICE,Ponni Samba (Imp),wholesale,Marandagahamula,329,22.2,2021-11-23,2025-03-11,450
+RICE,Kekulu (White) (Imp),wholesale,Marandagahamula,321,21.6,2021-11-23,2025-03-11,461
+RICE,Nadu (Imp),wholesale,Marandagahamula,319,21.5,2021-11-23,2025-02-19,461
+OTHER,Sprat,retail,Pettah,279,18.8,2020-07-28,2022-03-24,1089
+OTHER,Big Onion (Local),retail,Pettah,214,14.4,2020-09-22,2026-10-09,239
+OTHER,Big Onion (Local),retail,Narahenpita,133,9.0,2020-09-25,2026-10-09,387
+FRUITS,Apple (Imp),wholesale,Dambulla,115,7.7,2020-09-30,2021-05-31,1284
+FRUITS,Orange (Imp),wholesale,Dambulla,115,7.7,2020-09-30,2021-05-31,1284
+OTHER,Lime,wholesale,Dambulla,94,6.3,2020-07-28,2020-12-15,1388
+OTHER,Lime,retail,Dambulla,94,6.3,2020-07-28,2020-12-15,1388
+OTHER,Lime,retail,Narahenpita,89,6.0,2020-07-28,2020-12-15,1388
+FISH,Kelawalla,retail,Dambulla,69,4.6,2021-10-01,2022-01-11,1134
+FISH,Linna,retail,Dambulla,66,4.4,2021-10-01,2022-01-11,1134
+FISH,Hurulla,retail,Dambulla,65,4.4,2021-10-01,2022-01-11,1134
+OTHER,Green Chillie,wholesale,Dambulla,62,4.2,2020-07-28,2020-10-28,1421
+OTHER,Green Chillie,retail,Dambulla,62,4.2,2020-07-28,2020-10-28,1421
+OTHER,Dried Chillie (Imp),retail,Narahenpita,61,4.1,2020-07-28,2020-10-28,1421
+OTHER,Green Chillie,retail,Narahenpita,61,4.1,2020-07-28,2020-10-28,1421
+OTHER,Dried Chillie (Imp),wholesale,Pettah,59,4.0,2020-07-28,2020-10-21,1426
+OTHER,Dried Chillie (Imp),retail,Pettah,59,4.0,2020-07-28,2020-10-21,1426
+OTHER,Green Chillie,wholesale,Pettah,59,4.0,2020-07-28,2020-10-21,1426
+OTHER,Green Chillie,retail,Pettah,59,4.0,2020-07-28,2020-10-21,1426
+OTHER,Lime,wholesale,Pettah,59,4.0,2020-07-28,2020-10-21,1426
+OTHER,Lime,retail,Pettah,59,4.0,2020-07-28,2020-10-21,1426
+FISH,Kelawalla,retail,Peliyagoda,57,3.8,2020-07-28,2020-10-21,1426
+OTHER,Dried Chillie (Imp),wholesale,Dambulla,56,3.8,2020-07-28,2020-10-28,1421
+OTHER,Dried Chillie (Imp),retail,Dambulla,56,3.8,2020-07-28,2020-10-28,1421
+FISH,Salaya,retail,Peliyagoda,56,3.8,2020-07-28,2020-10-21,1426
+FISH,Balaya,retail,Peliyagoda,55,3.7,2020-07-28,2020-10-21,1426
+FISH,Paraw,retail,Peliyagoda,54,3.6,2020-07-28,2020-10-21,1426
+FISH,Salaya,retail,Dambulla,52,3.5,2021-10-01,2022-01-11,1134
+FISH,Thalapath,retail,Dambulla,50,3.4,2021-10-04,2022-01-10,1135
+RICE,Samba,wholesale,Dambulla,49,3.3,2020-07-28,2020-10-26,1423
+RICE,Nadu,wholesale,Dambulla,49,3.3,2020-07-28,2020-10-26,1423
+FISH,Hurulla,retail,Peliyagoda,48,3.2,2020-07-28,2020-10-21,1426
+OTHER,Coconut,retail,Pettah,43,2.9,2020-07-28,2020-09-29,1441
+FISH,Thalapath,retail,Peliyagoda,42,2.8,2020-07-28,2020-10-21,1426
+OTHER,Coconut,wholesale,Dambulla,41,2.8,2020-07-28,2020-09-29,1441
+OTHER,Coconut,retail,Dambulla,41,2.8,2020-07-28,2020-09-29,1441
+OTHER,Coconut,retail,Narahenpita,41,2.8,2020-07-28,2020-09-29,1441
+OTHER,Red Onion (local),wholesale,Pettah,38,2.6,2020-07-28,2020-09-21,1447
+OTHER,Red Onion (local),retail,Pettah,38,2.6,2020-07-28,2020-09-21,1447
+OTHER,Potato (local),wholesale,Pettah,38,2.6,2020-07-28,2020-09-21,1447
+OTHER,Potato (local),retail,Pettah,38,2.6,2020-07-28,2020-09-21,1447
+OTHER,Dhal (Small),wholesale,Pettah,38,2.6,2020-07-28,2020-09-21,1447
+OTHER,Dhal (Small),retail,Pettah,38,2.6,2020-07-28,2020-09-21,1447
+OTHER,Sugar,wholesale,Pettah,38,2.6,2020-07-28,2020-09-21,1447
+OTHER,Sugar,retail,Pettah,38,2.6,2020-07-28,2020-09-21,1447
+OTHER,Egg,wholesale,Pettah,38,2.6,2020-07-28,2020-09-21,1447
+OTHER,Egg,retail,Pettah,38,2.6,2020-07-28,2020-09-21,1447
+RICE,Kekulu White,wholesale,Pettah,38,2.6,2020-07-28,2020-09-21,1447
+RICE,Kekulu White,retail,Pettah,38,2.6,2020-07-28,2020-09-21,1447
+RICE,Kekulu Red,wholesale,Pettah,38,2.6,2020-07-28,2020-09-21,1447
+RICE,Kekulu Red,retail,Pettah,38,2.6,2020-07-28,2020-09-21,1447
+RICE,Kekulu White,wholesale,Dambulla,37,2.5,2020-07-28,2020-09-21,1447
+RICE,Kekulu Red,wholesale,Dambulla,37,2.5,2020-07-28,2020-09-21,1447
+FISH,Paraw,retail,Dambulla,37,2.5,2021-10-01,2022-01-07,1136
+OTHER,Red Onion (local),wholesale,Dambulla,36,2.4,2020-07-28,2020-09-21,1447
+OTHER,Red Onion (local),retail,Dambulla,36,2.4,2020-07-28,2020-09-21,1447
+RICE,Kekulu White,retail,Dambulla,36,2.4,2020-07-28,2020-09-21,1447
+RICE,Kekulu Red,retail,Dambulla,36,2.4,2020-07-28,2020-09-21,1447
+OTHER,Potato (local),retail,Narahenpita,35,2.4,2020-07-28,2020-09-21,1447
+OTHER,Dhal (Small),retail,Narahenpita,35,2.4,2020-07-28,2020-09-21,1447
+OTHER,Sugar,retail,Narahenpita,35,2.4,2020-07-28,2020-09-21,1447
+OTHER,Egg,retail,Narahenpita,35,2.4,2020-07-28,2020-09-21,1447
+FRUITS,Pineapple,wholesale,Pettah,35,2.4,2020-08-31,2026-07-16,1285
+RICE,Kekulu White,retail,Narahenpita,35,2.4,2020-07-28,2020-09-21,1447
+RICE,Kekulu Red,retail,Narahenpita,35,2.4,2020-07-28,2020-09-21,1447
+OTHER,Green Chilli,wholesale,Dambulla,33,2.2,2020-10-29,2020-12-15,1388
+OTHER,Green Chilli,retail,Dambulla,33,2.2,2020-10-29,2020-12-15,1388
+FISH,Balaya,retail,Dambulla,33,2.2,2021-10-07,2022-01-11,1134
+OTHER,Red Onion (local),retail,Narahenpita,31,2.1,2020-07-28,2020-09-21,1447
+OTHER,Green Chilli,retail,Narahenpita,28,1.9,2020-10-29,2020-12-15,1388
+OTHER,Big Onion (local),wholesale,Dambulla,26,1.8,2020-07-31,2020-09-21,1447
+OTHER,Big Onion (local),retail,Dambulla,26,1.8,2020-07-31,2020-09-21,1447
+OTHER,Big Onion (local),wholesale,Pettah,23,1.5,2020-08-19,2020-09-21,1447
+OTHER,Big Onion (local),retail,Pettah,23,1.5,2020-08-19,2020-09-21,1447
+OTHER,Potato (local),wholesale,Dambulla,21,1.4,2020-07-28,2020-09-18,1448
+OTHER,Potato (local),retail,Dambulla,20,1.3,2020-07-28,2020-09-18,1448
+RICE,Kekulu (White),wholesale,Dambulla,12,0.8,2020-09-22,2020-10-26,1423
+RICE,Kekulu (Red),wholesale,Dambulla,12,0.8,2020-09-22,2020-10-26,1423
+FRUITS,Apple (Imp),retail,Dambulla,8,0.5,2020-09-30,2020-10-15,1430
+FRUITS,Orange (Imp),retail,Dambulla,8,0.5,2020-09-30,2020-10-15,1430
+OTHER,Pineapple,wholesale,Pettah,2,0.1,2021-01-07,2021-01-08,1372
+OTHER,Pineapple,wholesale,Dambulla,2,0.1,2021-01-07,2021-01-08,1372
+OTHER,Pineapple,retail,Dambulla,2,0.1,2021-01-07,2021-01-08,1372
+OTHER,Pineapple,retail,Narahenpita,2,0.1,2021-01-07,2021-01-08,1372
+OTHER,Big Onion (local),retail,Narahenpita,1,0.1,2020-09-21,2020-09-21,1447
+OTHER,Coconut,wholesale,Pettah,1,0.1,2020-09-03,2020-09-03,1459
+OTHER,Apple (Imp),wholesale,Dambulla,1,0.1,2021-01-07,2021-01-07,1373
+OTHER,Orange (Imp),wholesale,Dambulla,1,0.1,2021-01-07,2021-01-07,1373
+FRUITS,Samba,wholesale,Pettah,1,0.1,2026-07-14,2026-07-14,1425
+FRUITS,Samba,wholesale,Dambulla,1,0.1,2026-07-14,2026-07-14,1425
+FRUITS,Samba,retail,Pettah,1,0.1,2026-07-14,2026-07-14,1425
+FRUITS,Samba,retail,Dambulla,1,0.1,2026-07-14,2026-07-14,1425
+FRUITS,Samba,retail,Narahenpita,1,0.1,2026-07-14,2026-07-14,1425
+FRUITS,Nadu,wholesale,Pettah,1,0.1,2026-07-14,2026-07-14,1425
+FRUITS,Nadu,wholesale,Dambulla,1,0.1,2026-07-14,2026-07-14,1425
+FRUITS,Nadu,retail,Pettah,1,0.1,2026-07-14,2026-07-14,1425
+FRUITS,Nadu,retail,Dambulla,1,0.1,2026-07-14,2026-07-14,1425
+FRUITS,Nadu,retail,Narahenpita,1,0.1,2026-07-14,2026-07-14,1425
+FRUITS,Kekulu (White),wholesale,Pettah,1,0.1,2026-07-14,2026-07-14,1425
+FRUITS,Kekulu (White),wholesale,Dambulla,1,0.1,2026-07-14,2026-07-14,1425
+FRUITS,Kekulu (White),retail,Pettah,1,0.1,2026-07-14,2026-07-14,1425
+FRUITS,Kekulu (White),retail,Dambulla,1,0.1,2026-07-14,2026-07-14,1425
+FRUITS,Kekulu (White),retail,Narahenpita,1,0.1,2026-07-14,2026-07-14,1425
+FRUITS,Kekulu (Red),wholesale,Pettah,1,0.1,2026-07-14,2026-07-14,1425
+FRUITS,Kekulu (Red),wholesale,Dambulla,1,0.1,2026-07-14,2026-07-14,1425
+FRUITS,Kekulu (Red),retail,Pettah,1,0.1,2026-07-14,2026-07-14,1425
+FRUITS,Kekulu (Red),retail,Dambulla,1,0.1,2026-07-14,2026-07-14,1425
+FRUITS,Kekulu (Red),retail,Narahenpita,1,0.1,2026-07-14,2026-07-14,1425
+FRUITS,Ponni Samba (Imp),wholesale,Pettah,1,0.1,2026-07-14,2026-07-14,1425
+FRUITS,Ponni Samba (Imp),retail,Pettah,1,0.1,2026-07-14,2026-07-14,1425
+FRUITS,Ponni Samba (Imp),retail,Narahenpita,1,0.1,2026-07-14,2026-07-14,1425
+FRUITS,Apple (Imp),wholesale,Pettah,0,0.0,,,1485
+FRUITS,Orange (Imp),wholesale,Pettah,0,0.0,,,1485
+OTHER,Green Chilli,wholesale,Pettah,0,0.0,,,1485
+OTHER,Green Chilli,retail,Pettah,0,0.0,,,1485
+OTHER,Pineapple,retail,Pettah,0,0.0,,,1485
+OTHER,Apple (Imp),retail,Pettah,0,0.0,,,1485
+OTHER,Apple (Imp),retail,Dambulla,0,0.0,,,1485
+OTHER,Orange (Imp),retail,Pettah,0,0.0,,,1485
+OTHER,Orange (Imp),retail,Dambulla,0,0.0,,,1485
+FISH,Linna,retail,Peliyagoda,0,0.0,,,1485
+FRUITS,Ponni Samba (Imp),wholesale,Dambulla,0,0.0,,,1485
+FRUITS,Nadu (Imp),wholesale,Pettah,0,0.0,,,1485
+FRUITS,Nadu (Imp),wholesale,Dambulla,0,0.0,,,1485
+FRUITS,Nadu (Imp),retail,Pettah,0,0.0,,,1485
+FRUITS,Nadu (Imp),retail,Narahenpita,0,0.0,,,1485
+FRUITS,Kekulu (White) (Imp),wholesale,Pettah,0,0.0,,,1485
+FRUITS,Kekulu (White) (Imp),wholesale,Dambulla,0,0.0,,,1485
+FRUITS,Kekulu (White) (Imp),retail,Pettah,0,0.0,,,1485
+FRUITS,Kekulu (White) (Imp),retail,Narahenpita,0,0.0,,,1485
