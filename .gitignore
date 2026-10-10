@@ -1,0 +1,13 @@
+data/raw/
+*.pdf
+samples/
+year_test/
+all/
+prices_all.csv
+prices_so_far.csv
+year_test.csv
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.DS_Store
