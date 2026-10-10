@@ -7,18 +7,24 @@ Extract the price table from CBSL Daily Price Report PDFs into a tidy CSV.
 
 Why position-based: the PDF text layer drops empty (grey) cells and splits numbers
 into fragments, so splitting a line on spaces assigns prices to the wrong market.
-We bin every token by its x-position instead.
+We bin every token by its x-position instead, and we read each section's market
+names from the PDF's own header rows (also by x-position) rather than hard-coding them.
 
-Parser version "2026-layout-v1" was developed and verified on reports dated
-2-9 October 2026 ONLY. Older reports may use different layouts: the script flags
-anything it cannot parse and never guesses silently.
+Parser version "table-layout-v2" was developed on reports from June 2021 to
+October 2026 (2-page, 5-column layout). Reports in other layouts (for example June
+2020: 4 pages, 6 price columns, no Unit column) are REJECTED with a clear message
+and are never guessed at.
 
-Output columns: one row per (report, item, market):
+Output: one row per (report, item, market):
   report_date, section, item, unit, price_type, market, market_assumed,
   price_prior, price_prior_status, price_today, price_today_status,
-  prior_label, prior_date, source_file, parser_version
-price_*_status is "ok" or "n.a." (reported as not available by CBSL). A cell that is
-grey/empty in the PDF is "not applicable" and produces no row.
+  prior_label, prior_date, narrative_basis, report_notes, source_file, parser_version
+price_*_status is "ok" or "n.a." (CBSL reported no price). A grey/empty cell in the PDF
+is "not applicable" and produces no row.
+market_assumed is True when a section prints its own market header row but leaves this
+column unnamed, so the name is inherited from the table's top header.
+narrative_basis is whether the page-1 summary quotes "retail" or "wholesale" prices
+(it was wholesale in 2021 reports).
 """
 import csv
 import logging
@@ -33,25 +39,22 @@ import pdfplumber
 logging.getLogger("pdfminer").setLevel(logging.ERROR)
 logging.getLogger("pdfplumber").setLevel(logging.ERROR)
 
-PARSER_VERSION = "2026-layout-v1"
+PARSER_VERSION = "table-layout-v2"
 MONTHS = ["January", "February", "March", "April", "May", "June", "July",
           "August", "September", "October", "November", "December"]
-
-# Five price columns (pairs of prior/today) per row. Market names change by section.
-# 3rd element = True when the header is blank in the PDF and we infer the name.
-_DEFAULT = [("wholesale", "Pettah", False), ("wholesale", "Dambulla", False),
-            ("retail", "Pettah", False), ("retail", "Dambulla", False),
-            ("retail", "Narahenpita", False)]
-_RICE = [("wholesale", "Pettah", True), ("wholesale", "Marandagahamula", False),
-         ("retail", "Pettah", False), ("retail", "Dambulla", False),
-         ("retail", "Narahenpita", False)]
-_FISH = [("wholesale", "Peliyagoda", False), ("wholesale", "Negombo", False),
-         None, ("retail", "Negombo", False), ("retail", "Narahenpita", True)]
-SECTION_MARKETS = {"RICE": _RICE, "FISH": _FISH}
+MARKET_NAMES = {"Pettah", "Dambulla", "Narahenpita", "Peliyagoda", "Negombo", "Marandagahamula"}
+# Five price columns: first two are wholesale, last three retail (checked against the
+# narrative text of each report in test_extract_prices.py).
+PRICE_TYPES = ["wholesale", "wholesale", "retail", "retail", "retail"]
 
 FIELDS = ["report_date", "section", "item", "unit", "price_type", "market", "market_assumed",
           "price_prior", "price_prior_status", "price_today", "price_today_status",
-          "prior_label", "prior_date", "source_file", "parser_version"]
+          "prior_label", "prior_date", "narrative_basis", "report_notes",
+          "source_file", "parser_version"]
+
+
+class UnsupportedLayout(ValueError):
+    """The PDF is not in a layout this parser was built for."""
 
 
 def parse_cell(text):
@@ -63,13 +66,6 @@ def parse_cell(text):
     if re.fullmatch(r"\d+(\.\d+)?", t):
         return float(t), "ok"
     raise ValueError(f"unparseable cell {text!r}")
-
-
-def find_table_page(pdf):
-    for p in pdf.pages:
-        if "Wholesale and Retail Prices" in (p.extract_text() or ""):
-            return p
-    raise ValueError("no page contains the price table")
 
 
 def group_rows(words, tol=2.5):
@@ -86,16 +82,27 @@ def group_rows(words, tol=2.5):
     return rows
 
 
+def clean_name(text):
+    return text.strip().rstrip("*:").strip()
+
+
 def parse_pdf(path):
-    """Return (rows, warnings) for one PDF."""
+    """Return (rows, warnings) for one PDF. Raises UnsupportedLayout / ValueError."""
     path = Path(path)
     warnings = []
     with pdfplumber.open(path) as pdf:
-        page = find_table_page(pdf)
+        alltext = "\n".join((p.extract_text() or "") for p in pdf.pages)
+        tpages = [p for p in pdf.pages if "Wholesale and Retail Prices" in (p.extract_text() or "")]
+        if not tpages:
+            raise UnsupportedLayout("no page contains the price table")
+        if len(tpages) > 1 or len(pdf.pages) > 2:
+            raise UnsupportedLayout(f"{len(pdf.pages)} pages / {len(tpages)} table pages "
+                                    "(expected a 2-page report with one table page)")
+        page = tpages[0]
         text = page.extract_text() or ""
         words = page.extract_words()
 
-    m = re.search(r"(\d{1,2})\s+(%s)\s+(\d{4})" % "|".join(MONTHS), text)
+    m = re.search(r"(\d{1,2})\s+(%s),?\s+(\d{4})" % "|".join(MONTHS), text)
     if not m:
         raise ValueError("report date not found on table page")
     report_date = date(int(m.group(3)), MONTHS.index(m.group(2)) + 1, int(m.group(1)))
@@ -107,10 +114,11 @@ def parse_pdf(path):
     today_c = sorted((w["x0"] + w["x1"]) / 2 for w in header if w["text"] == "Today")
     unit_hdr = [w for w in header if w["text"] == "Unit"]
     if len(today_c) != 5 or not unit_hdr:
-        raise ValueError(f"unexpected header layout (found {len(today_c)} 'Today' columns)")
+        raise UnsupportedLayout(f"header has {len(today_c)} 'Today' columns and "
+                                f"{'a' if unit_hdr else 'no'} 'Unit' column (expected 5 and a Unit column)")
     header_bottom = max(w["bottom"] for w in header if w["text"] == "Today")
 
-    # Comparison basis: "Yesterday" normally, "Last Friday dd.mm.yyyy" on Mondays.
+    # Comparison basis: "Yesterday" normally, "Last Friday dd.mm.yyyy" (or Monday) otherwise.
     htxt = " ".join(w["text"] for w in header if w["x0"] > 150 and w["top"] > 60)
     lm = re.search(r"Last\s+([A-Za-z]+)", htxt)
     dm = re.search(r"(\d{2})\.(\d{2})\.(\d{4})", htxt)
@@ -122,6 +130,12 @@ def parse_pdf(path):
     else:
         prior_label, prior_date = "Yesterday", None
 
+    bm = re.search(r"denote the\s+(retail|wholesale)\s+prices", alltext, re.I)
+    narrative_basis = bm.group(1).lower() if bm else ""
+    notes = [ln.strip(" *") for ln in text.splitlines()
+             if re.search(r"not in operation|not available|were not|was not", ln, re.I)]
+    report_notes = " | ".join(n for n in notes if n)
+
     label_max = unit_hdr[0]["x0"] - 10
     num_start = today_c[0] - 60
     split = [t - 21 for t in today_c]                 # prior | today boundary inside each pair
@@ -130,20 +144,35 @@ def parse_pdf(path):
     def pair_of(c):
         return sum(c > e for e in pair_edges)
 
-    out, section = [], None
+    # Top header: market name for each of the 5 columns.
+    top_names = {}
+    for w in header:
+        if w["x0"] > 150 and clean_name(w["text"]) in MARKET_NAMES:
+            top_names.setdefault(pair_of((w["x0"] + w["x1"]) / 2), clean_name(w["text"]))
+    if sorted(top_names) != [0, 1, 2, 3, 4]:
+        raise UnsupportedLayout(f"top header names markets for columns {sorted(top_names)} only")
+    top_list = [top_names[i] for i in range(5)]
+
+    out = []
+    section, sub, has_data = None, None, False
     body = [w for w in words if w["top"] > header_bottom + 2]
     for row in group_rows(body):
         letters = [w["text"] for w in row if w["x0"] > 150]
         if letters and all(len(t) == 1 and t.isalpha() for t in letters) and len(letters) >= 3:
-            section = "".join(letters).upper()
+            section, sub, has_data = "".join(letters).upper(), {}, False
             continue
         label = " ".join(w["text"] for w in row if w["x0"] < label_max)
         unit = " ".join(w["text"] for w in row if label_max <= w["x0"] < num_start)
-        if not label or not unit.startswith("Rs."):
+        if not (label and unit.startswith("Rs.")):
+            if section is not None and not has_data:          # section sub-header row
+                for w in row:
+                    if w["x0"] > 150 and clean_name(w["text"]) in MARKET_NAMES:
+                        sub.setdefault(pair_of((w["x0"] + w["x1"]) / 2), clean_name(w["text"]))
             continue
         if section is None:
             warnings.append(f"{path.name}: row {label!r} found before any section header")
             continue
+        has_data = True
         cells = {}
         for w in row:
             c = (w["x0"] + w["x1"]) / 2
@@ -152,26 +181,33 @@ def parse_pdf(path):
             i = pair_of(c)
             side = "prior" if c < split[i] else "today"
             cells.setdefault((i, side), []).append((w["x0"], w["text"]))
-        mapping = SECTION_MARKETS.get(section, _DEFAULT)
+        seen = set()
         for i in range(5):
             raw = {s: "".join(t for _, t in sorted(cells.get((i, s), []))) for s in ("prior", "today")}
             if not raw["prior"] and not raw["today"]:
                 continue                                  # grey cell: not applicable
-            if mapping[i] is None:
-                warnings.append(f"{path.name}: {label!r} has data in an unexpected column {i + 1}")
+            if sub:                                       # section prints its own header row
+                market, assumed = (sub[i], False) if i in sub else (top_list[i], True)
+            else:
+                market, assumed = top_list[i], False
+            ptype = PRICE_TYPES[i]
+            if (ptype, market) in seen:
+                warnings.append(f"{path.name}: {label!r} has two columns named {ptype} {market}; "
+                                "second one skipped")
                 continue
+            seen.add((ptype, market))
             try:
                 pv, ps = parse_cell(raw["prior"])
                 tv, ts = parse_cell(raw["today"])
             except ValueError as e:
                 warnings.append(f"{path.name}: {label!r} column {i + 1}: {e}")
                 continue
-            ptype, market, assumed = mapping[i]
             out.append(dict(report_date=report_date.isoformat(), section=section, item=label,
                             unit=unit, price_type=ptype, market=market, market_assumed=assumed,
                             price_prior=pv, price_prior_status=ps, price_today=tv,
                             price_today_status=ts, prior_label=prior_label,
                             prior_date=prior_date.isoformat() if prior_date else "",
+                            narrative_basis=narrative_basis, report_notes=report_notes,
                             source_file=path.name, parser_version=PARSER_VERSION))
     if not out:
         warnings.append(f"{path.name}: no price rows extracted")
@@ -179,7 +215,7 @@ def parse_pdf(path):
 
 
 def check_consistency(rows):
-    """Each report states yesterday's price, so today's price in report D must equal the
+    """Each report states the previous price, so today's price in report D must equal the
     'prior' price in the next report. Returns (n_compared, mismatches, n_no_reference)."""
     by_date = {}
     for r in rows:
@@ -215,14 +251,26 @@ def main(argv):
             rows += r
             all_warn += w
         except Exception as e:                       # quarantine, never guess
-            failed.append((p.name, str(e)))
+            failed.append((p.name, f"{type(e).__name__}: {e}"))
     with open(dest, "w", newline="", encoding="utf-8") as fh:
         wr = csv.DictWriter(fh, fieldnames=FIELDS)
         wr.writeheader()
         wr.writerows(rows)
     print(f"{len(pdfs)} PDFs, {len(rows)} price rows written to {dest}")
     print(f"{len(failed)} files failed to parse, {len(all_warn)} warnings")
-    for n, e in failed:
+    failed_names = {n for n, _ in failed}
+    by_year = {}
+    for p in pdfs:
+        y = p.name[:4]
+        ok_n, bad_n = by_year.get(y, (0, 0))
+        by_year[y] = (ok_n, bad_n + 1) if p.name in failed_names else (ok_n + 1, bad_n)
+    print("  year: parsed / failed")
+    for y in sorted(by_year):
+        print(f"  {y}: {by_year[y][0]} / {by_year[y][1]}")
+    if failed:
+        latest = max(failed)
+        print(f"  most recent failure: {latest[0]} - {latest[1]}")
+    for n, e in failed[:5]:
         print("  FAILED", n, "-", e)
     for w in all_warn[:20]:
         print("  WARN", w)
