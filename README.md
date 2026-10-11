@@ -56,7 +56,7 @@ final clean-up) differ; the ones inspected are discrepancies inside the CBSL rep
 - Source: CBSL Statistics Department, Daily Price Report (2,269 files, 2017 to present;
   the current extractor covers 28 July 2020 onward, 2017 to mid-2020 uses older layouts).
 - Right to use: robots.txt permits automated access at a 10 s crawl delay.
-  Written permission requested from CBSL on **[DATE]**; reply: **[PENDING / attach]**.
+  Written permission requested from CBSL on **11 Oct 2026**; reply: **none yet**.
 - Contains prices only, no personal data. Raw PDFs are not redistributed in this repo.
 
 ## Known data issues (found so far)
