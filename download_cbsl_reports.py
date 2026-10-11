@@ -66,7 +66,10 @@ class Fetcher:
         self.rp = RobotFileParser()
         self.rp.set_url(BASE + "/robots.txt")
         try:
-            self.rp.read()
+            _r = requests.get(BASE + '/robots.txt', headers={'User-Agent': USER_AGENT}, timeout=30)
+            if _r.status_code != 200:
+                raise RuntimeError(f'robots.txt returned HTTP {_r.status_code}')
+            self.rp.parse(_r.text.splitlines())
         except Exception as e:  # if robots.txt cannot be read, stop and ask the user
             raise SystemExit(f"Could not read robots.txt ({e}). Check it manually before scraping.")
 
