@@ -1,81 +1,153 @@
 # Price Signal
 
-Telling short-lived food price swings from lasting ones in Sri Lankan markets.
-ModelX 2.0 (IEEE CIS Student Chapter, IIT), domain: Economy & livelihoods.
+**Telling short-lived food price swings from lasting ones, using the Central Bank of Sri Lanka's Daily Price Reports.**
 
-**Status: in progress.** Data pipeline (download + extraction) works; models and
-interface are not built yet. This README describes only what exists today.
+ModelX 2.0 (IEEE CIS Student Chapter, IIT) · Domain: Cost of living and everyday economics · Author: Nivetha, SLIIT
 
-## What it does today
-1. `download_cbsl_reports.py` downloads the Central Bank of Sri Lanka (CBSL) *Daily Price
-   Report* PDFs from https://www.cbsl.gov.lk/en/statistics/economic-indicators/price-report
-   politely: it obeys robots.txt (including its 10-second crawl delay), resumes after
-   interruption and writes `data/manifest.csv` (URL, date, SHA-256, status, download time).
-2. `extract_prices.py` turns the PDFs into one tidy CSV row per (report, item, market).
-   It reads values by position (the PDF text layer drops empty cells and splits numbers),
-   reads market names from each section's own header, and **rejects layouts it was not
-   built for instead of guessing** (reports before late July 2020 use older formats).
-   Every unparsed file is listed with its reason in `failed_files.txt`.
-3. `test_extract_prices.py` checks the extractor against prices quoted in each report's own
-   summary text (125 spot checks across 2021-2026).
+**Status (11 Oct 2026):** data pipeline and feasibility evidence done; proposal submitted for 19 Oct; interface, guard and refusal rules still to build (see the timeline).
 
-## Run it
-```bash
-python3 -m venv .venv && source .venv/bin/activate
-pip install -r requirements.txt
+---
 
-# edit USER_AGENT in download_cbsl_reports.py (your contact email) first
-python3 download_cbsl_reports.py --max-pages 2 --limit 10   # small test
-python3 download_cbsl_reports.py                            # full archive, ~7 hours
+## 1. The problem and the user
 
-python3 extract_prices.py data/raw prices_all.csv
-```
-The summary printed at the end shows parsed/failed files per year. The full lists of
-failures and warnings are written to `failed_files.txt` and `warnings.txt`.
+Small food buyers in Colombo (canteens, small restaurants, shops) cannot tell when a price jump at Dambulla, the main wholesale source, is about to reach Pettah or Narahenpita, so they buy vegetables at the wrong time. The Central Bank publishes the prices every working day, but only as a PDF that compares a price with yesterday or last Friday. It does not say whether a Colombo price is lagging behind Dambulla, or how much of the gap usually closes.
 
-Tests need sample PDFs (not committed): `SAMPLES_DIR=path/to/pdfs python3 test_extract_prices.py`
-(or `pytest`). The samples are the reports for 1-2 June 2021-2026 (plus 3-4 June 2021 and
-2024), 2-9 October 2026, and 1-2 June 2020 (which must be rejected as an older layout).
+**Planned output:** one card per item showing whether the buyer's market is lagging behind Dambulla, how much of the gap has typically closed within 1, 3 and 5 report days, how uncertain that is, and the date of the data. When the data cannot support a view the card says "no clear signal" or "insufficient data". It never says "buy" or "sell".
 
-## Coverage (full run, 10 October 2026)
+## 2. Results so far
+
+All results use a time split: models are fitted on data up to 2023 and tested on 2024 to October 2026. No future data is used for training.
+
+**Finding 1: Dambulla leads Colombo prices (supported).** Adding the Dambulla price improves forecasts of Colombo price changes beyond a model that already uses the price's own history.
+
+| Colombo series | Horizon (report days) | Gain (points) | 95% interval | Placebo gain | Items with gain | Verdict |
+|---|---|---|---|---|---|---|
+| Wholesale Pettah | 1 / 3 / 5 | +7.3 / +9.5 / +9.0 | +6.4 to +11.3 | 0.0 to +0.2 | 14-15 of 18 | supported |
+| Retail Pettah | 1 / 3 / 5 | +6.5 / +8.4 / +7.9 | +5.5 to +10.2 | 0.0 to +0.1 | 14-16 of 19 | supported |
+| Retail Narahenpita | 1 / 3 / 5 | +7.5 / +12.2 / +12.0 | +5.9 to +14.1 | -0.3 to -0.1 | 10-17 of 19 | supported (partly at 1 day) |
+
+Gain is the share of squared forecast error removed, in percentage points, against a model with the price's own history only. The placebo swaps in another item's Dambulla price and should show nothing. Full per-row output, including per-year gains, is in `results_leadlag.txt`.
+
+**Finding 2: it is worth something in rupees (simulation).** A buyer who must buy once, today or 3 report days later, and follows the model, paid 1.2 to 1.6% less than always buying today (about Rs 60 to 96 per 10 kg). Perfect hindsight would save 3.6 to 5.4%. The direction was right 62 to 69% of the time on all calls and 75 to 85% on the strongest 25%. See `results_decision.txt`.
+
+**Finding 3 (negative result, kept on purpose): jump persistence cannot be predicted.** About 57% of one-day jumps of 15% or more persisted. Our models did no better than always guessing persistence (accuracy 56.6 to 56.7% against 57.2%, AUC 0.50 to 0.54), so we set that idea aside and pivoted to the lead-lag test above.
+
+**Limits, stated plainly:** the effect is modest (errors roughly 4 to 8% smaller than "no change"); it rests on one train and test split; horizons count report days, so a Monday spans a weekend; only 18 to 19 items have Dambulla wholesale prices; the rupee backtest assumes a purchase can be deferred at no cost; the test period (2024 on) is calm and the signal may weaken in a crisis such as 2022.
+
+## 3. Work done
+
+| # | Work | Evidence in this repo |
+|---|---|---|
+| 1 | Downloader that obeys robots.txt (10-second crawl delay), downloads each PDF once and records a manifest. 2,269 report PDFs retrieved (Apr 2017 to Oct 2026). | `download_cbsl_reports.py`, `data/manifest.csv` |
+| 2 | Position-based PDF table extractor. Reads each value by horizontal position, because the PDF text layer drops empty cells and splits numbers. Rejects any layout it was not built for instead of guessing. | `extract_prices.py` |
+| 3 | Tests: 125 extracted prices checked against figures quoted in each report's own summary text. | `test_extract_prices.py` |
+| 4 | Full extraction run: **1,485 report days parsed (28 Jul 2020 to 9 Oct 2026), 268,213 price rows.** | `failed_files.txt`, `coverage.py`, `coverage.csv` |
+| 5 | Feasibility checks: jump persistence (negative), lead-lag (positive). | `jump_check.py`, `model_check.py`, `leadlag_check.py` |
+| 6 | Robustness of the lead-lag signal: ridge model, placebo, month-resampled 95% intervals, per-year and per-item checks, self-test on synthetic data. | `robust_check.py`, `results_leadlag.txt` |
+| 7 | Rupee backtest of the buying decision against four baselines, thresholds fixed on pre-2024 data. | `decision_backtest.py`, `results_decision.txt` |
+| 8 | Written permission requested from CBSL on **11 Oct 2026**; reply: **none yet**. | this README |
+| 9 | Phase 1 project proposal written. | submitted for 19 Oct |
+| 10 | AI-use disclosure for every script and document. | `AI_USE.md` |
+
+### Coverage
+
 | | Count |
 |---|---|
-| PDF files downloaded (2017-04 to 2026-10) | 2,269 |
-| Reports parsed | 1,485 report days, **2020-07-28 to 2026-10-09** |
-| Rows in `prices_all.csv` | 268,213 (no duplicate report/item/market rows) |
-| Not parsed: older layouts (2017 to mid-2020) | 776, rejected on purpose |
-| Not parsed: scanned PDFs with no text | 4 (2022-03-16, 2025-09-24, 2025-09-25, 2026-04-15) |
-| Not parsed: header names a weekday but no date | 3 (2026-04-02, 2026-05-29, 2026-07-30) |
-| Skipped: exact duplicate file | 1 (`2022-06-22__...20220621_0.pdf` is a copy of 21 June 2022) |
+| Report files downloaded | 2,269 |
+| Parsed (current layout) | 1,485 of 1,493 in-scope reports |
+| Older layouts (2017 to mid-2020), rejected on purpose | 776 |
+| Scanned PDFs with no text layer (2022-03-16, 2025-09-24, 2025-09-25, 2026-04-15) | 4 |
+| Header names a weekday but no date (2026-04-02, 2026-05-29, 2026-07-30) | 3 |
+| Exact duplicate file (2022-06-22 is a copy of 21 June) | 1 |
 
-Cross-day check: each report states the previous price, so "today" in one report should
-equal "prior" in the next. About 0.5% of the compared pairs (1,125 of 208,019 before the
-final clean-up) differ; the ones inspected are discrepancies inside the CBSL reports.
+Unparsed reports are listed in `failed_files.txt`. Nothing is guessed or filled in silently.
 
-## Data
-- Source: CBSL Statistics Department, Daily Price Report (2,269 files, 2017 to present;
-  the current extractor covers 28 July 2020 onward, 2017 to mid-2020 uses older layouts).
-- Right to use: robots.txt permits automated access at a 10 s crawl delay.
-  Written permission requested from CBSL on **11 Oct 2026**; reply: **none yet**.
-- Contains prices only, no personal data. Raw PDFs are not redistributed in this repo.
+### Known data issues
 
-## Known data issues (found so far)
-- Monday reports compare with "last Friday", not yesterday; a few others compare with
-  "last Tuesday" or "last Wednesday" (public holidays). The extractor records the comparison
-  day in `prior_label` and `prior_date`.
-- 2021 reports' summary text quotes wholesale prices; later years quote retail.
-- Fish markets can be closed (for example 1-2 June 2026); recorded in `report_notes`.
-- Source inconsistency: on 2 June 2022 the summary text says Dambulla beans 600 to 475 but
-  the table says 605 to 475.
-- Some rice and fish column headers are blank in the PDF; those rows carry `market_assumed=True`.
-- No report in the data for 22 June 2022 (the file listed under that date is a copy of 21 June).
-- Some prices carry a footnote marker such as `150.00(a)`; the marker is dropped and the number kept.
-- Some 2020-2021 reports are laid out about 1.5 times larger than the rest; the extractor
-  scales its column positions to match.
-- Dates in some downloaded file names are wrong (for example a 2020 report filed under 2023);
-  the extractor uses the date printed inside each report and warns when it differs from the name.
+- Comparison basis varies ("Yesterday", "Last Friday", "Friday dd.mm.yyyy"); it is stored with every row.
+- Item names drift across years (case, "(lmp)" and "(Imp)", "Dhal" and "Red Dhal"); they are normalised in the analysis scripts.
+- "n.a." (no price reported), a blank cell (not applicable) and a closed market (footnote) are different things and are kept apart.
+- Prices are rounded to the nearest Rs 5 or 10, so cheap items move in steps.
+- One report (2 June 2022) quotes a summary figure that disagrees with its own table; we follow the table.
+- Some column headers are blank in the PDF; those rows are flagged as assumed.
+- Some pages are scaled differently, carry footnote markers inside prices, or have a file date that differs from the report date. The extractor handles these.
+- About 0.5% of compared prior-versus-today pairs differ across consecutive reports; they are flagged.
 
-## Not done yet
-Forecasting/anomaly models, evaluation against baselines, the user interface, and the
-stale-data refusal logic described in the proposal. Reports before late July 2020 are not
-parsed (they need a separate extractor for the older layout).
+## 4. Work to do, and timeline
+
+| Dates | Work | Done when |
+|---|---|---|
+| 10 to 19 Oct | Research, data pipeline, parser, lead-lag evidence, proposal | Proposal submitted; repository public with tests **(largely done)** |
+| 20 to 22 Oct | Re-run the checks on the final data; close remaining parser gaps; handle CBSL's reply | Coverage numbers final; results re-confirmed |
+| 23 to 26 Oct | Calibrated prediction intervals; extend the decision backtest | An 80% interval contains 75 to 85% of outcomes; backtest table written |
+| 27 to 29 Oct | Guard and refusal rules; daily refresh; interface | Stale, missing and closed-market tests pass; dashboard runs on the latest real report |
+| 30 to 31 Oct | Technical report, two-page summary, three-minute video; buyer feedback (2 to 3 buyers) | Drafts reviewed by a second person |
+| 1 Nov | **Implementation submission** | Repository opens from a private browser window and this README runs |
+| 9 to 14 Nov | If we reach the final: rehearse the live demo | Demo runs on the day's real report |
+
+**Still to build:** prediction intervals, the guard (is the latest report fresh and parsed? is there enough recent data? is the gap large enough for the model to have shown skill?), the daily refresh job, the Streamlit dashboard, and the buyer interviews.
+
+**What we cut first if time runs short:** (1) gradient-boosting challenger models, (2) Sinhala and Tamil versions of the interface, (3) automated daily refresh, replaced by a script the user runs, (4) the 1-day and 5-day horizons, keeping 3 days, (5) buyer interviews reduced from 3 to 1 or 2. We never cut the freshness check, the refusal rules or the honest evaluation.
+
+## 5. Final outcome we are aiming for
+
+- A public repository whose README runs from a clean machine.
+- A dashboard of cards built from the latest real report, each with its data date.
+- Refusal rules that are tested: stale data, a rejected report, a closed market, too little data, a missing Dambulla price.
+- A technical report that evaluates the system honestly against the proposal, and a three-minute video of it working on real data.
+
+If the lead-lag signal does not hold on the final data, we say so, stop claiming a lead, and ship the honest version: the data date, the Dambulla-to-Colombo gap, and a clear "no reliable signal" label with no forecast.
+
+## 6. How to run it
+
+```bash
+pip install -r requirements.txt
+
+# 1. Download the reports (obeys robots.txt; 10 s between requests; resumes automatically)
+python3 download_cbsl_reports.py --limit 10     # try 10 first
+python3 download_cbsl_reports.py                # full run
+
+# 2. Extract prices (writes failed_files.txt and warnings.txt in the current folder)
+python3 extract_prices.py data/raw prices_all.csv
+
+# 3. Tests (needs the sample PDFs listed in test_extract_prices.py)
+SAMPLES_DIR=samples python3 test_extract_prices.py
+
+# 4. Analysis
+python3 coverage.py prices_all.csv
+python3 jump_check.py prices_all.csv
+python3 model_check.py prices_all.csv
+python3 leadlag_check.py prices_all.csv
+python3 robust_check.py prices_all.csv
+python3 decision_backtest.py prices_all.csv
+```
+
+`prices_all.csv` and the raw PDFs are generated locally and are not redistributed in this repository.
+
+## 7. Repository map
+
+| File | What it is |
+|---|---|
+| `download_cbsl_reports.py` | Polite downloader and manifest writer |
+| `extract_prices.py` | PDF table extractor |
+| `test_extract_prices.py` | Extractor tests against each report's own summary text |
+| `coverage.py`, `coverage.csv` | Which item / market series are complete enough to model |
+| `jump_check.py`, `model_check.py` | Jump-persistence feasibility checks (negative result) |
+| `leadlag_check.py` | First lead-lag check |
+| `robust_check.py`, `results_leadlag.txt` | Robust lead-lag test with placebo and intervals |
+| `decision_backtest.py`, `results_decision.txt` | Rupee backtest of the buying decision |
+| `failed_files.txt` | Reports not parsed, with the reason |
+| `data/manifest.csv` | URL, date, file hash and download time of every report |
+| `AI_USE.md` | Which AI tool was used, for what |
+
+## 8. Data source, licence and ethics
+
+- **Source:** Central Bank of Sri Lanka, Statistics Department, Daily Price Report: https://www.cbsl.gov.lk/en/statistics/economic-indicators/price-report
+- **Access:** robots.txt permits automated access at a 10-second crawl delay and blocks only search and system paths, which we avoid.
+- **Reuse terms:** we have not found a statement of reuse terms on the CBSL site. Written permission was requested on 11 Oct 2026; reply: none yet. This section will be updated when CBSL replies.
+- **We do:** credit CBSL, use the data only for this non-commercial project, and keep the raw PDFs out of the repository.
+- **Personal data:** none. The data are prices by item and market only.
+
+## 9. AI assistance
+
+Claude (Anthropic) helped research data sources and literature, write first versions of the scripts and draft the proposal. We ran, tested and reviewed everything and are responsible for it. Details: [`AI_USE.md`](AI_USE.md).
