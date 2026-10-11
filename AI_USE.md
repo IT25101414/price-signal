@@ -19,3 +19,7 @@ Claude wrote first versions of these analysis scripts. We ran each one, checked 
 - `decision_backtest.py` (rupee backtest of the buying decision)
 
 Claude also researched data sources and literature, drafted the project proposal including the literature review, and explained PDF layouts. We ran, tested and reviewed everything, and we are responsible for it.
+
+## Addendum 2: refresh, guard, model and dashboard
+
+Claude (Anthropic) wrote first versions of `refresh.py`, `guard.py`, `model.py`, `app.py`, `run_daily.sh` and their tests (`test_refresh.py`, `test_guard.py`, `test_model.py`, `test_app.py`), and diagnosed and patched the robots.txt reading in `download_cbsl_reports.py`. We ran every test, checked the output on real data (including the interval coverage check), and reviewed everything. We are responsible for it.
