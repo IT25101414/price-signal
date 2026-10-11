@@ -6,3 +6,16 @@
 
 We ran, tested and reviewed everything before committing and take responsibility for it.
 Update this table whenever the use of AI tools changes.
+
+## Addendum: all scripts and documents where Claude (Anthropic) helped
+
+Claude wrote first versions of these analysis scripts. We ran each one, checked its output, and changed it where needed:
+
+- `coverage.py` (coverage report for the price table)
+- `jump_check.py` (do one-day price jumps persist?)
+- `model_check.py` (can a model predict which jumps persist?)
+- `leadlag_check.py` (does Dambulla lead Colombo prices?)
+- `robust_check.py` (ridge model, placebo test, month-resampled intervals)
+- `decision_backtest.py` (rupee backtest of the buying decision)
+
+Claude also researched data sources and literature, drafted the project proposal including the literature review, and explained PDF layouts. We ran, tested and reviewed everything, and we are responsible for it.
