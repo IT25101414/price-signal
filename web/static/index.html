@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Price Signal</title>
+<meta name="description" content="Do Colombo food prices lag Dambulla wholesale, and how much of the gap tends to close in 3 report days?">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230b5c5c'/%3E%3Cpath d='M16 6v20M7 16h18' stroke='%23fff' stroke-width='2'/%3E%3Crect x='10' y='12' width='9' height='5' fill='%23fff'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="/static/app.css">
+</head>
+<body>
+<a class="skip" href="#list">Skip to the price list</a>
+<header class="top">
+  <div class="wrap top-row">
+    <p class="brand">Price Signal</p>
+    <button id="theme" class="ghost" type="button" aria-label="Switch colour theme">Theme</button>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="status" id="status" aria-live="polite" aria-busy="true">
+    <h1 id="headline">Checking the latest report</h1>
+    <p id="reason" class="lede"></p>
+    <p id="demo" class="demo" hidden></p>
+  </section>
+
+  <section class="controls" aria-label="Choose a Colombo price">
+    <div class="seg" role="radiogroup" aria-label="Colombo price to compare with Dambulla wholesale" id="series"></div>
+    <label class="search"><span class="sr">Filter items</span>
+      <input id="q" type="search" placeholder="Filter items" autocomplete="off">
+    </label>
+  </section>
+
+  <section id="list" class="list-wrap" tabindex="-1">
+    <div class="axis-head" id="axishead" hidden><span></span><span class="ah-scale"><span>Expected to fall</span><span>Expected to rise</span></span><span></span></div>
+    <ol id="rows" class="rows"></ol>
+
+    <div id="none" class="none" hidden>
+      <h2 id="none-title">No estimate today</h2>
+      <ul id="none-list"></ul>
+    </div>
+  </section>
+
+  <section class="how" aria-labelledby="how-h">
+    <h2 id="how-h">How to read this</h2>
+    <p>Each bar is the model's 80% range for the change in the Colombo price over the next 3 report days. The mark inside it is the middle estimate. All bars share one scale, so a longer bar means more uncertainty.</p>
+    <p>Dambulla wholesale prices have led Colombo prices in past reports. These are statistical estimates from the Central Bank of Sri Lanka's Daily Price Reports, not forecasts you can rely on, and not advice. The data are published by the Statistics Department, Central Bank of Sri Lanka, which bears no responsibility for and does not endorse this project or its findings.</p>
+  </section>
+</main>
+
+<footer class="wrap foot">
+  <p id="foot"></p>
+</footer>
+
+<dialog id="detail" aria-labelledby="d-title">
+  <form method="dialog" class="d-close"><button class="ghost" aria-label="Close">Close</button></form>
+  <h2 id="d-title"></h2>
+  <p id="d-sub" class="lede"></p>
+  <div id="d-body"></div>
+</dialog>
+<div id="tip" class="tip" role="status" hidden></div>
+<script src="/static/app.js"></script>
+</body>
+</html>
