@@ -6,6 +6,7 @@ from pathlib import Path
 import pytest
 
 HERE = Path(__file__).resolve().parent
+FIXTURE = HERE / "test_cards.csv"   # a fixed 9 Oct 2026 sample, so the tests do not depend on today's cards.csv
 sys.path.insert(0, str(HERE))
 sys.path.insert(0, str(HERE.parent))
 
@@ -18,7 +19,7 @@ NUMBERS = server.NUMBER_FIELDS + ["direction", "signal"]
 @pytest.fixture()
 def make_client(tmp_path, monkeypatch):
     db = tmp_path / "t.db"
-    build_db.build(db, HERE.parent / "cards.csv", prices=None, synthetic=True)
+    build_db.build(db, FIXTURE, prices=None, synthetic=True)
     monkeypatch.setenv("PRICE_SIGNAL_DB", str(db))
     monkeypatch.setenv("PRICE_SIGNAL_LOG", str(tmp_path / "missing_log.csv"))
 
@@ -90,6 +91,6 @@ def test_bad_inputs(make_client):
 
 def test_db_matches_csv(tmp_path):
     db = tmp_path / "x.db"
-    n, _, _ = build_db.build(db, HERE.parent / "cards.csv", prices=None)
-    with open(HERE.parent / "cards.csv", newline="") as fh:
+    n, _, _ = build_db.build(db, FIXTURE, prices=None)
+    with open(FIXTURE, newline="") as fh:
         assert n == len(list(csv.DictReader(fh)))
