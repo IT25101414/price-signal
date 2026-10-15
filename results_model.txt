@@ -1,0 +1,6 @@
+series                  tests   inside 80% interval  avg half-width  by year
+wholesale Pettah        10407                 81.0%           28.1%  2024:80% 2025:82% 2026:81%
+retail Pettah           10739                 81.5%           23.3%  2024:81% 2025:82% 2026:82%
+retail Narahenpita      10129                 77.4%           18.1%  2024:79% 2025:76% 2026:77%
+
+Nominal 80%. The proposal's target is 75 to 85%. Half-width is the average +/- range for a 3-report-day change.

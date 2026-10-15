@@ -1,57 +1,57 @@
 
-=== wholesale Pettah   horizon 3 report days   10378 decisions in the test period ===
+=== wholesale Pettah   horizon 3 report days   10412 decisions in the test period ===
 policy                                  acted   cost vs buy-today  Rs per 10 kg  hit rate
 always buy today                            -               0.00%             0         -
-always wait                                 -               2.03%          -0.8         -
-hindsight best                              -              -5.35%        -179.5         -
+always wait                                 -               2.03%          -0.4         -
+hindsight best                              -              -5.34%        -179.2         -
 
-follow model C (own history)        30% acted              -0.10%         -12.6       57%
-follow model D (with Dambulla)      28% acted              -0.95%         -35.9       75%
+follow model C (own history)        30% acted              -0.10%         -12.5       57%
+follow model D (with Dambulla)      28% acted              -0.95%         -35.8       75%
 
-follow model C (own history)        53% acted               0.01%         -12.1       55%
+follow model C (own history)        53% acted               0.02%         -11.9       55%
 follow model D (with Dambulla)      52% acted              -1.31%         -50.4       69%
 
-follow model C (own history)        all calls               0.14%         -14.5       53%
-follow model D (with Dambulla)      all calls              -1.43%         -62.2       62%
-  Dambulla vs own-history model, strongest 25% : -0.848 pts of purchase value [-1.056, -0.641]  = -23.2 Rs per 10 kg   (cheaper)
-  Dambulla vs own-history model, strongest 50% : -1.320 pts of purchase value [-1.635, -1.033]  = -38.3 Rs per 10 kg   (cheaper)
-  Dambulla vs own-history model, all calls     : -1.570 pts of purchase value [-1.977, -1.179]  = -47.7 Rs per 10 kg   (cheaper)
+follow model C (own history)        all calls               0.15%         -14.0       53%
+follow model D (with Dambulla)      all calls              -1.42%         -61.9       62%
+  Dambulla vs own-history model, strongest 25% : -0.850 pts of purchase value [-1.057, -0.644]  = -23.3 Rs per 10 kg   (cheaper)
+  Dambulla vs own-history model, strongest 50% : -1.324 pts of purchase value [-1.639, -1.036]  = -38.5 Rs per 10 kg   (cheaper)
+  Dambulla vs own-history model, all calls     : -1.572 pts of purchase value [-1.977, -1.180]  = -47.9 Rs per 10 kg   (cheaper)
 
-=== retail Pettah   horizon 3 report days   10705 decisions in the test period ===
+=== retail Pettah   horizon 3 report days   10741 decisions in the test period ===
 policy                                  acted   cost vs buy-today  Rs per 10 kg  hit rate
 always buy today                            -               0.00%             0         -
-always wait                                 -               1.35%          -1.0         -
-hindsight best                              -              -4.41%        -179.5         -
+always wait                                 -               1.35%          -0.4         -
+hindsight best                              -              -4.40%        -179.2         -
 
-follow model C (own history)        29% acted              -0.05%          -8.0       57%
-follow model D (with Dambulla)      27% acted              -0.79%         -33.5       76%
+follow model C (own history)        29% acted              -0.04%          -7.7       57%
+follow model D (with Dambulla)      27% acted              -0.78%         -33.4       76%
 
-follow model C (own history)        53% acted              -0.06%         -11.5       55%
+follow model C (own history)        53% acted              -0.05%         -11.3       55%
 follow model D (with Dambulla)      52% acted              -1.07%         -49.2       70%
 
-follow model C (own history)        all calls              -0.06%         -16.4       54%
-follow model D (with Dambulla)      all calls              -1.23%         -60.0       65%
-  Dambulla vs own-history model, strongest 25% : -0.738 pts of purchase value [-0.910, -0.570]  = -25.5 Rs per 10 kg   (cheaper)
-  Dambulla vs own-history model, strongest 50% : -1.016 pts of purchase value [-1.270, -0.771]  = -37.7 Rs per 10 kg   (cheaper)
-  Dambulla vs own-history model, all calls     : -1.162 pts of purchase value [-1.469, -0.865]  = -43.6 Rs per 10 kg   (cheaper)
+follow model C (own history)        all calls              -0.06%         -15.6       54%
+follow model D (with Dambulla)      all calls              -1.22%         -59.7       65%
+  Dambulla vs own-history model, strongest 25% : -0.739 pts of purchase value [-0.910, -0.571]  = -25.7 Rs per 10 kg   (cheaper)
+  Dambulla vs own-history model, strongest 50% : -1.020 pts of purchase value [-1.270, -0.776]  = -37.9 Rs per 10 kg   (cheaper)
+  Dambulla vs own-history model, all calls     : -1.168 pts of purchase value [-1.470, -0.874]  = -44.1 Rs per 10 kg   (cheaper)
 
-=== retail Narahenpita   horizon 3 report days   10100 decisions in the test period ===
+=== retail Narahenpita   horizon 3 report days   10134 decisions in the test period ===
 policy                                  acted   cost vs buy-today  Rs per 10 kg  hit rate
 always buy today                            -               0.00%             0         -
-always wait                                 -               0.93%          -7.0         -
-hindsight best                              -              -3.57%        -198.4         -
+always wait                                 -               0.93%          -6.2         -
+hindsight best                              -              -3.56%        -197.7         -
 
-follow model C (own history)        17% acted              -0.31%         -23.8       70%
-follow model D (with Dambulla)      24% acted              -0.81%         -46.4       85%
+follow model C (own history)        17% acted              -0.31%         -23.7       70%
+follow model D (with Dambulla)      24% acted              -0.81%         -46.2       85%
 
-follow model C (own history)        38% acted              -0.48%         -30.5       65%
-follow model D (with Dambulla)      49% acted              -1.23%         -73.1       79%
+follow model C (own history)        38% acted              -0.47%         -30.2       65%
+follow model D (with Dambulla)      49% acted              -1.22%         -72.9       79%
 
-follow model C (own history)        all calls              -0.52%         -37.1       58%
-follow model D (with Dambulla)      all calls              -1.57%         -96.2       69%
-  Dambulla vs own-history model, strongest 25% : -0.495 pts of purchase value [-0.630, -0.368]  = -22.6 Rs per 10 kg   (cheaper)
-  Dambulla vs own-history model, strongest 50% : -0.749 pts of purchase value [-0.907, -0.600]  = -42.6 Rs per 10 kg   (cheaper)
-  Dambulla vs own-history model, all calls     : -1.047 pts of purchase value [-1.237, -0.853]  = -59.1 Rs per 10 kg   (cheaper)
+follow model C (own history)        all calls              -0.52%         -36.8       58%
+follow model D (with Dambulla)      all calls              -1.57%         -95.9       69%
+  Dambulla vs own-history model, strongest 25% : -0.494 pts of purchase value [-0.627, -0.366]  = -22.5 Rs per 10 kg   (cheaper)
+  Dambulla vs own-history model, strongest 50% : -0.748 pts of purchase value [-0.905, -0.599]  = -42.7 Rs per 10 kg   (cheaper)
+  Dambulla vs own-history model, all calls     : -1.045 pts of purchase value [-1.234, -0.852]  = -59.1 Rs per 10 kg   (cheaper)
 
 Negative = cheaper than always buying today. 'hindsight best' is a ceiling no real buyer can reach.
 Rs figures assume 10 kg per decision; scale to your own purchase size. Decisions on consecutive
