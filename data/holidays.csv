@@ -1,0 +1,4 @@
+# Sri Lankan public holidays on which the Central Bank published no Daily Price Report.
+# One date per line, YYYY-MM-DD, optional name after a comma. Fill from the official calendar.
+# While this file has no dates, a long holiday stretch can make data look stale and the guard refuses.
+date,name

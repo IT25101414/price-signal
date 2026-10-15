@@ -193,7 +193,7 @@ def main():
             "- **No clear signal** means the gap is too small for the model to have shown any skill. "
             "**Insufficient data** means too few recent days with both prices.\n"
             "- The effect is modest, it was tested on a calm period (2024 onward), and a Monday report spans a weekend.\n"
-            "- Source: Central Bank of Sri Lanka, Daily Price Report. Prices are rounded to the nearest Rs 5 or 10.")
+            "- Source: Central Bank of Sri Lanka, Statistics Department, Daily Price Report. Prices are rounded to the nearest Rs 5 or 10. This is an independent project, not endorsed by the Central Bank.")
 
 
 main()

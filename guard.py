@@ -17,11 +17,15 @@ Order of checks (the first that fails wins):
   no_clear_signal    the gap is too small for the model to have shown skill (needs the model)
   ok
 
-Working days are Monday to Friday, minus any `holidays` you pass in. Sri Lankan public
-holidays are not built in: a long holiday stretch can make the data look stale, and the
-guard then errs on the side of refusing, which is the safe direction.
+Working days are Monday to Friday, minus any public holidays. Holidays come from
+data/holidays.csv (one `YYYY-MM-DD` per line in the first column, `#` for comments; override the
+path with PRICE_SIGNAL_HOLIDAYS) or from the `holidays` argument. No holiday dates are built in:
+the file ships empty, and you fill it from the official Sri Lankan holiday calendar. With an
+empty file a long holiday stretch can make the data look stale, and the guard then errs on the
+side of refusing, which is the safe direction. Only list days the Central Bank published no report.
 """
 import csv
+import os
 import sys
 from dataclasses import dataclass
 from datetime import date, datetime, timedelta
@@ -48,12 +52,38 @@ class Verdict:
         return f"{self.status}: {self.reason}"
 
 
+HOLIDAYS_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data", "holidays.csv")
+
+
+def load_holidays(path=None):
+    """Set of dates from the holidays file. A missing file or an unreadable line adds nothing,
+    which can only make the guard refuse more often, never less."""
+    path = path or os.environ.get("PRICE_SIGNAL_HOLIDAYS") or HOLIDAYS_FILE
+    days = set()
+    try:
+        with open(path, newline="", encoding="utf-8") as fh:
+            for line in fh:
+                first = line.split("#", 1)[0].split(",", 1)[0].strip()
+                if not first:
+                    continue
+                try:
+                    days.add(datetime.strptime(first, "%Y-%m-%d").date())
+                except ValueError:
+                    continue            # the header row, or a malformed date
+    except OSError:
+        pass
+    return frozenset(days)
+
+
 def fmt(d):
     return f"{d.day} {d.strftime('%b %Y')}"
 
 
-def working_days_after(last, today, holidays=frozenset()):
-    """Working days (Mon-Fri, not holidays) after `last`, up to and including `today`."""
+def working_days_after(last, today, holidays=None):
+    """Working days (Mon-Fri, not holidays) after `last`, up to and including `today`.
+    `holidays=None` reads data/holidays.csv; pass a set (even an empty one) to override."""
+    if holidays is None:
+        holidays = load_holidays()
     n, d = 0, last
     while d < today:
         d += timedelta(days=1)
@@ -68,7 +98,7 @@ def _series(prices, item, ptype, market):
 
 
 def assess(prices, item, target=DEFAULT_TARGET, today=None, newest_listed=None, signal=None,
-           min_signal=None, holidays=frozenset(), max_age=MAX_AGE_WORKING_DAYS,
+           min_signal=None, holidays=None, max_age=MAX_AGE_WORKING_DAYS,
            window=WINDOW_REPORTS, min_obs=MIN_PAIRED_OBS):
     """prices: DataFrame in the extractor's output format (report_date as datetime.date)."""
     today = today or date.today()

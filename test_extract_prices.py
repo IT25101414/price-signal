@@ -15,6 +15,13 @@ from extract_prices import UnsupportedLayout, parse_pdf
 
 SAMPLES = Path(os.environ.get("SAMPLES_DIR", "samples"))
 
+import pytest  # noqa: E402
+
+# The sample PDFs are not committed, so these checks run on your machine and are skipped on a fresh clone or in CI.
+needs_samples = pytest.mark.skipif(
+    not (SAMPLES.is_dir() and any(SAMPLES.glob("*.pdf"))),
+    reason="sample PDFs not present (see README); run with SAMPLES_DIR=<folder>")
+
 R, W = "retail", "wholesale"
 # (report date, item, price_type, market, prior, today)
 CASES = [
@@ -168,6 +175,7 @@ def load():
     return rows, rejected
 
 
+@needs_samples
 def test_narrative_values_match_table():
     rows, _ = load()
     index = {(r["report_date"], r["item"], r["price_type"], r["market"]): r for r in rows}
@@ -180,12 +188,14 @@ def test_narrative_values_match_table():
     assert not failures, failures
 
 
+@needs_samples
 def test_2020_layout_is_rejected_not_guessed():
     _, rejected = load()
     names = [n for n, _ in rejected]
     assert all(n.startswith("2020-") for n in names), names
 
 
+@needs_samples
 def test_closed_fish_markets_are_flagged():
     rows, _ = load()
     june1 = [r for r in rows if r["report_date"] == "2026-06-01"]

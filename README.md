@@ -4,7 +4,7 @@
 
 ModelX 2.0 (IEEE CIS Student Chapter, IIT) · Domain: Cost of living and everyday economics · Author: Nivetha, SLIIT
 
-**Status (11 Oct 2026):** data pipeline and feasibility evidence done; proposal submitted for 19 Oct; interface, guard and refusal rules still to build (see the timeline).
+**Status (16 Oct 2026):** pipeline, refresh, guard, model, Streamlit dashboard and Flask/SQLite website built and tested; proposal ready for 19 Oct. See section 11 for the latest changes.
 
 ---
 
@@ -174,3 +174,12 @@ python3 -m streamlit run app.py
 ```
 
 **Crawler note:** robots.txt is read with our own identifiable User-Agent (the default Python one gets HTTP 403 from the site), the 10-second crawl delay is obeyed, and the crawler stops on anything other than HTTP 200.
+
+## 11. Update (16 Oct 2026): website, holidays, CI, refusal results
+
+- **Website** in `web/` (Flask + SQLite, no build step). Run: `python3 model.py prices_all.csv`, `python3 web/build_db.py`, `python3 web/server.py`. See `web/README.md`. The server applies the same guard on every request and withholds numbers when a report is stale, unread or not ok.
+- **Public holidays:** `data/holidays.csv` (header only, no dates invented). Add `date,name` rows (YYYY-MM-DD) and the guard stops counting those days as working days. Override the file with `PRICE_SIGNAL_HOLIDAYS`.
+- **Refusal results:** `python3 refusal_report.py` runs 12 synthetic cases, each with one deliberate fault, and writes `results_refusal.txt`. These test the guard's logic, not any real report.
+- **CI:** `.github/workflows/tests.yml` runs the tests and the refusal report on every push (Python 3.9). Tests that need the git-ignored sample PDFs are skipped when those are absent.
+- **Permission:** the Central Bank's Statistics Department replied on 12 Oct 2026 about use of the Daily Price Reports; page 1 of the reply is in `docs/cbsl_reply_2026-10-12.pdf` (contact details removed). This project is not endorsed by the Central Bank; the data is theirs, the analysis is ours.
+

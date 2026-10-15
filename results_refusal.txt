@@ -1,0 +1,17 @@
+Case                                                    Expected            Guard said          Result
+------------------------------------------------------------------------------------------------------
+Fresh, complete data                                    ok                  ok                  PASS
+Latest report 4 working days old                        stale               stale               PASS
+Site lists a newer report than the table holds          report_not_read     report_not_read     PASS
+Colombo (Pettah) market closed that day                 market_closed       market_closed       PASS
+Dambulla market closed that day                         market_closed       market_closed       PASS
+Dambulla price reported as n.a.                         no_dambulla_price   no_dambulla_price   PASS
+Dambulla row missing from the latest report             no_dambulla_price   no_dambulla_price   PASS
+Colombo price reported as n.a.                          no_colombo_price    no_colombo_price    PASS
+Too few recent days with both prices (30 of 40 needed)  insufficient_data   insufficient_data   PASS
+Empty price table                                       insufficient_data   insufficient_data   PASS
+Gap too small for the model to have shown skill         no_clear_signal     no_clear_signal     PASS
+4 working days old, but one is a listed public holiday  ok                  ok                  PASS
+
+12 of 12 refusal cases behave as specified.
+Synthetic tables with one deliberate fault each; see refusal_report.py and test_guard.py.

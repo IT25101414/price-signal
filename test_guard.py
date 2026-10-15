@@ -91,3 +91,30 @@ def test_stale_wins_over_other_problems():
 
 def test_empty_table_is_refused():
     assert assess(pd.DataFrame(columns=["report_date"]), "Lime", today=LAST).status == "insufficient_data"
+
+
+# ---- holidays (data/holidays.csv or the argument) ----
+from guard import load_holidays   # noqa: E402
+
+
+def test_holiday_is_not_a_working_day():
+    # Friday 9 Oct report, Thursday 15 Oct would be working day 4 -> stale; a holiday on Tue 13 Oct makes it day 3
+    assert assess(make(), "Lime", today=date(2026, 10, 15), holidays=frozenset()).status == "stale"
+    assert assess(make(), "Lime", today=date(2026, 10, 15), holidays=frozenset({date(2026, 10, 13)})).ok
+
+
+def test_weekend_holiday_changes_nothing():
+    assert working_days_after(LAST, date(2026, 10, 14), frozenset({date(2026, 10, 10)})) == 3
+
+
+def test_holidays_file_is_read_and_bad_lines_are_ignored(tmp_path, monkeypatch):
+    f = tmp_path / "h.csv"
+    f.write_text("# comment\ndate,name\n2026-10-13,Test day\nnot-a-date\n\n2026-10-14 # inline\n")
+    monkeypatch.setenv("PRICE_SIGNAL_HOLIDAYS", str(f))
+    assert load_holidays() == frozenset({date(2026, 10, 13), date(2026, 10, 14)})
+    assert working_days_after(LAST, date(2026, 10, 15)) == 2
+
+
+def test_missing_holidays_file_means_none(tmp_path, monkeypatch):
+    monkeypatch.setenv("PRICE_SIGNAL_HOLIDAYS", str(tmp_path / "nope.csv"))
+    assert load_holidays() == frozenset()
