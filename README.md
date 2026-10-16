@@ -183,3 +183,5 @@ python3 -m streamlit run app.py
 - **CI:** `.github/workflows/tests.yml` runs the tests and the refusal report on every push (Python 3.9). Tests that need the git-ignored sample PDFs are skipped when those are absent.
 - **Permission:** the Central Bank's Statistics Department replied on 12 Oct 2026 about use of the Daily Price Reports; page 1 of the reply is in `docs/cbsl_reply_2026-10-12.pdf` (contact details removed). This project is not endorsed by the Central Bank; the data is theirs, the analysis is ours.
 
+
+**Pinned versions:** `requirements.lock` lists the exact versions used for the results in this repository (Python 3.9). Install them with `python3 -m pip install -r requirements.lock`; `requirements.txt` gives the minimum versions.
