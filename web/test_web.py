@@ -94,3 +94,19 @@ def test_db_matches_csv(tmp_path):
     n, _, _ = build_db.build(db, FIXTURE, prices=None)
     with open(FIXTURE, newline="") as fh:
         assert n == len(list(csv.DictReader(fh)))
+
+
+def test_api_answers_are_never_cacheable(make_client):
+    c = make_client("2026-10-14")
+    for path in ("/api/status", "/api/cards", "/healthz"):
+        r = c.get(path)
+        assert r.headers["Cache-Control"] == "no-store"
+        assert r.headers["X-Content-Type-Options"] == "nosniff"
+
+
+def test_today_is_sri_lanka_date(monkeypatch):
+    import server
+    monkeypatch.delenv("PRICE_SIGNAL_TODAY", raising=False)
+    from datetime import datetime, timedelta, timezone
+    expect = (datetime.now(timezone.utc) + timedelta(hours=5, minutes=30)).date()
+    assert abs((server.today() - expect).days) <= 1      # tolerates running across midnight

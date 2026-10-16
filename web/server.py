@@ -17,7 +17,7 @@ Environment:
 import os
 import sqlite3
 import sys
-from datetime import date
+from datetime import date, datetime, timezone
 from pathlib import Path
 
 from flask import Flask, abort, g, jsonify, request
@@ -39,8 +39,16 @@ def db_path():
 
 
 def today():
+    """Today's date in Sri Lanka, because the reports are dated there and a host usually runs on UTC."""
     v = os.environ.get("PRICE_SIGNAL_TODAY")
-    return date.fromisoformat(v) if v else date.today()
+    if v:
+        return date.fromisoformat(v)
+    try:
+        from zoneinfo import ZoneInfo
+        return datetime.now(ZoneInfo("Asia/Colombo")).date()
+    except Exception:  # no zoneinfo or no tz database: use a fixed UTC+05:30 offset
+        from datetime import timedelta
+        return (datetime.now(timezone.utc) + timedelta(hours=5, minutes=30)).date()
 
 
 def log_path():
@@ -114,6 +122,8 @@ def create_app():
     def api_status():
         rd = report_date()
         st, reason, age = gate(rd)
+        if st != "ok":
+            app.logger.warning("withholding all estimates: %s", reason)
         m = meta()
         return jsonify(state=st, reason=reason, report_date=rd.isoformat(), report_date_label=guard.fmt(rd),
                        age_working_days=age, max_age_working_days=guard.MAX_AGE_WORKING_DAYS,
@@ -148,6 +158,15 @@ def create_app():
                 "SELECT report_date, series, price_rs FROM prices WHERE item = ? AND series IN (?, 'wholesale Dambulla') "
                 "ORDER BY report_date", (item, series))]
         return jsonify(card=card, history=history, history_source=meta().get("history_source", "none"))
+
+    @app.after_request
+    def headers(resp):
+        # Answers depend on today's date and the refresh log, so a cache must never replay an old one.
+        if request.path.startswith("/api/") or request.path == "/healthz":
+            resp.headers["Cache-Control"] = "no-store"
+        resp.headers["X-Content-Type-Options"] = "nosniff"
+        resp.headers["Referrer-Policy"] = "no-referrer"
+        return resp
 
     @app.errorhandler(400)
     @app.errorhandler(404)

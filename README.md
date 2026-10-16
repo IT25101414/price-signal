@@ -185,3 +185,5 @@ python3 -m streamlit run app.py
 
 
 **Pinned versions:** `requirements.lock` lists the exact versions used for the results in this repository (Python 3.9). Install them with `python3 -m pip install -r requirements.lock`; `requirements.txt` gives the minimum versions.
+
+**Hosting (added 16 Oct 2026):** `render.yaml` and `web/DEPLOY.md` describe a free Render deployment of the website. The site is built from the committed `cards.csv` and `data/refresh_log.csv` only; `run_daily.sh` refreshes, rebuilds the cards and pushes both files, and the host rebuilds on each push. The web server answers with `Cache-Control: no-store` and uses Sri Lanka time for the freshness check. The 80% range can be checked at other horizons with `python3 model.py prices_all.csv --evaluate --h 1` (and `--h 5`).

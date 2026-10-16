@@ -99,7 +99,7 @@ def evaluate(df, h=H, quiet=False):
         if not quiet:
             print(f"{target[0] + ' ' + target[1]:<22}{len(te):>7}{100 * inside.mean():>21.1f}%{100 * res['half_width']:>15.1f}%  {by_year}")
     if not quiet:
-        print("\nNominal 80%. The proposal's target is 75 to 85%. Half-width is the average +/- range for a 3-report-day change.")
+        print(f"\nHorizon {h} report day(s). Nominal 80%. The proposal's target is 75 to 85%. Half-width is the average +/- range for that change.")
     return out
 
 

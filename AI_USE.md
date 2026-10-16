@@ -28,3 +28,7 @@ Claude (Anthropic) wrote first versions of `refresh.py`, `guard.py`, `model.py`,
 
 Claude (Anthropic) wrote first versions of the Flask server, the SQLite loader and schema, the web page (`web/static/`), `web/test_web.py`, holiday support in `guard.py` with its tests, `refusal_report.py`, the GitHub Actions workflow, and the README and proposal edits for the Central Bank's reply. We ran the tests, looked at the pages in a browser, and reviewed everything. We are responsible for it.
 
+
+## Addendum 4: hosting files and server hardening
+
+Claude (Anthropic) wrote the Render blueprint (`render.yaml`), the deployment guide (`web/DEPLOY.md`), the Sri Lanka time handling, cache headers and logging in `web/server.py`, their tests, and the change to `run_daily.sh` that also publishes the refresh log. We ran the tests and the production server command and reviewed everything. We are responsible for it.
