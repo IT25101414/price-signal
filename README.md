@@ -85,7 +85,7 @@ Unparsed reports are listed in `failed_files.txt`. Nothing is guessed or filled 
 | 1 Nov | **Implementation submission** | Repository opens from a private browser window and this README runs |
 | 9 to 14 Nov | If we reach the final: rehearse the live demo | Demo runs on the day's real report |
 
-**Still to build:** prediction intervals, the guard (is the latest report fresh and parsed? is there enough recent data? is the gap large enough for the model to have shown skill?), the daily refresh job, the Streamlit dashboard, and the buyer interviews.
+**Still to do (16 Oct 2026):** buyer interviews, hosting the website, a scheduled cloud refresh, and the two-page summary and video. Built and tested: refresh, guard (with holiday support), model with calibrated ranges, Streamlit dashboard, Flask and SQLite website, refusal report and CI.
 
 **What we cut first if time runs short:** (1) gradient-boosting challenger models, (2) Sinhala and Tamil versions of the interface, (3) automated daily refresh, replaced by a script the user runs, (4) the 1-day and 5-day horizons, keeping 3 days, (5) buyer interviews reduced from 3 to 1 or 2. We never cut the freshness check, the refusal rules or the honest evaluation.
 

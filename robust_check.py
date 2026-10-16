@@ -43,7 +43,7 @@ FEATS = {
 
 
 def load(path):
-    df = pd.read_csv(path, dtype={"market_assumed": str})
+    df = pd.read_csv(path, dtype={"market_assumed": str}, low_memory=False)
     return clean(df)
 
 
