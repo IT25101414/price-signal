@@ -1,6 +1,7 @@
 data/raw/
 *.pdf
 !docs/cbsl_reply_2026-10-12.pdf
+!docs/submission/technical-report-final.pdf
 samples/
 year_test/
 all/

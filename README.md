@@ -4,7 +4,7 @@
 
 ModelX 2.0 (IEEE CIS Student Chapter, IIT) · Domain: Cost of living and everyday economics · Author: Nivetha, SLIIT
 
-**Status (17 Oct 2026):** functionality frozen at `v1.0.0-rc1`; the pipeline, model, safety guard, Streamlit dashboard and six-page Flask/SQLite website are built and tested. The committed cards use the 15 Oct report. The buyer study pack, deployment blueprint and submission-document drafts are prepared; real buyer sessions, public hosting, a licence choice and the final video remain open. See [`docs/submission/readiness.md`](docs/submission/readiness.md) for the live checklist.
+**Status (18 Oct 2026):** functionality frozen at `v1.0.0-rc1`; the pipeline, model, safety guard, Streamlit dashboard and six-page Flask/SQLite website are built and tested. The committed cards use the 15 Oct report. The final technical report is updated, and the buyer study pack, deployment blueprint, two-page summary and video script are prepared; real buyer sessions, public hosting, a licence choice and recording the final video remain open. See [`docs/submission/readiness.md`](docs/submission/readiness.md) for the live checklist.
 
 ---
 
@@ -50,7 +50,7 @@ Gain is the share of squared forecast error removed, in percentage points, again
 | 10 | AI-use disclosure for every script and document. | `AI_USE.md` |
 | 11 | Functionality frozen and independently re-checked: 73 tests pass, 12 of 12 deliberate refusal cases pass, and all model self-tests pass. | `docs/functionality-freeze-2026-10-17.md` |
 | 12 | Buyer-feedback protocol, response sheet and honest empty findings record prepared. | `docs/buyer-feedback/` |
-| 13 | Submission report, two-page summary and three-minute video script prepared from the saved evidence. | `docs/submission/` |
+| 13 | Final technical report updated from the 17 Oct version; two-page summary and three-minute video script prepared from the saved evidence. | `docs/submission/` |
 
 ### Coverage
 
@@ -88,7 +88,7 @@ Unparsed reports are listed in `failed_files.txt`. Nothing is guessed or filled 
 | 1 Nov | **Implementation submission** | Repository opens from a private browser window and this README runs |
 | 9 to 14 Nov | If we reach the final: rehearse the live demo | Demo runs on the day's real report |
 
-**Still to do (17 Oct 2026):** conduct and record one to three real buyer sessions; choose the repository's open-source licence; create the public Render service; add its URL to the README and report; record the final three-minute video on that public build; then complete a private-browser submission rehearsal. The report and two-page summary are prepared as submission-ready drafts, with the buyer and public-URL fields clearly marked pending. The daily refresh remains a deliberate local script rather than a cloud schedule because the complete price table is not redistributed.
+**Still to do (18 Oct 2026):** conduct and record one to three real buyer sessions; choose the repository's open-source licence; create the public Render service; add its URL to the README and report; record the final three-minute video on that public build; then complete a private-browser submission rehearsal. The final technical report is updated and the two-page summary is a submission-ready draft; pending buyer and public-URL fields are labelled rather than invented. The daily refresh remains a deliberate local script rather than a cloud schedule because the complete price table is not redistributed.
 
 **What we cut first if time runs short:** (1) gradient-boosting challenger models, (2) Sinhala and Tamil versions of the interface, (3) automated daily refresh, replaced by a script the user runs, (4) the 1-day and 5-day horizons, keeping 3 days, (5) buyer interviews reduced from 3 to 1 or 2. We never cut the freshness check, the refusal rules or the honest evaluation.
 

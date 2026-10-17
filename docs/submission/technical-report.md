@@ -2,6 +2,8 @@
 
 ## Technical report — ModelX 2.0 Phase 2 implementation
 
+> Condensed editable draft. The reviewed report that preserves the full evaluation tables and interface figures is `technical-report-final.pdf`.
+
 **Author:** Nivetha Ramanan, Sri Lanka Institute of Information Technology  
 **Domain:** Economy and livelihoods — cost of living and everyday economics  
 **Repository:** <https://github.com/IT25101414/price-signal>  

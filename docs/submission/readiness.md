@@ -1,6 +1,6 @@
 # Implementation submission readiness
 
-Checked 17 October 2026 against the ModelX 2.0 implementation requirements. This file separates completed evidence from work that needs a real participant, the repository owner or a public service.
+Checked 18 October 2026 against the ModelX 2.0 implementation requirements. This file separates completed evidence from work that needs a real participant, the repository owner or a public service.
 
 | Requirement | State | Evidence / exact next action |
 |---|---|---|
@@ -13,7 +13,7 @@ Checked 17 October 2026 against the ModelX 2.0 implementation requirements. This
 | Public hosting | Technically prepared | `render.yaml` and `web/DEPLOY.md` are ready; the repository owner must sign in to Render, connect GitHub and approve service creation |
 | README run instructions | Complete | Root README plus `web/README.md`; public URL must be added after deployment |
 | Open-source licence | Owner decision required | Choose the legal terms (for example MIT, Apache-2.0 or another licence); do not publish a licence selected by an assistant |
-| Technical report | Submission-ready draft | Source in `docs/submission/technical-report.md`; finalise the buyer-results and public-URL fields after those activities |
+| Technical report | Complete for the current evidence | Updated 17-page PDF in `docs/submission/technical-report-final.pdf`; add the real buyer result and public URL later if those activities are completed |
 | Two-page summary | Submission-ready draft | Source in `docs/submission/two-page-summary.md`; finalise the same two fields |
 | Three-minute video | Script ready | `docs/submission/video-script.md`; record after deployment and buyer-result updates so the video matches the submitted build |
 | Private-browser rehearsal | Pending deployment/video | Open repository, website and video without an authenticated session; follow `docs/submission/private-browser-check.md` |
