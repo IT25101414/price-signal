@@ -1,8 +1,8 @@
 # Hosting the website (Render, free plan)
 
-The site needs only what is committed to the repository: `cards.csv` (the day's estimates) and
-`data/refresh_log.csv` (so the guard can tell whether a newer report is listed). It does **not** need
-`prices_all.csv`, which stays on your machine; without it the item detail view says no price history is loaded.
+The site needs only what is committed to the repository: `cards.csv` (the day's estimates),
+`data/refresh_log.csv` (so the guard can verify the listing), and `data/recent_prices.csv` for the
+public one-year history. It does **not** need `prices_all.csv`, which stays on your machine.
 
 ## One-time setup
 
@@ -36,6 +36,6 @@ curl -s https://YOUR-ADDRESS.onrender.com/api/status
 ## Local test of the production command
 
 ```
-python3 -m pip install gunicorn
+python3 -m pip install -r web/requirements.lock
 gunicorn --chdir web --bind 127.0.0.1:8000 --workers 1 server:app
 ```

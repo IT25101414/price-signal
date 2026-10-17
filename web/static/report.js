@@ -4,6 +4,7 @@
   var SERIES = ["retail Pettah", "wholesale Pettah", "retail Narahenpita"];
   var state = { series: SERIES[0] };
   var data = null;
+  var seq = 0;
 
   function message(text) { var m = $("msg"); m.hidden = !text; m.textContent = text || ""; $("out").hidden = !!text; }
   function mean(a) { var v = a.filter(function (x) { return x != null; }); return v.length ? v.reduce(function (p, q) { return p + q; }, 0) / v.length : null; }
@@ -13,7 +14,7 @@
     box.textContent = "";
     SERIES.forEach(function (s) {
       var b = el("button", null, PS.NAMES[s]);
-      b.type = "button"; b.setAttribute("role", "radio"); b.setAttribute("aria-checked", String(s === state.series));
+      b.type = "button"; b.setAttribute("aria-pressed", String(s === state.series));
       b.addEventListener("click", function () { state.series = s; drawSeries(); load(); });
       box.appendChild(b);
     });
@@ -106,27 +107,31 @@
     var name = PS.NAMES[w.series], items = w.items;
     var span = function (a) { return PS.date(a[0]) + " to " + PS.date(a[1], true); };
     $("h1").textContent = "Weekly report: " + name;
-    var dm = mean(items.map(function (r) { return r.dambulla.change_pct; })), cm = mean(items.map(function (r) { return r.colombo.change_pct; }));
+    var dComplete = items.filter(function (r) { return r.dambulla.change_pct != null; });
+    var cComplete = items.filter(function (r) { return r.colombo.change_pct != null; });
+    var dm = mean(dComplete.map(function (r) { return r.dambulla.change_pct; })), cm = mean(cComplete.map(function (r) { return r.colombo.change_pct; }));
     var up = items.filter(function (r) { return r.colombo.change_pct > 0; }).length, down = items.filter(function (r) { return r.colombo.change_pct < 0; }).length;
-    $("lede").textContent = "This week is the five report days " + span(w.this_week) + "; last week is " + span(w.last_week) + ". On average Dambulla wholesale prices moved " +
-      PS.signed(dm) + "% and " + name + " prices " + PS.signed(cm) + "% across " + items.length + " items (" + up + " higher, " + down + " lower in Colombo).";
+    $("lede").textContent = "This week is the five report days " + span(w.this_week) + "; last week is " + span(w.last_week) + ". Using only items with all five prices in both weeks, Dambulla wholesale moved " +
+      PS.signed(dm) + "% across " + dComplete.length + " items and " + name + " moved " + PS.signed(cm) + "% across " + cComplete.length + " (" + up + " higher, " + down + " lower in Colombo).";
     $("print-note").textContent = "Price Signal weekly report, " + name + ", report of " + PS.date(w.report_date, true) + ". Source: Statistics Department, Central Bank of Sri Lanka, Daily Price Reports. Not advice.";
-    $("movers-c").textContent = "Change in the average price, this week against last week. Items are sorted by the Dambulla move; Colombo often follows a few report days later.";
+    $("movers-c").textContent = "Change in the five-report-day average, this week against last week. A change is blank unless all five prices exist in both weeks. Items are sorted by the Dambulla move.";
     $("multi-c").textContent = "Both prices are set to 100 on the first day of last week so their shapes can be compared. The shaded part is this week.";
     movers(items, name); multiples(items, name); table(items, name);
   }
 
   function load() {
+    var my = ++seq;
     var csv = $("csv");
     $("print").disabled = false;
     csv.href = "/api/weekly.csv?series=" + encodeURIComponent(state.series);
     PS.get("/api/weekly?series=" + encodeURIComponent(state.series)).then(function (w) {
+      if (my !== seq) return;
       data = w;
       if (w.state !== "ok") { message("The weekly report is not shown. " + w.reason); csv.hidden = true; $("print").hidden = true; $("h1").textContent = "Weekly report"; $("lede").textContent = ""; return; }
       csv.hidden = false; $("print").hidden = false;
       if (!w.items.length) { message("No price history is loaded in this copy of the site. Put prices_all.csv in the repository folder and run: python3 web/build_db.py"); csv.hidden = true; $("print").hidden = true; return; }
       message(""); render(w);
-    }).catch(function (e) { message("Could not load the report: " + e.message + ". Is the server running? Start it with: python3 web/server.py"); });
+    }).catch(function (e) { if (my === seq) message("Could not load the report: " + e.message + ". Is the server running? Start it with: python3 web/server.py"); });
   }
 
   PS.start();

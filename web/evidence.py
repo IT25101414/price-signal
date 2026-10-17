@@ -6,7 +6,7 @@ cannot drift apart. If a file is missing, that part is simply absent and the pag
 
     results_model.txt, results_model_h1.txt, results_model_h5.txt   calibration of the 80% range (model.py --evaluate)
     results_robust.txt                                              does Dambulla add skill? (robust_check.py)
-    results_decision.txt                                            rupee backtest (decision_backtest.py)
+    results_decision.txt                                            decision backtest (decision_backtest.py)
 """
 import re
 from pathlib import Path
@@ -68,12 +68,12 @@ def decision(root):
             m = re.match(r"always wait\s+-\s+([+-]?[\d.]+%)", line)
             if m:
                 r["wait_pct"] = pct(m.group(1))
-            m = re.match(r"hindsight best\s+-\s+([+-]?[\d.]+%)\s+([+-]?[\d.]+)", line)
+            m = re.match(r"hindsight best\s+-\s+([+-]?[\d.]+%)", line)
             if m:
-                r["hindsight_pct"], r["hindsight_rs"] = pct(m.group(1)), float(m.group(2))
-            m = re.match(r"follow model ([CD]) \([^)]*\)\s+(?:\d+% acted|all calls)\s+([+-]?[\d.]+%)\s+([+-]?[\d.]+)\s+(\d+)%", line)
+                r["hindsight_pct"] = pct(m.group(1))
+            m = re.match(r"follow model ([CD]) \([^)]*\)\s+(?:\d+% acted|all calls)\s+([+-]?[\d.]+%)\s+(\d+)%", line)
             if m:
-                row = dict(pct=pct(m.group(2)), rs=float(m.group(3)), hit=int(m.group(4)))
+                row = dict(pct=pct(m.group(2)), hit=int(m.group(3)))
                 (d_rows if m.group(1) == "D" else c_rows).append(row)
             m = re.match(r"\s*Dambulla vs own-history model, all calls\s*:\s*([+-]?[\d.]+) pts of purchase value \[([+-]?[\d.]+), ([+-]?[\d.]+)\]", line)
             if m:

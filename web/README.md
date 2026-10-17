@@ -26,7 +26,7 @@ The first start builds `web/price_signal.db` from `cards.csv`. After the daily p
 python3 web/build_db.py        # uses ../cards.csv and, if present, ../prices_all.csv for price history
 ```
 
-`prices_all.csv` is git-ignored, so on a fresh clone the detail view says no history is loaded until you run the extractor or copy the file in.
+`prices_all.csv` is git-ignored. A fresh clone uses the committed one-year slice in `data/recent_prices.csv`; copy or build `prices_all.csv` only when you need the full history.
 
 Try the layout with invented history (clearly marked "Demo data" on the page):
 
@@ -48,6 +48,7 @@ Every API response goes through `guard.py` logic at request time. A figure is re
 
 - the latest report is at most 3 working days old (`guard.MAX_AGE_WORKING_DAYS`)
 - `data/refresh_log.csv` does not list a newer report than the database holds
+- the latest refresh successfully checked the Central Bank report listing
 - the card's own status is `ok`
 
 Otherwise numbers, direction, signal and price history are removed server side and only the reason is sent. A missing refresh log counts as "unknown", the same as the Streamlit app.

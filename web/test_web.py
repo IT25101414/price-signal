@@ -69,6 +69,30 @@ def test_unread_newer_report_withholds(make_client):
     assert all(not has_numbers(x) for x in d["cards"])
 
 
+def test_source_failure_withholds_all_numbers_and_history(hist_client, tmp_path, monkeypatch):
+    c = hist_client("2026-10-12")
+    log = tmp_path / "source-down.csv"
+    log.write_text("newest_listed,status,message\n2026-10-09,ok,up to date\n"
+                   ",source_unavailable,could not reach listing\n")
+    monkeypatch.setenv("PRICE_SIGNAL_LOG", str(log))
+    status = c.get("/api/status").get_json()
+    assert status["state"] == "source_unavailable"
+    cards = c.get("/api/cards").get_json()["cards"]
+    assert all(x["status"] == "source_unavailable" and not has_numbers(x) for x in cards)
+    h = c.get("/api/history?item=Cabbage&series=retail%20Pettah&days=22").get_json()
+    assert h["state"] == "source_unavailable" and h["dates"] == []
+
+
+def test_later_source_failure_does_not_erase_known_unread_report(hist_client, tmp_path, monkeypatch):
+    c = hist_client("2026-10-12")
+    log = tmp_path / "known-newer-then-down.csv"
+    log.write_text("newest_listed,status,message\n2026-10-12,partial,parse failed\n"
+                   ",source_unavailable,could not reach listing\n")
+    monkeypatch.setenv("PRICE_SIGNAL_LOG", str(log))
+    status = c.get("/api/status").get_json()
+    assert status["state"] == "report_not_read"
+
+
 def test_withheld_card_has_no_history(make_client):
     c = make_client("2026-10-13")
     item = c.get("/api/items/Lime").get_json()          # no_clear_signal in cards.csv
@@ -187,13 +211,17 @@ def test_weekly_is_arithmetic_on_the_last_ten_report_days(tmp_path, monkeypatch)
     db = tmp_path / "w.db"
     build_db.build(db, FIXTURE, prices=None, synthetic=False)
     con = sqlite3.connect(db)
-    item = con.execute("SELECT item FROM cards WHERE series='retail Pettah' AND status='ok' LIMIT 1").fetchone()[0]
+    items = [r[0] for r in con.execute("SELECT item FROM cards WHERE series='retail Pettah' AND status='ok' LIMIT 2")]
+    item, incomplete = items
     days = ["2026-09-28", "2026-09-29", "2026-09-30", "2026-10-01", "2026-10-02",
             "2026-10-05", "2026-10-06", "2026-10-07", "2026-10-08", "2026-10-09"]
     for i, d in enumerate(days):
         last = i < 5
         con.execute("INSERT INTO prices VALUES (?,?,?,?)", (d, item, "wholesale Dambulla", 100.0 if last else 110.0))
         con.execute("INSERT INTO prices VALUES (?,?,?,?)", (d, item, "retail Pettah", 200.0 if last else 190.0))
+        if i != 7:
+            con.execute("INSERT INTO prices VALUES (?,?,?,?)", (d, incomplete, "wholesale Dambulla", 100.0 if last else 110.0))
+        con.execute("INSERT INTO prices VALUES (?,?,?,?)", (d, incomplete, "retail Pettah", 200.0 if last else 190.0))
     con.commit(); con.close()
     monkeypatch.setenv("PRICE_SIGNAL_DB", str(db))
     monkeypatch.setenv("PRICE_SIGNAL_LOG", str(tmp_path / "none.csv"))
@@ -203,6 +231,9 @@ def test_weekly_is_arithmetic_on_the_last_ten_report_days(tmp_path, monkeypatch)
     assert w["this_week"] == ["2026-10-05", "2026-10-09"] and w["last_week"] == ["2026-09-28", "2026-10-02"]
     assert row["dambulla"]["change_pct"] == pytest.approx(10.0) and row["colombo"]["change_pct"] == pytest.approx(-5.0)
     assert row["dambulla"]["last"] == pytest.approx(100.0) and row["colombo"]["this"] == pytest.approx(190.0)
+    partial = next(r for r in w["items"] if r["item"] == incomplete)
+    assert partial["dambulla"]["this_n"] == 4 and partial["dambulla"]["change_pct"] is None
+    assert partial["colombo"]["this_n"] == 5 and partial["colombo"]["change_pct"] == pytest.approx(-5.0)
 
 
 def test_weekly_csv_has_one_row_per_item(hist_client):
@@ -250,13 +281,29 @@ def test_recent_slice_is_used_when_the_full_table_is_absent(tmp_path, monkeypatc
     import build_db
     slice_ = tmp_path / "recent.csv"
     slice_.write_text("report_date,item,series,price_rs\n"
-                      "2026-10-08,Carrot,wholesale Dambulla,200\n2026-10-08,Carrot,retail Pettah,260\n"
-                      "2026-10-08,Nothing,retail Pettah,5\n2026-10-08,Carrot,fish Negombo,9\n")
+                      "2026-10-09,Carrot,wholesale Dambulla,200\n2026-10-09,Carrot,retail Pettah,260\n"
+                      "2026-10-09,Nothing,retail Pettah,5\n2026-10-09,Carrot,fish Negombo,9\n")
     monkeypatch.setattr(build_db, "RECENT", slice_)
     monkeypatch.setattr(build_db, "DEFAULT_PRICES", tmp_path / "prices_all.csv")      # does not exist
     db = tmp_path / "s.db"
     n_cards, n_prices, source = build_db.build(db, FIXTURE, prices=tmp_path / "prices_all.csv")
     assert source == "data/recent_prices.csv" and n_prices == 2        # unknown item and unknown series are dropped
+
+
+def test_history_is_withheld_when_its_latest_date_does_not_match_cards(tmp_path, monkeypatch):
+    import build_db
+    slice_ = tmp_path / "stale-recent.csv"
+    slice_.write_text("report_date,item,series,price_rs\n"
+                      "2026-10-08,Carrot,wholesale Dambulla,200\n"
+                      "2026-10-08,Carrot,retail Pettah,260\n")
+    monkeypatch.setattr(build_db, "RECENT", slice_)
+    monkeypatch.setattr(build_db, "DEFAULT_PRICES", tmp_path / "prices_all.csv")
+    db = tmp_path / "stale.db"
+    _, n_prices, source = build_db.build(db, FIXTURE, prices=tmp_path / "prices_all.csv")
+    assert n_prices == 0 and source == "withheld_date_mismatch"
+    import sqlite3
+    with sqlite3.connect(db) as con:
+        assert con.execute("SELECT COUNT(*) FROM prices").fetchone()[0] == 0
 
 
 def test_recent_frame_keeps_only_shown_series_and_items(tmp_path):

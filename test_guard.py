@@ -3,7 +3,7 @@ from datetime import date, timedelta
 
 import pandas as pd
 
-from guard import assess, working_days_after
+from guard import assess, refresh_state_from_log, working_days_after
 
 LAST = date(2026, 10, 9)        # a Friday
 
@@ -51,6 +51,23 @@ def test_holidays_can_be_excluded():
 def test_report_listed_on_site_but_not_read_is_refused():
     v = assess(make(), "Lime", today=date(2026, 10, 12), newest_listed=date(2026, 10, 12))
     assert v.status == "report_not_read"
+
+
+def test_source_listing_failure_is_refused():
+    v = assess(make(), "Lime", today=date(2026, 10, 12), refresh_status="source_unavailable")
+    assert v.status == "source_unavailable" and "withheld" in v.reason
+
+
+def test_source_failure_keeps_last_known_newest_date(tmp_path):
+    log = tmp_path / "refresh.csv"
+    log.write_text(
+        "newest_listed,status,message\n"
+        "2026-10-12,partial,newer report could not be read\n"
+        ",source_unavailable,listing could not be checked\n"
+    )
+    state = refresh_state_from_log(log)
+    assert state["newest_listed"] == date(2026, 10, 12)
+    assert state["status"] == "source_unavailable"
 
 
 def test_dambulla_market_closed_is_refused():

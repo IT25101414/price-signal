@@ -132,8 +132,15 @@ def build(db=DEFAULT_DB, cards=ROOT / "cards.csv", prices=ROOT / "prices_all.csv
         n_prices, source = insert_prices(con, prices), "prices_all.csv"
     elif prices and Path(prices) == DEFAULT_PRICES and RECENT.exists():
         n_prices, source = insert_recent_csv(con, RECENT), "data/recent_prices.csv"
+    card_date = max(r["date"] for r in rows)
+    history_date_row = con.execute("SELECT MAX(report_date) FROM prices").fetchone()
+    history_date = history_date_row[0] if history_date_row else None
+    if history_date and history_date != card_date:
+        con.execute("DELETE FROM prices")
+        n_prices, source = 0, "withheld_date_mismatch"
     meta = {"built_at_utc": datetime.now(timezone.utc).isoformat(timespec="seconds"),
-            "cards_file": str(Path(cards).name), "history_source": source, "history_rows": str(n_prices)}
+            "cards_file": str(Path(cards).name), "history_source": source, "history_rows": str(n_prices),
+            "cards_date": card_date, "history_latest_date": history_date or ""}
     con.executemany("INSERT INTO meta VALUES (?,?)", meta.items())
     con.commit()
     con.close()

@@ -128,7 +128,9 @@ def run(prices_csv="prices_all.csv", index_url=None, fetcher=None):
             res["downloaded_ok"] += 1
             path = row["file"]
         try:
-            rows, _warn = ex.parse_pdf(path)
+            rows, warnings = ex.parse_pdf(path)
+            if warnings:
+                raise ValueError("parser warnings: " + " | ".join(warnings))
             rd = rows[0]["report_date"]
             if rd in known:
                 failures.append(f"{title}: report date {rd} is already in the table; not added twice")

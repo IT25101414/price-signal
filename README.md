@@ -28,7 +28,7 @@ All results use a time split: models are fitted on data up to 2023 and tested on
 
 Gain is the share of squared forecast error removed, in percentage points, against a model with the price's own history only. The placebo swaps in another item's Dambulla price and should show nothing. Full per-row output, including per-year gains, is in `results_leadlag.txt`.
 
-**Finding 2: it is worth something in rupees (simulation).** A buyer who must buy once, today or 3 report days later, and follows the model, paid 1.2 to 1.6% less than always buying today (about Rs 60 to 96 per 10 kg). Perfect hindsight would save 3.6 to 5.4%. The direction was right 62 to 69% of the time on all calls and 75 to 85% on the strongest 25%. See `results_decision.txt`.
+**Finding 2: it had modest value in a simulation.** A buyer who must buy once, today or 3 report days later, and follows the model, paid 1.2 to 1.6% less than always buying today. Perfect hindsight would save 3.6 to 5.4%. The direction was right 62 to 69% of the time on all calls and 75 to 85% on the strongest 25%. CBSL reports different foods in different units, so the project does not combine them into a misleading rupee-per-kilogram figure. See `results_decision.txt`.
 
 **Finding 3 (negative result, kept on purpose): jump persistence cannot be predicted.** About 57% of one-day jumps of 15% or more persisted. Our models did no better than always guessing persistence (accuracy 56.6 to 56.7% against 57.2%, AUC 0.50 to 0.54), so we set that idea aside and pivoted to the lead-lag test above.
 

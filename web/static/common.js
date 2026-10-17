@@ -244,8 +244,19 @@
     if (band) svg.appendChild(PS.s("rect", { x: X(n - band), y: 0, width: w - X(n - band), height: h, fill: "var(--accent-soft)", opacity: 0.55 }));
     series.forEach(function (s) {
       var pts = [];
-      s.values.forEach(function (v, i) { if (v != null) pts.push(X(i).toFixed(1) + "," + Y(v).toFixed(1)); });
-      svg.appendChild(PS.s("polyline", { points: pts.join(" "), fill: "none", stroke: "var(" + s.color + ")", "stroke-width": 2, "stroke-linejoin": "round" }));
+      function flush() {
+        if (pts.length > 1) svg.appendChild(PS.s("polyline", { points: pts.join(" "), fill: "none", stroke: "var(" + s.color + ")", "stroke-width": 2, "stroke-linejoin": "round" }));
+        else if (pts.length === 1) {
+          var xy = pts[0].split(",");
+          svg.appendChild(PS.s("circle", { cx: xy[0], cy: xy[1], r: 2, fill: "var(" + s.color + ")" }));
+        }
+        pts = [];
+      }
+      s.values.forEach(function (v, i) {
+        if (v == null) flush();
+        else pts.push(X(i).toFixed(1) + "," + Y(v).toFixed(1));
+      });
+      flush();
     });
     return svg;
   };

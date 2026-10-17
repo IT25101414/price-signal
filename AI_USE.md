@@ -41,3 +41,7 @@ Claude (Anthropic) wrote the Explore, Weekly report, Method and Help pages (`web
 
 OpenAI Codex inspected the CBSL email reply for personal contact information, produced the one-page redacted public copy in `docs/cbsl_reply_2026-10-12.pdf`, and corrected the README's earlier "no reply yet" statements. The original email PDF remains private. We reviewed the redacted copy against the original and are responsible for publishing it.
 
+## Addendum 8: functionality-freeze audit
+
+OpenAI Codex audited the pipeline, model, publication script, Flask APIs and browser interface before the functionality freeze. It implemented fail-closed handling when the CBSL listing cannot be checked, retained the last known listed report date across outages, prevented incomplete model inputs from producing an `ok` card, made refresh tests independent of private PDF fixtures, required weekly averages to contain all five observations, corrected paired-date calculations on Explore, withheld mismatched history, pinned the tested web deployment dependencies, and removed a mixed-unit rupee-per-10-kg claim. It also added the corresponding regression tests and accessibility wording changes. We ran the full automated suite, model self-tests, refusal report, desktop browser checks and a 390 px mobile-layout check; the verification record is in `docs/functionality-freeze-2026-10-17.md`. The project author remains responsible for reviewing and submitting the work.
+

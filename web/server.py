@@ -76,10 +76,14 @@ def gate(report_date):
     if age > guard.MAX_AGE_WORKING_DAYS:
         return ("stale", f"The latest report is dated {guard.fmt(report_date)}, {age} working days ago. "
                          f"Estimates are withheld after more than {guard.MAX_AGE_WORKING_DAYS}.", age)
-    listed = guard.newest_listed_from_log(log_path())
+    refresh_state = guard.refresh_state_from_log(log_path())
+    listed = refresh_state["newest_listed"]
     if listed is not None and listed > report_date:
         return ("report_not_read", f"The CBSL site lists a report dated {guard.fmt(listed)}, but the newest one "
                                    f"read here is {guard.fmt(report_date)}. Estimates are withheld.", age)
+    if refresh_state["status"] == "source_unavailable":
+        return ("source_unavailable", "The latest refresh could not check the CBSL report listing. "
+                                      "Estimates are withheld until the source can be checked.", age)
     return ("ok", f"Based on the {guard.fmt(report_date)} report.", age)
 
 
@@ -265,14 +269,15 @@ def create_app():
 
         def avg(d, days):
             v = [d[x] for x in days if x in d]
-            return sum(v) / len(v) if len(v) >= 3 else None
+            return (sum(v) / len(v) if len(v) == len(days) else None, len(v))
 
         for item in sorted(allowed & set(by)):
             dd, cc = by[item].get("wholesale Dambulla", {}), by[item].get(series, {})
             row = dict(item=item)
             for key, d in (("dambulla", dd), ("colombo", cc)):
-                a, b = avg(d, last_w), avg(d, this_w)
+                (a, na), (b, nb) = avg(d, last_w), avg(d, this_w)
                 row[key] = dict(last=a, this=b, change_pct=(100 * (b / a - 1)) if a and b else None,
+                                last_n=na, this_n=nb,
                                 spark=[d.get(x) for x in last_w + this_w])
             if row["dambulla"]["this"] is not None or row["colombo"]["this"] is not None:
                 out["items"].append(row)

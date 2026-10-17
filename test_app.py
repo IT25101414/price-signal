@@ -33,11 +33,11 @@ def cards_csv(tmp_path):
     return p
 
 
-def run(tmp_path, monkeypatch, today="2026-10-12", listed=None, cards=True):
+def run(tmp_path, monkeypatch, today="2026-10-12", listed=None, refresh_status=None, cards=True):
     monkeypatch.setenv("PRICE_SIGNAL_CARDS", str(cards_csv(tmp_path) if cards else tmp_path / "missing.csv"))
     log = tmp_path / "refresh_log.csv"
-    if listed:
-        log.write_text(f"newest_listed\n{listed}\n")
+    if listed or refresh_status:
+        log.write_text(f"newest_listed,status,message\n{listed or ''},{refresh_status or 'ok'},test\n")
     monkeypatch.setenv("PRICE_SIGNAL_LOG", str(log))
     monkeypatch.setenv("PRICE_SIGNAL_TODAY", today)
     at = AppTest.from_file("app.py", default_timeout=30)
@@ -59,7 +59,7 @@ def test_fresh_data_shows_date_age_and_numbers(tmp_path, monkeypatch):
     assert any("9 Oct 2026" in s.value and "working day" in s.value for s in at.success)
     assert not at.error
     assert len(at.metric) >= 3
-    assert "Expected change over 3 report days" in all_text(at)
+    assert "Expected change over the 3 report days after 2026-10-09" in all_text(at)
 
 
 def test_stale_data_hides_every_number(tmp_path, monkeypatch):
@@ -73,6 +73,12 @@ def test_stale_data_hides_every_number(tmp_path, monkeypatch):
 def test_newer_report_on_site_hides_every_number(tmp_path, monkeypatch):
     at = run(tmp_path, monkeypatch, listed="2026-10-12")
     assert any("12 Oct 2026" in e.value for e in at.error)
+    assert len(at.metric) == 0
+
+
+def test_source_failure_hides_every_number(tmp_path, monkeypatch):
+    at = run(tmp_path, monkeypatch, refresh_status="source_unavailable")
+    assert any("could not check" in e.value for e in at.error)
     assert len(at.metric) == 0
 
 

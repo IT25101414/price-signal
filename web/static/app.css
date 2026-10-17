@@ -4,7 +4,7 @@
   --surface: #ffffff;
   --ink: #14232b;
   --ink-2: #4a5b63;
-  --ink-3: #6c7b82;
+  --ink-3: #5f7077;
   --line: #d5dedc;
   --accent: #0b5c5c;
   --accent-soft: #cfe5e2;
@@ -56,8 +56,8 @@ h1 { margin: 0 0 8px; font-size: clamp(28px, 5.2vw, 44px); line-height: 1.1; fon
 .controls { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: space-between; padding: 18px 0 14px; }
 .seg { display: inline-flex; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); padding: 3px; gap: 2px; flex-wrap: wrap; }
 .seg button { font: inherit; font-size: 14px; border: 0; background: transparent; color: var(--ink-2); padding: 7px 14px; border-radius: 7px; cursor: pointer; }
-.seg button[aria-checked="true"] { background: var(--accent); color: var(--surface); font-weight: 600; }
-.seg button:hover:not([aria-checked="true"]) { background: var(--accent-soft); color: var(--ink); }
+.seg button[aria-pressed="true"] { background: var(--accent); color: var(--surface); font-weight: 600; }
+.seg button:hover:not([aria-pressed="true"]) { background: var(--accent-soft); color: var(--ink); }
 .search input { font: inherit; font-size: 14px; padding: 8px 12px; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); color: var(--ink); width: 200px; max-width: 100%; }
 
 .list-wrap { outline: none; }

@@ -27,7 +27,7 @@
     <p>Most of Colombo's fresh produce passes through Dambulla first. When the Dambulla wholesale price moves a lot, Colombo prices have tended to follow over the next few report days. Price Signal estimates how much of the current gap is likely to close, and how unsure that estimate is.</p>
     <ol class="steps">
       <li>Every working day the Central Bank's Daily Price Report is read, table by table, and added to the price history. A report that cannot be read is left out, never guessed.</li>
-      <li>For each item and each Colombo price, a regression model compares today's Dambulla-to-Colombo gap with its own usual level and with the recent moves of both prices, and estimates the change over the next 3 report days.</li>
+      <li>For each item and each Colombo price, a regression model compares the source report's Dambulla-to-Colombo gap with its own usual level and with the recent moves of both prices, and estimates the change over the following 3 report days.</li>
       <li>The 80% range comes from how wrong the model was in a year it was not fitted on. It is wide on purpose.</li>
       <li>A guard checks the data again on every page view. If the report is more than 3 working days old, a newer report exists that has not been read, a market was closed, a price is missing, there is too little history, or the signal is too small, the page shows the reason and no number.</li>
     </ol>
@@ -56,7 +56,7 @@
       <li>No buyer has used the cards yet, so whether people would act on them is not tested.</li>
     </ul>
     <h2>Where the numbers come from</h2>
-    <p>This page reads the result files saved in the repository, so it cannot differ from the code: <a href="https://github.com/IT25101414/price-signal/blob/main/results_robust.txt">results_robust.txt</a>, <a href="https://github.com/IT25101414/price-signal/blob/main/results_model.txt">results_model.txt</a> (and the 1 and 5 day versions) and <a href="https://github.com/IT25101414/price-signal/blob/main/results_decision.txt">results_decision.txt</a>. The full write-up is the technical report in the repository.</p>
+    <p>This page reads the result files saved in the repository, so it cannot differ from the code: <a href="https://github.com/IT25101414/price-signal/blob/main/results_robust.txt">results_robust.txt</a>, <a href="https://github.com/IT25101414/price-signal/blob/main/results_model.txt">results_model.txt</a> (and the 1 and 5 day versions) and <a href="https://github.com/IT25101414/price-signal/blob/main/results_decision.txt">results_decision.txt</a>. The final technical report will be linked with the submission materials.</p>
   </div>
 </main>
 <footer class="wrap foot" id="foot"></footer>

@@ -9,6 +9,7 @@ Reads cards.csv (written by model.py). Every card was already passed through gua
 adds one more check each time it is opened, because cards.csv can be older than the page view:
   * if the latest report is more than guard.MAX_AGE_WORKING_DAYS working days old, every number is hidden
   * if the Central Bank site listed a newer report than the one in the table, every number is hidden
+  * if the latest refresh could not check the Central Bank listing, every number is hidden
   * a card the guard withheld never shows a number, only the reason
 
 The page never says "buy" or "sell". It describes what usually happens and how uncertain that is.
@@ -37,6 +38,7 @@ STATUS_TITLE = {
     "market_closed": "A market was closed",
     "stale": "Data too old",
     "report_not_read": "Newest report not read",
+    "source_unavailable": "Source could not be checked",
 }
 SIGNAL_TEXT = {"strong": "Strong signal", "weak": "Modest signal"}
 NUMBER_COLS = ["dambulla_rs", "colombo_rs", "gap_vs_usual_pct", "expected_change_pct", "low_pct", "high_pct"]
@@ -53,7 +55,7 @@ def age_text(n):
     return "1 working day old" if n == 1 else f"{n} working days old"
 
 
-def apply_gate(cards, today, newest_listed):
+def apply_gate(cards, today, newest_listed, refresh_status=None):
     """Return (state, message, cards). state is 'ok' or 'withheld'. When withheld, every card is
     turned into a refusal with the reason and its numbers are removed."""
     latest = date.fromisoformat(str(cards["date"].iloc[0]))
@@ -67,6 +69,10 @@ def apply_gate(cards, today, newest_listed):
         reason = (f"The Central Bank site lists a report dated {guard.fmt(newest_listed)}, but the newest one "
                   f"we could read is {guard.fmt(latest)}. Estimates are withheld.")
         status = "report_not_read"
+    elif refresh_status == "source_unavailable":
+        reason = ("The latest refresh could not check the Central Bank report listing. "
+                  "Estimates are withheld until the source can be checked.")
+        status = "source_unavailable"
     if reason is None:
         return "ok", f"Data from the report of {guard.fmt(latest)} ({age_text(age)}).", cards
     gated = cards.copy()
@@ -115,11 +121,11 @@ def render_card(row, show_title=True):
             st.caption(str(row["reason"]))
             return
         c1, c2, c3 = st.columns(3)
-        c1.metric("Dambulla wholesale", f"Rs {row['dambulla_rs']:.0f}/kg")
-        c2.metric(row["series"].title(), f"Rs {row['colombo_rs']:.0f}/kg")
+        c1.metric("Dambulla wholesale", f"Rs {row['dambulla_rs']:.0f}")
+        c2.metric(row["series"].title(), f"Rs {row['colombo_rs']:.0f}")
         c3.metric("Gap vs usual", f"{row['gap_vs_usual_pct']:+.0f}%")
         st.write(gap_sentence(row))
-        st.markdown(f"Expected change over 3 report days: **{row['expected_change_pct']:+.1f}%**  \n"
+        st.markdown(f"Expected change over the 3 report days after {row['date']}: **{row['expected_change_pct']:+.1f}%**  \n"
                     f"80% range: {row['low_pct']:+.1f}% to {row['high_pct']:+.1f}%")
         st.markdown(range_bar(row["low_pct"], row["expected_change_pct"], row["high_pct"]), unsafe_allow_html=True)
         st.caption(SIGNAL_TEXT.get(row["signal"], "") + ". A range that crosses zero means the direction is uncertain.")
@@ -142,7 +148,9 @@ def main():
     cards["reason"] = cards["reason"].fillna("")
     cards["signal"] = cards["signal"].fillna("")
 
-    state, message, cards = apply_gate(cards, today_date(), guard.newest_listed_from_log(LOG_PATH))
+    refresh_state = guard.refresh_state_from_log(LOG_PATH)
+    state, message, cards = apply_gate(cards, today_date(), refresh_state["newest_listed"],
+                                       refresh_state["status"])
     (st.success if state == "ok" else st.error)(message)
 
     view = st.radio("View", ["Pick an item", "All items"], horizontal=True)
@@ -168,7 +176,7 @@ def main():
             ok = ok.sort_values("abs_gap", ascending=False)
             table = pd.DataFrame({
                 "Item": ok["item"], "Series": ok["series"],
-                "Dambulla Rs/kg": ok["dambulla_rs"].round(0), "Colombo Rs/kg": ok["colombo_rs"].round(0),
+                "Dambulla Rs (reported unit)": ok["dambulla_rs"].round(0), "Colombo Rs (reported unit)": ok["colombo_rs"].round(0),
                 "Gap vs usual %": ok["gap_vs_usual_pct"].round(0),
                 "Expected 3-day change %": ok["expected_change_pct"].round(1),
                 "80% range low %": ok["low_pct"].round(1), "80% range high %": ok["high_pct"].round(1),
@@ -187,12 +195,13 @@ def main():
         st.markdown(
             "- **Gap vs usual** compares today's Dambulla price with the price in your market. It is measured against "
             "how far apart the two usually are, so a normal margin does not count as a signal.\n"
-            "- **Expected change** is what the model expects your market's price to do over the next 3 report days. "
+            "- **Expected change** is what the model estimates for the 3 report days after the dated source report. "
             "The **80% range** is built so that about 80% of past outcomes it had not seen fell inside it. "
             "In testing on 2024 onward it held 77 to 82% of outcomes.\n"
             "- **No clear signal** means the gap is too small for the model to have shown any skill. "
             "**Insufficient data** means too few recent days with both prices.\n"
             "- The effect is modest, it was tested on a calm period (2024 onward), and a Monday report spans a weekend.\n"
+            "- CBSL uses different units for different foods (for example, kilograms or individual items), so the rupee values repeat the report's unit and are not combined into a mixed-unit cash claim.\n"
             "- Source: Central Bank of Sri Lanka, Statistics Department, Daily Price Report. Prices are rounded to the nearest Rs 5 or 10. This is an independent project, not endorsed by the Central Bank.")
 
 

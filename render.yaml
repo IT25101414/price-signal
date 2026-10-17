@@ -3,7 +3,7 @@ services:
     name: price-signal
     runtime: python
     plan: free
-    buildCommand: pip install -r web/requirements.txt gunicorn && python web/build_db.py
+    buildCommand: pip install -r web/requirements.lock && python web/build_db.py
     startCommand: gunicorn --chdir web --bind 0.0.0.0:$PORT --workers 1 server:app
     healthCheckPath: /healthz
     envVars:

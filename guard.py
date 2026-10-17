@@ -99,6 +99,7 @@ def _series(prices, item, ptype, market):
 
 def assess(prices, item, target=DEFAULT_TARGET, today=None, newest_listed=None, signal=None,
            min_signal=None, holidays=None, max_age=MAX_AGE_WORKING_DAYS,
+           refresh_status=None,
            window=WINDOW_REPORTS, min_obs=MIN_PAIRED_OBS):
     """prices: DataFrame in the extractor's output format (report_date as datetime.date)."""
     today = today or date.today()
@@ -112,6 +113,9 @@ def assess(prices, item, target=DEFAULT_TARGET, today=None, newest_listed=None, 
     if newest_listed is not None and newest_listed > latest:
         return Verdict("report_not_read", f"the site lists a report dated {fmt(newest_listed)} but the newest "
                                           f"one we could read is {fmt(latest)}; estimates are withheld")
+    if refresh_status == "source_unavailable":
+        return Verdict("source_unavailable", "the latest refresh could not check the Central Bank report listing; "
+                                              "estimates are withheld until the source can be checked")
     today_rows = prices[prices["report_date"] == latest]
     notes = " ".join(str(x) for x in today_rows["report_notes"].dropna().unique())
     for market in (SOURCE[1], target[1]):
@@ -150,14 +154,38 @@ def load_prices(path):
     return df
 
 
-def newest_listed_from_log(log_file="data/refresh_log.csv"):
+def refresh_state_from_log(log_file="data/refresh_log.csv"):
+    """Return the last refresh status and newest report date known from the log.
+
+    A source outage produces a row with no ``newest_listed`` value. In that case we retain
+    the most recent earlier date for diagnostics, but the ``source_unavailable`` status still
+    makes every interface fail closed.
+    """
     try:
         with open(log_file, newline="", encoding="utf-8") as fh:
             rows = list(csv.DictReader(fh))
-        v = rows[-1]["newest_listed"] if rows else ""
-        return datetime.strptime(v, "%Y-%m-%d").date() if v else None
-    except (OSError, ValueError, KeyError):
-        return None
+        if not rows:
+            return {"status": "", "message": "", "newest_listed": None}
+        last = rows[-1]
+        newest = None
+        for row in reversed(rows):
+            value = row.get("newest_listed", "").strip()
+            if value:
+                try:
+                    newest = datetime.strptime(value, "%Y-%m-%d").date()
+                    break
+                except ValueError:
+                    continue
+        return {"status": last.get("status", "").strip(),
+                "message": last.get("message", "").strip(),
+                "newest_listed": newest}
+    except (OSError, KeyError):
+        return {"status": "", "message": "", "newest_listed": None}
+
+
+def newest_listed_from_log(log_file="data/refresh_log.csv"):
+    """Backward-compatible helper for callers that only need the newest known date."""
+    return refresh_state_from_log(log_file)["newest_listed"]
 
 
 def main(argv):

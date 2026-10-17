@@ -2,6 +2,7 @@
 (function () {
   var MINUS = PS.MINUS;
   var state = { series: null, cards: [], status: null, q: "", scale: 10 };
+  var seq = 0;
   var $ = PS.$, el = PS.el, signed = PS.signed, rs = PS.rs, get = PS.get, NAMES = PS.NAMES;
   PS.initTheme();
   PS.menu();
@@ -16,7 +17,8 @@
       $("headline").textContent = n ? n + " of " + state.cards.length + " items have an estimate" : "No item has a clear signal today";
       $("reason").textContent = "Based on the CBSL Daily Price Report of " + s.report_date_label + ". Each estimate compares Dambulla wholesale with a Colombo price.";
     } else {
-      $("headline").textContent = s.state === "stale" ? "The data are too old" : "A newer report is not read yet";
+      $("headline").textContent = s.state === "stale" ? "The data are too old" :
+        (s.state === "source_unavailable" ? "The source could not be checked" : "A newer report is not read yet");
       $("reason").textContent = s.reason;
     }
     var demo = $("demo");
@@ -33,8 +35,7 @@
     s.series.forEach(function (name) {
       var b = el("button", null, NAMES[name] || name);
       b.type = "button";
-      b.setAttribute("role", "radio");
-      b.setAttribute("aria-checked", String(name === state.series));
+      b.setAttribute("aria-pressed", String(name === state.series));
       b.addEventListener("click", function () { state.series = name; load(); });
       box.appendChild(b);
     });
@@ -131,7 +132,7 @@
     facts.appendChild(fact("Dambulla wholesale", rs(c.dambulla_rs)));
     facts.appendChild(fact("Colombo price", rs(c.colombo_rs)));
     facts.appendChild(fact("Colombo vs its usual gap", signed(c.gap_vs_usual_pct) + "%"));
-    facts.appendChild(fact("Middle estimate, 3 report days", (c.direction === "down" ? "▼ " : c.direction === "up" ? "▲ " : "") + signed(c.expected_change_pct) + "%"));
+    facts.appendChild(fact("Middle estimate, following 3 report days", (c.direction === "down" ? "▼ " : c.direction === "up" ? "▲ " : "") + signed(c.expected_change_pct) + "%"));
     body.appendChild(facts);
     body.appendChild(el("p", "note", "80% range for the change in the Colombo price: " + signed(c.low_pct) + " to " + signed(c.high_pct) + "% (scale " + MINUS + state.scale + "% to +" + state.scale + "%)."));
     body.appendChild(ruler(c, "big"));
@@ -178,13 +179,16 @@
 
   // ---------- load ----------
   function load() {
+    var my = ++seq;
     return Promise.all([get("/api/status"), get("/api/cards" + (state.series ? "?series=" + encodeURIComponent(state.series) : ""))])
       .then(function (r) {
+        if (my !== seq) return;
         state.status = r[0]; state.cards = r[1].cards; state.series = r[1].series;
         state.scale = niceScale(state.cards);
         renderSeries(r[0]); renderStatus(r[0]); renderRows();
       })
       .catch(function (e) {
+        if (my !== seq) return;
         $("status").setAttribute("aria-busy", "false");
         $("headline").textContent = "The page could not load the data";
         $("reason").textContent = e.message + ". Is the server running? Start it with: python3 web/server.py";

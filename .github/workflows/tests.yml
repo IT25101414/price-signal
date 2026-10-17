@@ -11,6 +11,6 @@ jobs:
         with:
           python-version: "3.9"
           cache: pip
-      - run: pip install -r requirements.txt -r web/requirements.txt
+      - run: pip install -r requirements.lock -r web/requirements.lock
       - run: python -m pytest -q
       - run: python refusal_report.py

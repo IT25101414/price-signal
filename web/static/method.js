@@ -94,23 +94,21 @@
   function decide(list) {
     if (!list.length) return;
     var groups = list.map(function (r) {
-      var rs = function (x) { return PS.signed(x, 0) + " Rs per 10 kg"; };
       return { title: PS.NAMES[r.series], rows: [
-        { label: "Dambulla model", style: "model", v: r.d_all.pct, text: pct(r.d_all.pct, 2) + "  (" + rs(r.d_all.rs) + ")", tip: "Cost against always buying today: " + pct(r.d_all.pct, 2) + ". Right about the direction " + r.d_all.hit + "% of the time (" + r.d_top25.hit + "% for the strongest 25% of calls)." },
-        { label: "Own-history model", style: "own", v: r.c_all.pct, text: pct(r.c_all.pct, 2) + "  (" + rs(r.c_all.rs) + ")", tip: "A model that uses only the price's own history." },
-        { label: "Hindsight ceiling", style: "ceiling", v: r.hindsight_pct, text: pct(r.hindsight_pct, 2) + "  (" + rs(r.hindsight_rs) + ")", tip: "What perfect foresight would save. No real buyer can reach it." }] };
+        { label: "Dambulla model", style: "model", v: r.d_all.pct, text: pct(r.d_all.pct, 2), tip: "Cost against always buying today: " + pct(r.d_all.pct, 2) + ". Right about the direction " + r.d_all.hit + "% of the time (" + r.d_top25.hit + "% for the strongest 25% of calls)." },
+        { label: "Own-history model", style: "own", v: r.c_all.pct, text: pct(r.c_all.pct, 2), tip: "A model that uses only the price's own history." },
+        { label: "Hindsight ceiling", style: "ceiling", v: r.hindsight_pct, text: pct(r.hindsight_pct, 2), tip: "What perfect foresight would save. No real buyer can reach it." }] };
     });
     var lo = Math.min.apply(null, list.map(function (r) { return r.hindsight_pct; }));
     rowsChart($("d-chart"), { kind: "bar", groups: groups, min: Math.floor(lo - 2), max: 1, zero: true, fmt: function (v) { return PS.signed(v, 0) + "%"; },
       legend: [{ label: "Dambulla model", color: "--accent" }, { label: "Own-history model", color: "--ink-3" }, { label: "Hindsight ceiling", color: "--ink-3", dash: true }],
       aria: "Cost of following each model against always buying today, as a share of the purchase value, by Colombo series" });
     $("d-table").appendChild(PS.table("Show the numbers as a table", ["Colombo price", "Dambulla model", "Own-history model", "Hindsight ceiling", "Dambulla vs own history (95% interval)", "Direction right: all / strongest 25%"],
-      list.map(function (r) { return [PS.NAMES[r.series], pct(r.d_all.pct, 2) + " (" + PS.signed(r.d_all.rs, 0) + " Rs)", pct(r.c_all.pct, 2), pct(r.hindsight_pct, 2), PS.signed(r.d_vs_c_pts, 2) + " points (" + PS.signed(r.d_vs_c_lo, 2) + " to " + PS.signed(r.d_vs_c_hi, 2) + ")", r.d_all.hit + "% / " + r.d_top25.hit + "%"]; })));
-    var d = list.map(function (r) { return Math.abs(r.d_all.pct); }), rsv = list.map(function (r) { return Math.abs(r.d_all.rs); });
+      list.map(function (r) { return [PS.NAMES[r.series], pct(r.d_all.pct, 2), pct(r.c_all.pct, 2), pct(r.hindsight_pct, 2), PS.signed(r.d_vs_c_pts, 2) + " points (" + PS.signed(r.d_vs_c_lo, 2) + " to " + PS.signed(r.d_vs_c_hi, 2) + ")", r.d_all.hit + "% / " + r.d_top25.hit + "%"]; })));
+    var d = list.map(function (r) { return Math.abs(r.d_all.pct); });
     var share = list.map(function (r) { return 100 * r.d_all.pct / r.hindsight_pct; });
-    $("d-read").textContent = "Following the Dambulla model cost " + Math.min.apply(null, d).toFixed(1) + " to " + Math.max.apply(null, d).toFixed(1) + "% less than always buying today, about Rs " +
-      Math.round(Math.min.apply(null, rsv)) + " to " + Math.round(Math.max.apply(null, rsv)) + " per 10 kg, and captured roughly " + Math.round(Math.min.apply(null, share)) + " to " + Math.round(Math.max.apply(null, share)) +
-      "% of what perfect hindsight could save. The saving is modest and is a simulation, not observed savings.";
+    $("d-read").textContent = "Following the Dambulla model cost " + Math.min.apply(null, d).toFixed(1) + " to " + Math.max.apply(null, d).toFixed(1) + "% less than always buying today and captured roughly " + Math.round(Math.min.apply(null, share)) + " to " + Math.round(Math.max.apply(null, share)) +
+      "% of what perfect hindsight could save. The source uses different units for different foods, so no mixed-unit rupee total is claimed. The saving is a simulation, not observed savings.";
   }
 
   PS.start();

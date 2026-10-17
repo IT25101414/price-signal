@@ -11,8 +11,7 @@
     options.forEach(function (o) {
       var b = el("button", null, o[1]);
       b.type = "button";
-      b.setAttribute("role", "radio");
-      b.setAttribute("aria-checked", String(o[0] === current));
+      b.setAttribute("aria-pressed", String(o[0] === current));
       b.addEventListener("click", function () { onPick(o[0]); });
       box.appendChild(b);
     });
@@ -49,33 +48,33 @@
     if (sub) f.appendChild(el("span", null, sub));
     return f;
   }
-  function first(a) { for (var i = 0; i < a.length; i++) if (a[i] != null) return a[i]; return null; }
-  function last(a) { for (var i = a.length - 1; i >= 0; i--) if (a[i] != null) return a[i]; return null; }
-
   function render(h) {
     var dates = h.dates, d = h.dambulla, c = h.colombo;
-    if (first(d) == null || first(c) == null) {
-      message(null, "There are no " + (first(d) == null ? "Dambulla" : (PS.NAMES[state.series] || state.series)) + " prices for " + h.item + " in this period.");
+    var paired = [];
+    dates.forEach(function (_, i) { if (d[i] != null && c[i] != null) paired.push(i); });
+    if (!paired.length) {
+      message(null, "There are no report days with both Dambulla and " + (PS.NAMES[state.series] || state.series) + " prices for " + h.item + " in this period.");
       return;
     }
     var base = state.mode === "index";
-    var d0 = first(d), c0 = first(c);
-    var dv = base ? d.map(function (v) { return v == null ? null : 100 * v / d0; }) : d;
-    var cv = base ? c.map(function (v) { return v == null ? null : 100 * v / c0; }) : c;
+    var firstPair = paired[0], lastPair = paired[paired.length - 1];
+    var d0 = d[firstPair], c0 = c[firstPair];
+    var dv = base ? d.map(function (v, i) { return i < firstPair || v == null ? null : 100 * v / d0; }) : d;
+    var cv = base ? c.map(function (v, i) { return i < firstPair || v == null ? null : 100 * v / c0; }) : c;
     var gap = d.map(function (v, i) { return v != null && c[i] != null ? 100 * (c[i] / v - 1) : null; });
     var gv = gap.filter(function (v) { return v != null; });
     var gavg = gv.length ? gv.reduce(function (a, b) { return a + b; }, 0) / gv.length : null;
     var name = PS.NAMES[state.series] || state.series;
-    var chD = d0 ? 100 * (last(d) / d0 - 1) : null, chC = c0 ? 100 * (last(c) / c0 - 1) : null;
+    var chD = 100 * (d[lastPair] / d0 - 1), chC = 100 * (c[lastPair] / c0 - 1);
 
     var f = $("facts");
     f.textContent = "";
-    f.appendChild(fact("Dambulla wholesale", PS.rs(last(d)), PS.arrow(chD) + PS.signed(chD) + "% over the period"));
-    f.appendChild(fact(name, PS.rs(last(c)), PS.arrow(chC) + PS.signed(chC) + "% over the period"));
-    f.appendChild(fact("Average gap", PS.signed(gavg, 0) + "%", "Colombo above Dambulla, " + dates.length + " report days"));
+    f.appendChild(fact("Dambulla wholesale", PS.rs(d[lastPair]), PS.arrow(chD) + PS.signed(chD) + "% between shared report days"));
+    f.appendChild(fact(name, PS.rs(c[lastPair]), PS.arrow(chC) + PS.signed(chC) + "% between shared report days"));
+    f.appendChild(fact("Average gap", PS.signed(gavg, 0) + "%", "Colombo above Dambulla, " + gv.length + " paired report days"));
 
     $("c1-t").textContent = h.item + ": Dambulla and " + name;
-    $("c1-c").textContent = base ? "Both prices set to 100 on the first day, so you can compare how they moved, not what they cost." : "Price per kg in rupees, as reported.";
+    $("c1-c").textContent = base ? "Both prices are set to 100 on the first report day where both were published (" + PS.date(dates[firstPair], true) + "). Missing observations remain gaps." : "Price in rupees, in the unit used for this item in the source report. Missing observations remain gaps.";
     var box = $("c1");
     PS.responsive(box, function (w) {
       box.appendChild(PS.legend([{ label: "Dambulla wholesale", color: "--dambulla" }, { label: name, color: "--colombo" }]));

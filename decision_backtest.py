@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Decision backtest: what is the Dambulla signal worth to a buyer, in rupees?
+Decision backtest: what is the Dambulla signal worth to a buyer, as a share of purchase value?
 
     python3 decision_backtest.py prices_all.csv [--h 3]
     python3 decision_backtest.py --selftest
@@ -19,7 +19,6 @@ The decision (kept deliberately simple and stated plainly):
 
 What is reported (test period 2024 onward, per Colombo series):
   * cost relative to always buying today, in % of the purchase value (negative = cheaper)
-    and in Rs for 10 kg (a stated assumption: scale it to your own purchase size)
   * the same for always waiting, and for hindsight (the best of the two each time: a ceiling)
   * policy C: follows the model that uses only the price's OWN history
   * policy D: follows the model that also uses Dambulla
@@ -33,7 +32,6 @@ import pandas as pd
 
 import robust_check as rc
 
-KG = 10.0
 COVERAGES = (0.25, 0.5, 1.0)       # act on the strongest 25%, 50% or all calls
 N_BOOT = 2000
 
@@ -52,7 +50,7 @@ def build_panel(series, target, items, h):
 
 
 def policy_cost(pred, thr, p_now, p_wait):
-    """Cost per kg. Wait only on a predicted fall beyond the threshold; otherwise buy today."""
+    """Cost in the item's reported unit. Wait on a predicted fall; otherwise buy today."""
     wait = pred <= -thr
     return np.where(wait, p_wait, p_now), wait
 
@@ -75,11 +73,10 @@ def run_one(series, target, items, h, rng):
         preds_te[k] = rc.predict(m, te[cols].to_numpy())
 
     rel = lambda cost: (cost - p_now) / p_now                  # share of purchase value
-    rs = lambda cost: KG * (cost - p_now)                      # rupees for KG kg
     base = {"always wait": p_wait, "hindsight best": np.minimum(p_now, p_wait)}
     rows = []
     for name, cost in base.items():
-        rows.append(dict(policy=name, share="-", rel=rel(cost).mean(), rs=rs(cost).mean(), hit=np.nan))
+        rows.append(dict(policy=name, share="-", rel=rel(cost).mean(), hit=np.nan))
     blocks = pd.unique(months)
     idx = {m: np.where(months == m)[0] for m in blocks}
     out = {"rows": rows, "n": len(te), "diffs": {}}
@@ -94,7 +91,7 @@ def run_one(series, target, items, h, rng):
             res[k] = (cost, acted, hit)
             rows.append(dict(policy=f"follow model {k} ({'own history' if k == 'C' else 'with Dambulla'})",
                              share=f"{100 * acted.mean():.0f}% acted" if cov < 1 else "all calls",
-                             rel=rel(cost).mean(), rs=rs(cost).mean(), hit=hit))
+                             rel=rel(cost).mean(), hit=hit))
         d = rel(res["D"][0]) - rel(res["C"][0])
         blk = np.array([[d[i].sum(), len(i)] for i in idx.values()])
         boots = []
@@ -103,8 +100,7 @@ def run_one(series, target, items, h, rng):
             s = blk[pick].sum(0)
             boots.append(s[0] / s[1])
         lo, hi = np.percentile(boots, [2.5, 97.5])
-        rs_diff = (rs(res["D"][0]) - rs(res["C"][0])).mean()
-        out["diffs"][cov] = (d.mean(), lo, hi, rs_diff)
+        out["diffs"][cov] = (d.mean(), lo, hi)
     return out
 
 
@@ -123,22 +119,22 @@ def run(df, h=3, quiet=False):
         if quiet:
             continue
         print(f"\n=== {target[0]} {target[1]}   horizon {h} report days   {r['n']} decisions in the test period ===")
-        print(f"{'policy':<34}{'acted':>11}{'cost vs buy-today':>20}{'Rs per ' + str(int(KG)) + ' kg':>14}{'hit rate':>10}")
-        print(f"{'always buy today':<34}{'-':>11}{'0.00%':>20}{'0':>14}{'-':>10}")
+        print(f"{'policy':<34}{'acted':>11}{'cost vs buy-today':>20}{'hit rate':>10}")
+        print(f"{'always buy today':<34}{'-':>11}{'0.00%':>20}{'-':>10}")
         for row in r["rows"]:
             if row["policy"].startswith("follow model C"):
                 print()
             hit = "-" if np.isnan(row["hit"]) else f"{100 * row['hit']:.0f}%"
-            print(f"{row['policy']:<34}{row['share']:>11}{100 * row['rel']:>19.2f}%{row['rs']:>14.1f}{hit:>10}")
-        for cov, (dm, lo, hi, rsd) in r["diffs"].items():
+            print(f"{row['policy']:<34}{row['share']:>11}{100 * row['rel']:>19.2f}%{hit:>10}")
+        for cov, (dm, lo, hi) in r["diffs"].items():
             lab = "all calls" if cov >= 1 else f"strongest {int(100 * cov)}%"
             print(f"  Dambulla vs own-history model, {lab:<14}: {100 * dm:+.3f} pts of purchase value "
-                  f"[{100 * lo:+.3f}, {100 * hi:+.3f}]  = {rsd:+.1f} Rs per {int(KG)} kg   "
+                  f"[{100 * lo:+.3f}, {100 * hi:+.3f}]   "
                   f"({'cheaper' if hi < 0 else 'not shown to differ' if lo <= 0 <= hi else 'dearer'})")
     if not quiet:
         print("\nNegative = cheaper than always buying today. 'hindsight best' is a ceiling no real buyer can reach.")
-        print(f"Rs figures assume {int(KG)} kg per decision; scale to your own purchase size. Decisions on consecutive")
-        print("days overlap, so treat the intervals (resampled by month) as the honest guide, not the point estimates.")
+        print("CBSL items use different reported units, so no mixed-unit rupee total is shown. Decisions on consecutive")
+        print("days overlap; treat the intervals (resampled by month) as the honest guide, not the point estimates.")
     return results
 
 
@@ -148,7 +144,7 @@ def selftest():
         res = run(rc.synthetic(follower), h=3, quiet=True)
         verdicts = []
         for target, r in res.items():
-            dm, lo, hi, _ = r["diffs"][1.0]
+            dm, lo, hi = r["diffs"][1.0]
             verdicts.append("cheaper" if hi < 0 else "same" if lo <= 0 <= hi else "dearer")
         want = "cheaper" if follower else "same"
         good = len(verdicts) == 3 and all(v == want for v in verdicts)

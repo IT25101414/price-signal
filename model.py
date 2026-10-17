@@ -103,7 +103,7 @@ def evaluate(df, h=H, quiet=False):
     return out
 
 
-def live(df, gdf, h=H, today=None, newest_listed=None):
+def live(df, gdf, h=H, today=None, newest_listed=None, refresh_status=None):
     axis, series = rc.build_series(df)
     latest = axis[-1]
     today = today or date.today()
@@ -130,7 +130,11 @@ def live(df, gdf, h=H, today=None, newest_listed=None):
                 card.update(dambulla_rs=round(float(row["p_dambulla"]), 1), colombo_rs=round(float(row["p_colombo"]), 1),
                             gap_vs_usual_pct=round(100 * math.expm1(float(row["gapdev"])), 1))
             v = guard.assess(gdf, item, target=target, today=today, newest_listed=newest_listed,
-                             signal=None if math.isnan(pred) else pred, min_signal=fc["thr"]["weak"])
+                             signal=None if math.isnan(pred) else pred, min_signal=fc["thr"]["weak"],
+                             refresh_status=refresh_status)
+            if v.ok and not have:
+                v = guard.Verdict("insufficient_data", "the latest model inputs are incomplete for this item; "
+                                                       "no estimate is shown")
             card["status"], card["reason"] = v.status, v.reason
             if v.ok and have:
                 card.update(expected_change_pct=round(100 * math.expm1(pred), 1),
@@ -199,7 +203,9 @@ def main(argv):
         evaluate(df, h)
         return
     gdf = guard.load_prices(args[0])
-    cards = live(df, gdf, h, newest_listed=guard.newest_listed_from_log())
+    refresh_state = guard.refresh_state_from_log()
+    cards = live(df, gdf, h, newest_listed=refresh_state["newest_listed"],
+                 refresh_status=refresh_state["status"])
     cards.to_csv(out, index=False)
     show(cards)
     print(f"written to {out}")
