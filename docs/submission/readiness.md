@@ -8,7 +8,7 @@ Checked 18 October 2026 against the ModelX 2.0 implementation requirements. This
 | Automated verification | Complete | 85 passed with no environment-dependent skips; 12/12 refusal cases and all three model self-tests passed. Original-report validation is an explicit local evidence check. |
 | Real-data end-to-end product | Complete locally | Committed cards dated 15 Oct 2026; Welcome, Today, Explore, Weekly report, Method and Help pages |
 | Data-use evidence | Complete | Redacted CBSL reply in `docs/cbsl_reply_2026-10-12.pdf`; attribution and non-endorsement wording included |
-| Buyer-feedback materials | Complete | Session guide and response template in `docs/buyer-feedback/` |
+| Buyer-feedback materials | Complete | Session guide, three anonymised response records and the findings summary are in `docs/buyer-feedback/` |
 | Real buyer feedback | Complete | Three consented anonymous sessions on 16-17 Oct; task counts, individual ratings, medians, decisions and limitations are in `findings-summary.md` |
 | Public hosting | Technically prepared | `render.yaml` and `web/DEPLOY.md` are ready; the repository owner must sign in to Render, connect GitHub and approve service creation |
 | README run instructions | Complete | Root README plus `web/README.md`; public URL must be added after deployment |
