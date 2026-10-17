@@ -38,4 +38,4 @@ The README, technical-report draft, two-page-summary draft and video script were
 
 ## Reproducibility follow-up - 18 October 2026
 
-The three original-report checks were moved out of default pytest discovery and retained as an explicit local validation in `validate_extract_prices_real.py`. Eleven repository-owned extractor helper tests were added. The fresh-clone suite now reports **84 passed and 0 skipped**, while the original 125-value real-report evidence remains available when the git-ignored source PDFs are present.
+The three original-report checks were moved out of default pytest discovery and retained as an explicit local validation in `validate_extract_prices_real.py`. Eleven repository-owned extractor helper tests were added. After the buyer-feedback wording regression check was added, the fresh-clone suite reports **85 passed and 0 skipped**, while the original 125-value real-report evidence remains available when the git-ignored source PDFs are present.

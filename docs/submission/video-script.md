@@ -1,6 +1,6 @@
 # Three-minute demonstration script
 
-Record this only after the public URL, buyer-feedback result and final report are updated. Use the public build on real data. Keep a clock visible while rehearsing; target 2:45 to 2:55.
+Record this only after the public URL and final report are updated. Use the public build on real data. Keep a clock visible while rehearsing; target 2:45 to 2:55.
 
 ## 0:00–0:20 — problem and user
 
@@ -42,11 +42,11 @@ Record this only after the public URL, buyer-feedback result and final report ar
 
 **Show:** Help page or README and final commit.
 
-**Say:** “The pipeline, model and six-page site are reproducible from the public repository. Eighty-four automated tests pass without environment-dependent skips, and the code, permission evidence, MIT licence and AI-use disclosure are public. [ONE SENTENCE WITH REAL BUYER RESULT, OR: ‘Real buyer feedback remains a limitation and is not claimed.’] The key result is a modest, tested Dambulla lead presented with uncertainty and safe refusal.”
+**Say:** “The pipeline, model and six-page site are reproducible from the public repository. Eighty-five automated tests pass without environment-dependent skips, and the code, permission evidence, MIT licence and AI-use disclosure are public. Three food buyers rated understanding, trust and usefulness at a median four out of five; their difficulty with the range, history terms and blank weekly values led to clearer explanations. The key result is a modest, tested Dambulla lead presented with uncertainty and safe refusal.”
 
 ## Before recording
 
-- Replace `[FINAL DATA DATE]` and the buyer-feedback sentence with verified facts.
+- Replace `[FINAL DATA DATE]` with the verified date shown by the submitted build.
 - Warm the public service, close unrelated tabs and increase browser zoom so labels are readable.
 - Do not show a terminal containing local paths, email addresses or tokens.
 - Record one continuous successful run on the exact submitted commit.

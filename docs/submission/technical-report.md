@@ -19,7 +19,7 @@ The completed system has a polite, resumable PDF collector; a position-based tab
 
 On held-out data from 2024 onward, adding Dambulla information improved forecasts beyond an own-history model in all three Colombo series. At three report days, the improvement in squared-error skill was 9.7 percentage points for wholesale Pettah, 8.3 for retail Pettah and 12.1 for retail Narahenpita. The stated 80% ranges contained 77.4% to 81.5% of unseen three-day outcomes. In a simulation, following the Dambulla model cost 1.22% to 1.57% less than always buying today. These are modest modelling results, not observed buyer savings.
 
-The implementation is frozen and verified: 84 repository-owned automated tests pass with no environment-dependent skips; all 12 deliberate refusal cases pass; and the model, robustness and decision-policy synthetic self-tests pass. The 125-value check against original CBSL PDFs remains a separate explicit local validation because those source files are intentionally not redistributed. Real buyer feedback and public deployment remain pending external actions and are not claimed as complete.
+The implementation is frozen and verified: 85 repository-owned automated tests pass with no environment-dependent skips; all 12 deliberate refusal cases pass; and the model, robustness and decision-policy synthetic self-tests pass. The 125-value check against original CBSL PDFs remains a separate explicit local validation because those source files are intentionally not redistributed. Public deployment remains pending external verification.
 
 ## 2. Proposal versus implementation
 
@@ -35,7 +35,7 @@ The implementation is frozen and verified: 84 repository-owned automated tests p
 | Current user interface | Complete locally | Welcome, Today, Explore, Weekly report, Method and Help |
 | Daily cloud schedule | Deliberately replaced | `run_daily.sh`; the full generated price table is not republished |
 | Gradient-boosting challenger | Completed, not adopted | Ridge retained under the pre-declared rule |
-| Two or three buyer sessions | Pending | Protocol is ready; no outcomes invented |
+| Two or three buyer sessions | Complete | Three anonymous, consented sessions on 16-17 Oct; task results, ratings and limitations recorded |
 | Public deployment | Prepared, pending owner sign-in | `render.yaml`, `web/DEPLOY.md` |
 
 ## 3. User, problem and delivered insight
@@ -99,7 +99,7 @@ The simulated policy chooses whether to buy today or after three report days, us
 
 Twelve constructed cases test fresh data, staleness, a newer unread report, Colombo or Dambulla closure, missing or `n.a.` prices, too little data, no clear signal and a holiday-adjusted freshness boundary. All 12 produce the specified state. Server tests verify that withheld cards and history contain no protected figures and that the interface never says “buy” or “sell”.
 
-On 18 October 2026, default `pytest` reported 84 passed and zero skipped. Eleven repository-owned tests cover the extractor's cell parsing, row grouping, name cleaning and cross-report consistency without external fixtures. The stronger 125-value check against original source reports remains in `validate_extract_prices_real.py` and is invoked explicitly with local PDFs, rather than appearing as three environment-dependent skips in a fresh clone. The model, robustness and decision self-tests all pass on synthetic worlds with known answers. Python source compilation succeeds when its bytecode cache is directed to a writable project or temporary directory.
+On 18 October 2026, default `pytest` reported 85 passed and zero skipped. Eleven repository-owned tests cover the extractor's cell parsing, row grouping, name cleaning and cross-report consistency without external fixtures; an additional interface regression check covers the explanations added after buyer feedback. The stronger 125-value check against original source reports remains in `validate_extract_prices_real.py` and is invoked explicitly with local PDFs, rather than appearing as three environment-dependent skips in a fresh clone. The model, robustness and decision self-tests all pass on synthetic worlds with known answers. Python source compilation succeeds when its bytecode cache is directed to a writable project or temporary directory.
 
 ## 8. What the user sees and why it is trustworthy
 
@@ -107,9 +107,15 @@ Every page names the report date and data source. Direction is carried by signs,
 
 If the source listing cannot be checked, if it lists a newer unread report, if the data exceed three working days, or if an item's inputs are incomplete, the website removes numbers server-side. Weekly comparisons require five observations in both weeks. Historical comparisons require dates shared by both series. These choices reduce apparent coverage, but they prevent a polished interface from hiding weak evidence.
 
+### Buyer evaluation and resulting changes
+
+Three small-food buyers participated anonymously with consent: a restaurant buyer on 16 October and a vegetable-shop buyer and hotel/catering buyer on 17 October. Main-card understanding scores were 4, 3 and 4; trust as one buying input was 4, 2 and 4; usefulness was 5, 3 and 4. The median was 4/5 for all three measures. Two participants described using the site for checking or planning while still confirming the supplier's current price; the third would continue relying mainly on suppliers unless the signal's accuracy was clearer.
+
+The task evidence exposed specific comprehension failures. Two participants needed help or could not explain the range; all three needed help or did not complete the historical comparison; and two questioned blank weekly values. The interface now describes the interval as a possible range that contained the real change about eight times in ten in past testing, explains shared dates and the start-at-100 comparison in plain language, states why weekly values are blank, and gives the source-data date its own status chip. An automated regression test confirms these explanations remain present. The revised wording has not yet been retested, and the exact tested commit, devices, setting and facilitator were not recorded, so this is formative evidence rather than proof of adoption or economic benefit.
+
 ## 9. Limitations and unresolved work
 
-- Real buyers have not yet used the system. The central behavioural claim—whether a buyer understands and would act on a card—remains untested. A structured, consent-based protocol is ready in `docs/buyer-feedback/`.
+- The buyer study has only three participants and measures short-session comprehension and self-reported intent, not long-term use, purchasing behaviour or realised savings. The revised wording has not yet been retested.
 - The public Render service has not yet been verified. The repository owner has begun the external service setup; the exact public URL will be recorded only after `/healthz` and the application pages respond successfully.
 - The repository owner selected the MIT License on 18 October 2026. It covers the project's original software; CBSL data and reports, the Sri Lankan national emblem and other third-party material remain under their respective terms.
 - The full generated table is local, so daily publication is manual. This avoids republishing the complete derived dataset until that choice is made explicitly.
@@ -144,5 +150,5 @@ Claude (Anthropic) and OpenAI Codex assisted with research, first drafts of code
 
 ## 12. Submission completion rule
 
-Before this draft is labelled final, replace the pending public URL, enter only observed buyer-feedback results, record the video from that exact build and run the private-browser checklist. If no buyer session is completed, retain that as a limitation rather than implying evaluation that did not occur.
+Before this draft is labelled final, replace the pending public URL, regenerate the reviewed PDF, record the video from that exact build and run the private-browser checklist.
 

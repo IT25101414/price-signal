@@ -2,6 +2,8 @@
 
 This folder is the evidence pack for testing Price Signal with **2 to 3 real small-food buyers** before the final report and video. The study tests whether buyers understand and trust the cards; it does not claim that the model changes real purchase outcomes.
 
+**Completed:** three anonymous sessions were conducted on 16-17 October 2026. The project owner confirmed consent to publish the anonymous responses on 18 October. Individual records are in `responses/`; aggregated results, product decisions and study limitations are in `findings-summary.md`.
+
 ## Who to recruit
 
 Recruit people who regularly decide when or where to buy vegetables for a canteen, restaurant, grocery, market stall or similar small business. Use participant IDs (`B01`, `B02`, `B03`) in public notes. Do not publish names, telephone numbers, business addresses or commercially sensitive purchase figures.

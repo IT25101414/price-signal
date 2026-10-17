@@ -166,6 +166,15 @@ def test_pages_exist(hist_client):
         assert r.status_code == 200 and b"<html" in r.data
 
 
+def test_buyer_feedback_explanations_are_present(hist_client):
+    c = hist_client("2026-10-12")
+    assert b"about 8 times in 10" in c.get("/today").data
+    assert b"shared report day means" in c.get("/explore").data
+    assert b"A blank means" in c.get("/report").data
+    assert b"Blank weekly value" in c.get("/help").data
+    assert b"Price data " in c.get("/static/app.js").data
+
+
 def test_welcome_page_leads_to_today_and_states_independence(hist_client):
     body = hist_client("2026-10-12").get("/").data
     assert b'href="/today"' in body

@@ -114,8 +114,8 @@
     $("lede").textContent = "This week is the five report days " + span(w.this_week) + "; last week is " + span(w.last_week) + ". Using only items with all five prices in both weeks, Dambulla wholesale moved " +
       PS.signed(dm) + "% across " + dComplete.length + " items and " + name + " moved " + PS.signed(cm) + "% across " + cComplete.length + " (" + up + " higher, " + down + " lower in Colombo).";
     $("print-note").textContent = "Price Signal weekly report, " + name + ", report of " + PS.date(w.report_date, true) + ". Source: Statistics Department, Central Bank of Sri Lanka, Daily Price Reports. Not advice.";
-    $("movers-c").textContent = "Change in the five-report-day average, this week against last week. A change is blank unless all five prices exist in both weeks. Items are sorted by the Dambulla move.";
-    $("multi-c").textContent = "Both prices are set to 100 on the first day of last week so their shapes can be compared. The shaded part is this week.";
+    $("movers-c").textContent = "Change in the five-report-day average, this week against last week. A blank means at least one daily price needed for the comparison was unavailable. Items are sorted by the Dambulla move.";
+    $("multi-c").textContent = "To compare the shapes, both markets start at 100 on the first day of last week. A value of 110 means 10% above that starting price. The shaded part is this week.";
     movers(items, name); multiples(items, name); table(items, name);
   }
 

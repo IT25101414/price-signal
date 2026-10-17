@@ -40,18 +40,21 @@ Gain is the additional share of squared forecast error removed. The placebo is a
 
 Price Signal removes estimates when the Central Bank listing cannot be checked, a newer report has not been parsed, the latest good data are more than three working days old, a market is closed, a price is missing, recent paired history is insufficient or the gap is too small. The server applies the guard again on every request and withholds history as well as cards.
 
-Verification on 18 October 2026: **84 reproducible tests passed with no environment-dependent skips**, **12 of 12 deliberate refusal cases passed**, and the model, robustness and decision-policy synthetic self-tests passed. The 125-value check against original CBSL reports remains a separate, explicit local validation because the source PDFs are not redistributed.
+Verification on 18 October 2026: **85 reproducible tests passed with no environment-dependent skips**, **12 of 12 deliberate refusal cases passed**, and the model, robustness and decision-policy synthetic self-tests passed. The 125-value check against original CBSL reports remains a separate, explicit local validation because the source PDFs are not redistributed.
+
+### What three buyers understood
+
+Three anonymous, consented sessions on 16-17 October covered a restaurant, vegetable shop and hotel/catering business. Median ratings were **4/5** for main-card understanding, trust as one buying input and usefulness. Two participants needed help with the possible range, all three needed help or could not complete the history comparison, and two were unsure why weekly values were blank. The interface now explains that the tested range held about eight times in ten, replaces “paired report days” with days when both prices were available, explains the start-at-100 chart and states that a blank weekly value means a required daily price was unavailable. The revised wording has not yet been retested.
 
 ### Honest scope
 
-The effect is modest and covers only 18–19 foods with a Dambulla wholesale price. The test period is calmer than the 2022 crisis, prices are rounded and the three-report-day horizon can cross a weekend. Public deployment and real buyer feedback are not yet complete. The buyer protocol, Render blueprint, technical-report draft, video script and private-browser checklist are prepared, but no participant result or public URL is invented.
+The effect is modest and covers only 18–19 foods with a Dambulla wholesale price. The test period is calmer than the 2022 crisis, prices are rounded and the three-report-day horizon can cross a weekend. The buyer study has only three participants and measures comprehension and stated intent, not actual purchasing behaviour or savings. Public deployment is not yet verified, and no public URL is guessed.
 
 ### Final submission actions
 
-1. Run one to three documented buyer-feedback sessions and enter the actual results.
-2. Complete the Render deployment, verify `/healthz` and add the exact public URL.
-3. Update the report and this summary with those facts.
-4. Record the three-minute demonstration from the exact submitted build and complete the signed-out browser rehearsal.
+1. Complete the Render deployment, verify `/healthz` and add the exact public URL.
+2. Regenerate the final report PDF with the verified URL and current buyer results.
+3. Record the three-minute demonstration from the exact submitted build and complete the signed-out browser rehearsal.
 
 **Attribution:** Daily Price Report data — Statistics Department, Central Bank of Sri Lanka. CBSL does not endorse this project, its analysis or its conclusions.  
 **AI disclosure:** Claude and OpenAI Codex assisted with research, drafting, code and review; the repository's `AI_USE.md` gives the file-level account. The author reviewed the work and is responsible for the submission.

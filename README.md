@@ -4,7 +4,7 @@
 
 ModelX 2.0 (IEEE CIS Student Chapter, IIT) · Domain: Cost of living and everyday economics · Author: Nivetha, SLIIT
 
-**Status (18 Oct 2026):** functionality frozen at `v1.0.0-rc1`; the pipeline, model, safety guard, Streamlit dashboard and six-page Flask/SQLite website are built and tested. The committed cards use the 15 Oct report. The final technical report is updated, the project is MIT-licensed, and the buyer study pack, deployment blueprint, two-page summary and video script are prepared; real buyer sessions, verified public hosting and recording the final video remain open. See [`docs/submission/readiness.md`](docs/submission/readiness.md) for the live checklist.
+**Status (18 Oct 2026):** functionality frozen at `v1.0.0-rc1`; the pipeline, model, safety guard, Streamlit dashboard and six-page Flask/SQLite website are built and tested. The committed cards use the 15 Oct report. Three consented buyer sessions are documented and their main comprehension problems have been addressed in the interface. The project is MIT-licensed; verified public hosting, the final PDF update and recording the video remain open. See [`docs/submission/readiness.md`](docs/submission/readiness.md) for the live checklist.
 
 ---
 
@@ -32,6 +32,8 @@ Gain is the share of squared forecast error removed, in percentage points, again
 
 **Finding 3 (negative result, kept on purpose): jump persistence cannot be predicted.** About 57% of one-day jumps of 15% or more persisted. Our models did no better than always guessing persistence (accuracy 56.6 to 56.7% against 57.2%, AUC 0.50 to 0.54), so we set that idea aside and pivoted to the lead-lag test above.
 
+**Finding 4: three buyers saw potential value but needed clearer uncertainty language.** A restaurant buyer, vegetable-shop buyer and hotel/catering buyer completed structured sessions on 16-17 Oct. Median ratings were 4/5 for understanding, trust as one input and usefulness. Two of three needed help with the possible range, all three needed help or could not complete the historical comparison, and two questioned blank weekly values. The site now explains these points in plain language. This small study measures comprehension and stated intent, not actual savings; details are in `docs/buyer-feedback/findings-summary.md`.
+
 **Limits, stated plainly:** the effect is modest (errors roughly 4 to 8% smaller than "no change"); it rests on one train and test split; horizons count report days, so a Monday spans a weekend; only 18 to 19 items have Dambulla wholesale prices; the rupee backtest assumes a purchase can be deferred at no cost; the test period (2024 on) is calm and the signal may weaken in a crisis such as 2022.
 
 ## 3. Work done
@@ -48,8 +50,8 @@ Gain is the share of squared forecast error removed, in percentage points, again
 | 8 | Written response received from CBSL on **12 Oct 2026**: the published data are publicly available, do not require specific approval for use, and should be attributed to the Statistics Department. CBSL does not endorse the project. | [`docs/cbsl_reply_2026-10-12.pdf`](docs/cbsl_reply_2026-10-12.pdf) |
 | 9 | Phase 1 project proposal written. | ready for the 19 Oct submission |
 | 10 | AI-use disclosure for every script and document. | `AI_USE.md` |
-| 11 | Functionality frozen and independently re-checked: 84 reproducible tests pass with no environment-dependent skips, 12 of 12 deliberate refusal cases pass, and all model self-tests pass. | `docs/functionality-freeze-2026-10-17.md` |
-| 12 | Buyer-feedback protocol, response sheet and honest empty findings record prepared. | `docs/buyer-feedback/` |
+| 11 | Functionality frozen and independently re-checked: 85 reproducible tests pass with no environment-dependent skips, 12 of 12 deliberate refusal cases pass, and all model self-tests pass. | `docs/functionality-freeze-2026-10-17.md` |
+| 12 | Three anonymous, consented buyer sessions completed; task results and individual ratings recorded; buyer-driven wording changes implemented. | `docs/buyer-feedback/findings-summary.md` |
 | 13 | Final technical report updated from the 17 Oct version; two-page summary and three-minute video script prepared from the saved evidence. | `docs/submission/` |
 
 ### Coverage
@@ -88,7 +90,7 @@ Unparsed reports are listed in `failed_files.txt`. Nothing is guessed or filled 
 | 1 Nov | **Implementation submission** | Repository opens from a private browser window and this README runs |
 | 9 to 14 Nov | If we reach the final: rehearse the live demo | Demo runs on the day's real report |
 
-**Still to do (18 Oct 2026):** conduct and document one to three real buyer sessions; complete and verify the public Render service; add its exact URL to the README and report; record the final three-minute video on that public build; then complete a private-browser submission rehearsal. The final technical report is updated and the two-page summary is a submission-ready draft; pending buyer and public-URL fields are labelled rather than invented. The daily refresh remains a deliberate local script rather than a cloud schedule because the complete price table is not redistributed.
+**Still to do (18 Oct 2026):** complete and verify the public Render service; add its exact URL to the README and report; regenerate the final PDF from the updated report; record the final three-minute video on that public build; then complete a private-browser submission rehearsal. The buyer findings and interface changes are complete. The daily refresh remains a deliberate local script rather than a cloud schedule because the complete price table is not redistributed.
 
 **What we cut first if time runs short:** (1) gradient-boosting challenger models, (2) Sinhala and Tamil versions of the interface, (3) automated daily refresh, replaced by a script the user runs, (4) the 1-day and 5-day horizons, keeping 3 days, (5) buyer interviews reduced from 3 to 1 or 2. We never cut the freshness check, the refusal rules or the honest evaluation.
 
@@ -188,7 +190,7 @@ python3 -m streamlit run app.py
 - **Website** in `web/` (Flask + SQLite, no build step). Run: `python3 model.py prices_all.csv`, `python3 web/build_db.py`, `python3 web/server.py`. See `web/README.md`. The server applies the same guard on every request and withholds numbers when a report is stale, unread or not ok.
 - **Public holidays:** `data/holidays.csv` (2026 public holidays, taken from a published calendar). Add `date,name` rows (YYYY-MM-DD) and the guard stops counting those days as working days. Override the file with `PRICE_SIGNAL_HOLIDAYS`.
 - **Refusal results:** `python3 refusal_report.py` runs 12 synthetic cases, each with one deliberate fault, and writes `results_refusal.txt`. These test the guard's logic, not any real report.
-- **CI:** `.github/workflows/tests.yml` runs the reproducible tests and the refusal report on every push (Python 3.9). The verified local result on 18 Oct is **84 passed, 0 skipped**. The separate `validate_extract_prices_real.py` check uses git-ignored original PDFs and is invoked explicitly, so a fresh clone no longer reports environment-dependent skips.
+- **CI:** `.github/workflows/tests.yml` runs the reproducible tests and the refusal report on every push (Python 3.9). The verified local result on 18 Oct is **85 passed, 0 skipped**. The separate `validate_extract_prices_real.py` check uses git-ignored original PDFs and is invoked explicitly, so a fresh clone no longer reports environment-dependent skips.
 - **Permission:** the Central Bank's Statistics Department replied on 12 Oct 2026 about use of the Daily Price Reports; page 1 of the reply is in `docs/cbsl_reply_2026-10-12.pdf` (contact details removed). This project is not endorsed by the Central Bank; the data is theirs, the analysis is ours.
 
 

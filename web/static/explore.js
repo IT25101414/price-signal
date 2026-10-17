@@ -69,12 +69,12 @@
 
     var f = $("facts");
     f.textContent = "";
-    f.appendChild(fact("Dambulla wholesale", PS.rs(d[lastPair]), PS.arrow(chD) + PS.signed(chD) + "% between shared report days"));
-    f.appendChild(fact(name, PS.rs(c[lastPair]), PS.arrow(chC) + PS.signed(chC) + "% between shared report days"));
-    f.appendChild(fact("Average gap", PS.signed(gavg, 0) + "%", "Colombo above Dambulla, " + gv.length + " paired report days"));
+    f.appendChild(fact("Dambulla wholesale", PS.rs(d[lastPair]), PS.arrow(chD) + PS.signed(chD) + "% from the first to latest day with both prices"));
+    f.appendChild(fact(name, PS.rs(c[lastPair]), PS.arrow(chC) + PS.signed(chC) + "% from the first to latest day with both prices"));
+    f.appendChild(fact("Average gap", PS.signed(gavg, 0) + "%", "Colombo above Dambulla, based on " + gv.length + " days when both prices were available"));
 
     $("c1-t").textContent = h.item + ": Dambulla and " + name;
-    $("c1-c").textContent = base ? "Both prices are set to 100 on the first report day where both were published (" + PS.date(dates[firstPair], true) + "). Missing observations remain gaps." : "Price in rupees, in the unit used for this item in the source report. Missing observations remain gaps.";
+    $("c1-c").textContent = base ? "To compare the shapes, each market starts at 100 on " + PS.date(dates[firstPair], true) + ", the first day both prices were available. A value of 110 means 10% above that starting price. Missing prices remain gaps." : "Price in rupees, in the unit used for this item in the source report. A gap means that market did not publish a price for that item on that report day.";
     var box = $("c1");
     PS.responsive(box, function (w) {
       box.appendChild(PS.legend([{ label: "Dambulla wholesale", color: "--dambulla" }, { label: name, color: "--colombo" }]));

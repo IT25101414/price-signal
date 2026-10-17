@@ -29,6 +29,7 @@
     var meta = $("status-meta");
     meta.textContent = "";
     [
+      ["Price data " + s.report_date_label, "neutral"],
       [s.state === "ok" ? "Source verified" : "Source withheld", s.state === "ok" ? "ok" : "warn"],
       [s.age_working_days + " working day" + (s.age_working_days === 1 ? "" : "s") + " old", s.age_working_days <= s.max_age_working_days ? "ok" : "warn"],
       [NAMES[state.series] || state.series || "Loading market", "neutral"],
@@ -203,7 +204,7 @@
   }
 
   function tipText(c) {
-    return c.item + ": best estimate " + signed(c.expected_change_pct) + "%, likely range " + signed(c.low_pct) + " to " + signed(c.high_pct) + "%";
+    return c.item + ": best estimate " + signed(c.expected_change_pct) + "%, possible range " + signed(c.low_pct) + " to " + signed(c.high_pct) + "%";
   }
 
   function renderRows() {
@@ -231,7 +232,7 @@
       name.appendChild(p);
       var num = el("span", "num");
       num.appendChild(el("b", null, (c.direction === "down" ? "▼ " : c.direction === "up" ? "▲ " : "") + signed(c.expected_change_pct) + "%"));
-      num.appendChild(el("small", null, signed(c.low_pct) + " to " + signed(c.high_pct) + (c.signal ? ", " + signalLabel(c.signal) : "")));
+      num.appendChild(el("small", null, "Possible range " + signed(c.low_pct) + " to " + signed(c.high_pct) + (c.signal ? ", " + signalLabel(c.signal) : "")));
       b.appendChild(name); b.appendChild(ruler(c)); b.appendChild(num);
       b.setAttribute("aria-label", tipText(c) + ". Open details.");
       b.addEventListener("click", function () { openDetail(c); });
@@ -296,7 +297,7 @@
     facts.appendChild(fact("Current gap compared with usual", signed(c.gap_vs_usual_pct) + "%"));
     facts.appendChild(fact("Best estimate for the following 3 report days", (c.direction === "down" ? "▼ " : c.direction === "up" ? "▲ " : "") + signed(c.expected_change_pct) + "%"));
     body.appendChild(facts);
-    body.appendChild(el("p", "note", "Likely range for the Colombo price change: " + signed(c.low_pct) + " to " + signed(c.high_pct) + "% (chart scale " + MINUS + state.scale + "% to +" + state.scale + "%)."));
+    body.appendChild(el("p", "note", "Possible range for the Colombo price change: " + signed(c.low_pct) + " to " + signed(c.high_pct) + "%. In past testing, the real change fell inside a range like this about 8 times in 10. It is not a guaranteed best- or worst-case price. Chart scale: " + MINUS + state.scale + "% to +" + state.scale + "%."));
     body.appendChild(ruler(c, "big"));
     var holder = el("div");
     holder.appendChild(el("p", "note", "Loading price history"));
