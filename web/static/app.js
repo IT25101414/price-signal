@@ -1,7 +1,7 @@
 "use strict";
 (function () {
   var MINUS = PS.MINUS;
-  var state = { series: null, cards: [], status: null, q: "", scale: 10 };
+  var state = { series: null, cards: [], status: null, q: "", direction: "all", signal: "all", sort: "expected", scale: 10 };
   var seq = 0;
   var $ = PS.$, el = PS.el, signed = PS.signed, rs = PS.rs, get = PS.get, NAMES = PS.NAMES;
   PS.initTheme();
@@ -26,6 +26,17 @@
       demo.hidden = false;
       demo.textContent = "Demo data: the price history in this build is invented for testing the layout. The estimates are from cards.csv.";
     } else demo.hidden = true;
+    var meta = $("status-meta");
+    meta.textContent = "";
+    [
+      [s.state === "ok" ? "Source verified" : "Source withheld", s.state === "ok" ? "ok" : "warn"],
+      [s.age_working_days + " working day" + (s.age_working_days === 1 ? "" : "s") + " old", s.age_working_days <= s.max_age_working_days ? "ok" : "warn"],
+      [NAMES[state.series] || state.series || "Loading market", "neutral"],
+      [s.history_source === "synthetic" ? "Synthetic history" : "Observed history", s.history_source === "synthetic" ? "warn" : "neutral"]
+    ].forEach(function (x) {
+      var chip = el("span", "meta-chip " + x[1], x[0]);
+      meta.appendChild(chip);
+    });
     PS.footer("Database built " + (s.built_at_utc ? s.built_at_utc.replace("T", " ").replace("+00:00", " UTC") : "unknown") + ".");
   }
 
@@ -49,6 +60,134 @@
   }
   function pos(v) { return (50 + (v / state.scale) * 50).toFixed(2) + "%"; }
 
+  function intervalWidth(c) { return c.high_pct - c.low_pct; }
+
+  function filteredCards() {
+    var q = state.q.trim().toLowerCase();
+    return state.cards.filter(function (c) {
+      if (q && c.item.toLowerCase().indexOf(q) < 0) return false;
+      if (state.direction !== "all" && c.direction !== state.direction) return false;
+      if (state.signal !== "all" && c.signal !== state.signal) return false;
+      return true;
+    });
+  }
+
+  function kpi(label, value, note, tone) {
+    var a = el("article", "kpi" + (tone ? " " + tone : ""));
+    a.appendChild(el("p", "kpi-label", label));
+    a.appendChild(el("strong", "kpi-value", value));
+    a.appendChild(el("p", "kpi-note", note));
+    return a;
+  }
+
+  function renderOverview() {
+    var box = $("overview"), kpis = $("kpis");
+    box.hidden = false;
+    kpis.textContent = "";
+    var ok = state.cards.filter(function (c) { return c.status === "ok"; });
+    var strong = ok.filter(function (c) { return c.signal === "strong"; });
+    var rises = ok.filter(function (c) { return c.direction === "up"; }).length;
+    var falls = ok.filter(function (c) { return c.direction === "down"; }).length;
+    var avgWidth = ok.length ? ok.reduce(function (n, c) { return n + intervalWidth(c); }, 0) / ok.length : null;
+    var safe = state.status.state === "ok";
+    kpis.appendChild(kpi("Active estimates", safe ? ok.length + " / " + state.cards.length : "—", "Items passing all refusal rules", "accent"));
+    kpis.appendChild(kpi("Strong evidence", safe ? String(strong.length) : "—", "Highest evidence tier today", "strong-tone"));
+    kpis.appendChild(kpi("Direction split", safe ? rises + " rise · " + falls + " fall" : "—", "Middle estimates, not recommendations"));
+    kpis.appendChild(kpi("Mean 80% range", safe && avgWidth != null ? avgWidth.toFixed(1) + " pp" : "—", "Lower means less model uncertainty"));
+    renderSignalMap(safe ? ok : []);
+    renderWatchlist(safe ? ok : []);
+    renderOps();
+  }
+
+  function renderSignalMap(cards) {
+    var host = $("signal-map");
+    host.textContent = "";
+    if (!cards.length) {
+      host.appendChild(el("p", "empty-panel", "No active estimates are available for the map."));
+      return;
+    }
+    var W = 760, H = 310, L = 56, R = 18, T = 20, B = 44;
+    var xAbs = Math.max(5, Math.ceil(Math.max.apply(null, cards.map(function (c) { return Math.abs(c.expected_change_pct); })) / 5) * 5);
+    var maxU = Math.ceil(Math.max.apply(null, cards.map(intervalWidth)) / 10) * 10 || 10;
+    var X = function (v) { return L + ((v + xAbs) / (2 * xAbs)) * (W - L - R); };
+    var Y = function (v) { return H - B - (v / maxU) * (H - T - B); };
+    var svg = PS.s("svg", { viewBox: "0 0 " + W + " " + H, role: "img", "aria-label": "Scatter plot of expected price change against width of the 80 percent uncertainty range" });
+    [-xAbs, -xAbs / 2, 0, xAbs / 2, xAbs].forEach(function (v) {
+      var x = X(v);
+      svg.appendChild(PS.s("line", { x1: x, x2: x, y1: T, y2: H - B, stroke: "var(--line)", "stroke-width": v === 0 ? 2 : 1 }));
+      svg.appendChild(PS.s("text", { x: x, y: H - 16, "text-anchor": "middle", "font-size": 11, fill: "var(--ink-3)" }, signed(v, 0) + "%"));
+    });
+    [0, maxU / 2, maxU].forEach(function (v) {
+      var y = Y(v);
+      svg.appendChild(PS.s("line", { x1: L, x2: W - R, y1: y, y2: y, stroke: "var(--line)", "stroke-width": 1 }));
+      svg.appendChild(PS.s("text", { x: L - 8, y: y + 4, "text-anchor": "end", "font-size": 11, fill: "var(--ink-3)" }, Math.round(v) + " pp"));
+    });
+    svg.appendChild(PS.s("text", { x: (L + W - R) / 2, y: H - 2, "text-anchor": "middle", "font-size": 12, fill: "var(--ink-2)" }, "Middle estimate: expected Colombo change"));
+    cards.forEach(function (c) {
+      var g = PS.s("g", { tabindex: "0", role: "button", "aria-label": tipText(c) + ". Uncertainty width " + intervalWidth(c).toFixed(1) + " percentage points. Open details." });
+      var dot = PS.s("circle", { cx: X(c.expected_change_pct), cy: Y(intervalWidth(c)), r: c.signal === "strong" ? 8 : 6,
+        fill: c.signal === "strong" ? "var(--accent)" : "var(--colombo)", opacity: c.signal === "strong" ? .95 : .72,
+        stroke: "var(--surface)", "stroke-width": 2 });
+      g.appendChild(dot);
+      function show(e) { showTip(e.clientX || 40, e.clientY || 80, [tipText(c), "80% range width " + intervalWidth(c).toFixed(1) + " pp"]); }
+      g.addEventListener("pointermove", show);
+      g.addEventListener("pointerleave", hideTip);
+      g.addEventListener("focus", function () { showTip(window.innerWidth / 2, 160, [tipText(c), "80% range width " + intervalWidth(c).toFixed(1) + " pp"]); });
+      g.addEventListener("blur", hideTip);
+      g.addEventListener("click", function () { openDetail(c); });
+      g.addEventListener("keydown", function (e) { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openDetail(c); } });
+      svg.appendChild(g);
+    });
+    host.appendChild(svg);
+  }
+
+  function renderWatchlist(cards) {
+    var list = $("watchlist");
+    list.textContent = "";
+    var ranked = cards.slice().sort(function (a, b) {
+      var evidence = (b.signal === "strong") - (a.signal === "strong");
+      return evidence || Math.abs(b.expected_change_pct) - Math.abs(a.expected_change_pct) || intervalWidth(a) - intervalWidth(b);
+    }).slice(0, 5);
+    $("watch-count").textContent = ranked.length + " shown";
+    if (!ranked.length) {
+      list.appendChild(el("li", "empty-panel", "No signals are available."));
+      return;
+    }
+    ranked.forEach(function (c, i) {
+      var li = el("li");
+      var b = el("button"); b.type = "button";
+      b.appendChild(el("span", "watch-rank", String(i + 1).padStart(2, "0")));
+      var words = el("span", "watch-words");
+      words.appendChild(el("b", null, c.item));
+      words.appendChild(el("small", null, c.signal + " evidence · range " + intervalWidth(c).toFixed(1) + " pp"));
+      b.appendChild(words);
+      b.appendChild(el("strong", "watch-value " + (c.direction || "flat"), PS.arrow(c.expected_change_pct) + signed(c.expected_change_pct) + "%"));
+      b.addEventListener("click", function () { openDetail(c); });
+      li.appendChild(b); list.appendChild(li);
+    });
+  }
+
+  function renderOps() {
+    var s = state.status, grid = $("ops-grid"), chip = $("ops-state");
+    grid.textContent = "";
+    var ok = s.state === "ok";
+    chip.className = "status-chip " + (ok ? "ok" : "warn");
+    chip.textContent = ok ? "All safety gates passed" : "Outputs withheld";
+    var checks = [
+      ["Source listing", ok ? "Verified" : "Attention required", ok],
+      ["Freshness gate", s.age_working_days + " / " + s.max_age_working_days + " working days", s.age_working_days <= s.max_age_working_days],
+      ["Cards loaded", state.cards.length + " records for this market", state.cards.length > 0],
+      ["History mode", s.history_source === "synthetic" ? "Synthetic demo" : s.history_source.replaceAll("_", " "), s.history_source !== "synthetic"],
+      ["Database build", s.built_at_utc ? s.built_at_utc.replace("T", " ").replace("+00:00", " UTC") : "Unknown", !!s.built_at_utc]
+    ];
+    checks.forEach(function (x) {
+      var item = el("div", "op-item");
+      item.appendChild(el("span", "op-icon " + (x[2] ? "pass" : "attention"), x[2] ? "✓" : "!"));
+      var words = el("span"); words.appendChild(el("b", null, x[0])); words.appendChild(el("small", null, x[1])); item.appendChild(words);
+      grid.appendChild(item);
+    });
+  }
+
   function ruler(c, cls) {
     var r = el("span", "ruler" + (cls ? " " + cls : ""));
     r.appendChild(el("span", "zero"));
@@ -67,14 +206,18 @@
   }
 
   function renderRows() {
-    var q = state.q.trim().toLowerCase();
-    var cards = state.cards.filter(function (c) { return !q || c.item.toLowerCase().indexOf(q) >= 0; });
-    var ok = cards.filter(function (c) { return c.status === "ok"; })
-      .sort(function (a, b) { return a.expected_change_pct - b.expected_change_pct; });
+    var cards = filteredCards();
+    var ok = cards.filter(function (c) { return c.status === "ok"; });
+    ok.sort(function (a, b) {
+      if (state.sort === "name") return a.item.localeCompare(b.item);
+      if (state.sort === "uncertainty") return intervalWidth(a) - intervalWidth(b);
+      return a.expected_change_pct - b.expected_change_pct;
+    });
     var no = cards.filter(function (c) { return c.status !== "ok"; });
     var rows = $("rows");
     rows.textContent = "";
     $("axishead").hidden = ok.length === 0;
+    $("view-count").textContent = ok.length + " active estimate" + (ok.length === 1 ? "" : "s") + " · " + no.length + " withheld";
     ok.forEach(function (c) {
       var li = el("li", "row");
       var b = el("button");
@@ -109,6 +252,24 @@
       if (!all) li.appendChild(document.createTextNode(c.reason));
       ul.appendChild(li);
     });
+  }
+
+  function csvCell(v) {
+    if (v == null) return "";
+    var s = String(v);
+    return /[\",\n]/.test(s) ? '"' + s.replaceAll('"', '""') + '"' : s;
+  }
+
+  function exportView() {
+    if (!state.status || state.status.state !== "ok") return;
+    var cards = filteredCards().filter(function (c) { return c.status === "ok"; });
+    var fields = ["report_date", "item", "series", "signal", "direction", "expected_change_pct", "low_pct", "high_pct", "dambulla_rs", "colombo_rs", "gap_vs_usual_pct"];
+    var lines = [fields.join(",")];
+    cards.forEach(function (c) { lines.push(fields.map(function (f) { return csvCell(f === "series" ? state.series : (f === "report_date" ? state.status.report_date : c[f])); }).join(",")); });
+    var blob = new Blob([lines.join("\n") + "\n"], { type: "text/csv;charset=utf-8" });
+    var url = URL.createObjectURL(blob), a = document.createElement("a");
+    a.href = url; a.download = "price-signal-" + state.series.replaceAll(" ", "-") + "-" + state.status.report_date + ".csv";
+    document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
   }
 
   function showTip(x, y, lines) { PS.tip(x, y, lines); }
@@ -185,7 +346,8 @@
         if (my !== seq) return;
         state.status = r[0]; state.cards = r[1].cards; state.series = r[1].series;
         state.scale = niceScale(state.cards);
-        renderSeries(r[0]); renderStatus(r[0]); renderRows();
+        renderSeries(r[0]); renderStatus(r[0]); renderOverview(); renderRows();
+        $("export").disabled = state.status.state !== "ok" || !state.cards.some(function (c) { return c.status === "ok"; });
       })
       .catch(function (e) {
         if (my !== seq) return;
@@ -195,6 +357,10 @@
       });
   }
   $("q").addEventListener("input", function (e) { state.q = e.target.value; renderRows(); });
+  $("direction").addEventListener("change", function (e) { state.direction = e.target.value; renderRows(); });
+  $("signal").addEventListener("change", function (e) { state.signal = e.target.value; renderRows(); });
+  $("sort").addEventListener("change", function (e) { state.sort = e.target.value; renderRows(); });
+  $("export").addEventListener("click", exportView);
   $("detail").addEventListener("click", function (e) { if (e.target === this) this.close(); });
   $("detail").addEventListener("close", hideTip);
   load();

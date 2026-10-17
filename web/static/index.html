@@ -20,19 +20,81 @@
 
 <main class="wrap">
   <section class="status" id="status" aria-live="polite" aria-busy="true">
+    <p class="eyebrow">Market command centre · 3-report-day horizon</p>
     <h1 id="headline">Checking the latest report</h1>
     <p id="reason" class="lede"></p>
+    <div id="status-meta" class="status-meta" aria-label="Source status"></div>
     <p id="demo" class="demo" hidden></p>
   </section>
 
-  <section class="controls" aria-label="Choose a Colombo price">
+  <section id="overview" class="overview" aria-label="Signal overview" hidden>
+    <div id="kpis" class="kpi-grid"></div>
+
+    <div class="insight-grid">
+      <article class="panel map-panel" aria-labelledby="map-h">
+        <div class="panel-head">
+          <div>
+            <p class="panel-kicker">Model landscape</p>
+            <h2 id="map-h">Impact × uncertainty</h2>
+          </div>
+          <p class="panel-note">Each point is one active estimate</p>
+        </div>
+        <div id="signal-map" class="signal-map"></div>
+        <div class="map-key" aria-hidden="true"><span><i class="dot strong"></i>Strong signal</span><span><i class="dot weak"></i>Weak signal</span><span>Higher on chart = wider 80% range</span></div>
+      </article>
+
+      <article class="panel watch-panel" aria-labelledby="watch-h">
+        <div class="panel-head">
+          <div>
+            <p class="panel-kicker">Evidence queue</p>
+            <h2 id="watch-h">High-attention signals</h2>
+          </div>
+          <span id="watch-count" class="count-pill"></span>
+        </div>
+        <ol id="watchlist" class="watchlist"></ol>
+        <p class="panel-foot">Ranked by evidence strength, then absolute middle estimate. This is not buying advice.</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="controls advanced-controls" aria-label="Filter and sort estimates">
     <div class="seg" role="group" aria-label="Colombo price to compare with Dambulla wholesale" id="series"></div>
     <label class="search"><span class="sr">Filter items</span>
       <input id="q" type="search" placeholder="Filter items" autocomplete="off">
     </label>
+    <label class="field compact">Direction
+      <select id="direction" class="ps">
+        <option value="all">All directions</option>
+        <option value="up">Expected rise</option>
+        <option value="down">Expected fall</option>
+        <option value="flat">Near zero</option>
+      </select>
+    </label>
+    <label class="field compact">Evidence
+      <select id="signal" class="ps">
+        <option value="all">All strengths</option>
+        <option value="strong">Strong only</option>
+        <option value="weak">Weak only</option>
+      </select>
+    </label>
+    <label class="field compact">Sort
+      <select id="sort" class="ps">
+        <option value="expected">Expected change</option>
+        <option value="uncertainty">Narrowest range</option>
+        <option value="name">Item name</option>
+      </select>
+    </label>
+    <button id="export" class="btn alt" type="button">Export current view</button>
   </section>
 
   <section id="list" class="list-wrap" tabindex="-1">
+    <div class="section-title-row">
+      <div>
+        <p class="panel-kicker">Item-level detail</p>
+        <h2>Signal register</h2>
+      </div>
+      <p id="view-count" class="section-count" aria-live="polite"></p>
+    </div>
     <div class="axis-head" id="axishead" hidden><span></span><span class="ah-scale"><span>Expected to fall</span><span>Expected to rise</span></span><span></span></div>
     <ol id="rows" class="rows"></ol>
 
@@ -40,6 +102,17 @@
       <h2 id="none-title">No estimate today</h2>
       <ul id="none-list"></ul>
     </div>
+  </section>
+
+  <section class="ops panel" aria-labelledby="ops-h">
+    <div class="panel-head">
+      <div>
+        <p class="panel-kicker">Operational assurance</p>
+        <h2 id="ops-h">Pipeline health</h2>
+      </div>
+      <span id="ops-state" class="status-chip">Checking</span>
+    </div>
+    <div id="ops-grid" class="ops-grid"></div>
   </section>
 
   <section class="how" aria-labelledby="how-h">

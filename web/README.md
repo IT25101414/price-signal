@@ -20,6 +20,12 @@ python3 -m pip install -r web/requirements.txt
 python3 web/server.py          # open http://127.0.0.1:5000
 ```
 
+If port 5000 is already in use (common on macOS), choose another port:
+
+```bash
+PORT=5124 python3 web/server.py # open http://127.0.0.1:5124
+```
+
 The first start builds `web/price_signal.db` from `cards.csv`. After the daily pipeline writes a new `cards.csv`, rebuild:
 
 ```bash
@@ -66,7 +72,7 @@ Environment variables: `PRICE_SIGNAL_DB`, `PRICE_SIGNAL_LOG`, `PRICE_SIGNAL_TODA
 
 | Page | What it shows |
 |---|---|
-| `/` Today | The cards for the latest report, with each estimate's 80% range |
+| `/` Today | Market command centre: source health, signal KPIs, impact-versus-uncertainty map, evidence-ranked watchlist, filters, safe CSV export and item cards with each estimate's 80% range |
 | `/explore` | Past prices of one item: Dambulla wholesale against a Colombo price, the gap between them, 1 week to 1 year |
 | `/report` | This week against last week for every item, biggest moves, small charts, CSV download, print to PDF |
 | `/method` | The evidence, read from `results_*.txt` in the repository |
