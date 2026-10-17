@@ -53,7 +53,7 @@ MONTHS = ["January", "February", "March", "April", "May", "June", "July",
 WEEKDAYS = "Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday"
 MARKET_NAMES = {"Pettah", "Dambulla", "Narahenpita", "Peliyagoda", "Negombo", "Marandagahamula"}
 # Five price columns: first two are wholesale, last three retail (checked against the
-# narrative text of each report in test_extract_prices.py).
+# narrative text of each report in validate_extract_prices_real.py).
 PRICE_TYPES = ["wholesale", "wholesale", "retail", "retail", "retail"]
 
 FIELDS = ["report_date", "section", "item", "unit", "price_type", "market", "market_assumed",

@@ -2,7 +2,7 @@
 
 | Tool | Used for |
 |---|---|
-| Claude (Anthropic) | Researching data sources, drafting the project proposal, writing first versions of `download_cbsl_reports.py`, `extract_prices.py` and `test_extract_prices.py`, and explaining PDF layouts. |
+| Claude (Anthropic) | Researching data sources, drafting the project proposal, writing first versions of `download_cbsl_reports.py`, `extract_prices.py` and the real-report extractor validation now named `validate_extract_prices_real.py`, and explaining PDF layouts. |
 
 We ran, tested and reviewed everything before committing and take responsibility for it.
 Update this table whenever the use of AI tools changes.

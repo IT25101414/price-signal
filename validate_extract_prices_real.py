@@ -5,7 +5,10 @@ This verifies the column-to-market mapping independently of the table itself.
 NOTE: 2021 narratives quote WHOLESALE prices; from 2022 on they quote RETAIL prices
 unless a market is named as wholesale (fish, Marandagahamula rice).
 
-Run:  SAMPLES_DIR=samples python3 test_extract_prices.py     (or pytest)
+This is an optional validation against original source reports, deliberately kept
+outside the default pytest/CI collection because the PDFs are not redistributed.
+
+Run:  SAMPLES_DIR=samples python3 validate_extract_prices_real.py
 Needs the sample PDFs (not committed; see README) and pdfplumber.
 """
 import os
@@ -17,7 +20,9 @@ SAMPLES = Path(os.environ.get("SAMPLES_DIR", "samples"))
 
 import pytest  # noqa: E402
 
-# The sample PDFs are not committed, so these checks run on your machine and are skipped on a fresh clone or in CI.
+# The sample PDFs are not committed, so these checks run only when this file is
+# invoked explicitly. The default suite has repository-owned unit tests for the
+# extractor helpers and reports no environment-dependent skips.
 needs_samples = pytest.mark.skipif(
     not (SAMPLES.is_dir() and any(SAMPLES.glob("*.pdf"))),
     reason="sample PDFs not present (see README); run with SAMPLES_DIR=<folder>")

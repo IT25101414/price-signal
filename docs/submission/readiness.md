@@ -5,14 +5,14 @@ Checked 18 October 2026 against the ModelX 2.0 implementation requirements. This
 | Requirement | State | Evidence / exact next action |
 |---|---|---|
 | Functionality frozen | Complete | `v1.0.0-rc1`; `docs/functionality-freeze-2026-10-17.md` |
-| Automated verification | Complete | 73 passed, 3 optional real-PDF fixture checks skipped; 12/12 refusal cases and all three model self-tests passed |
+| Automated verification | Complete | 84 passed with no environment-dependent skips; 12/12 refusal cases and all three model self-tests passed. Original-report validation is an explicit local evidence check. |
 | Real-data end-to-end product | Complete locally | Committed cards dated 15 Oct 2026; Welcome, Today, Explore, Weekly report, Method and Help pages |
 | Data-use evidence | Complete | Redacted CBSL reply in `docs/cbsl_reply_2026-10-12.pdf`; attribution and non-endorsement wording included |
 | Buyer-feedback materials | Complete | Session guide, response template and findings template in `docs/buyer-feedback/` |
 | Real buyer feedback | Pending external participant | Conduct one to three sessions; enter only observed answers in `findings-summary.md` |
 | Public hosting | Technically prepared | `render.yaml` and `web/DEPLOY.md` are ready; the repository owner must sign in to Render, connect GitHub and approve service creation |
 | README run instructions | Complete | Root README plus `web/README.md`; public URL must be added after deployment |
-| Open-source licence | Owner decision required | Choose the legal terms (for example MIT, Apache-2.0 or another licence); do not publish a licence selected by an assistant |
+| Open-source licence | Complete | Repository owner selected and committed the MIT License on 18 Oct 2026; third-party data and emblem exclusions are stated in the README |
 | Technical report | Complete for the current evidence | Updated 17-page PDF in `docs/submission/technical-report-final.pdf`; add the real buyer result and public URL later if those activities are completed |
 | Two-page summary | Submission-ready draft | Source in `docs/submission/two-page-summary.md`; finalise the same two fields |
 | Three-minute video | Script ready | `docs/submission/video-script.md`; record after deployment and buyer-result updates so the video matches the submitted build |

@@ -4,7 +4,7 @@
 
 ModelX 2.0 (IEEE CIS Student Chapter, IIT) · Domain: Cost of living and everyday economics · Author: Nivetha, SLIIT
 
-**Status (18 Oct 2026):** functionality frozen at `v1.0.0-rc1`; the pipeline, model, safety guard, Streamlit dashboard and six-page Flask/SQLite website are built and tested. The committed cards use the 15 Oct report. The final technical report is updated, and the buyer study pack, deployment blueprint, two-page summary and video script are prepared; real buyer sessions, public hosting, a licence choice and recording the final video remain open. See [`docs/submission/readiness.md`](docs/submission/readiness.md) for the live checklist.
+**Status (18 Oct 2026):** functionality frozen at `v1.0.0-rc1`; the pipeline, model, safety guard, Streamlit dashboard and six-page Flask/SQLite website are built and tested. The committed cards use the 15 Oct report. The final technical report is updated, the project is MIT-licensed, and the buyer study pack, deployment blueprint, two-page summary and video script are prepared; real buyer sessions, verified public hosting and recording the final video remain open. See [`docs/submission/readiness.md`](docs/submission/readiness.md) for the live checklist.
 
 ---
 
@@ -40,7 +40,7 @@ Gain is the share of squared forecast error removed, in percentage points, again
 |---|---|---|
 | 1 | Downloader that obeys robots.txt (10-second crawl delay), downloads each PDF once and records a manifest. 2,269 report PDFs retrieved (Apr 2017 to Oct 2026). | `download_cbsl_reports.py`, `data/manifest.csv` |
 | 2 | Position-based PDF table extractor. Reads each value by horizontal position, because the PDF text layer drops empty cells and splits numbers. Rejects any layout it was not built for instead of guessing. | `extract_prices.py` |
-| 3 | Tests: 125 extracted prices checked against figures quoted in each report's own summary text. | `test_extract_prices.py` |
+| 3 | Extractor verification: repository-owned helper tests run in CI, and an optional local validation checks 125 extracted prices against figures quoted in the original reports' summary text. | `test_extract_prices_unit.py`, `validate_extract_prices_real.py` |
 | 4 | Full extraction run: **1,485 report days parsed (28 Jul 2020 to 9 Oct 2026), 268,213 price rows.** | `failed_files.txt`, `coverage.py`, `coverage.csv` |
 | 5 | Feasibility checks: jump persistence (negative), lead-lag (positive). | `jump_check.py`, `model_check.py`, `leadlag_check.py` |
 | 6 | Robustness of the lead-lag signal: ridge model, placebo, month-resampled 95% intervals, per-year and per-item checks, self-test on synthetic data. | `robust_check.py`, `results_leadlag.txt` |
@@ -48,7 +48,7 @@ Gain is the share of squared forecast error removed, in percentage points, again
 | 8 | Written response received from CBSL on **12 Oct 2026**: the published data are publicly available, do not require specific approval for use, and should be attributed to the Statistics Department. CBSL does not endorse the project. | [`docs/cbsl_reply_2026-10-12.pdf`](docs/cbsl_reply_2026-10-12.pdf) |
 | 9 | Phase 1 project proposal written. | ready for the 19 Oct submission |
 | 10 | AI-use disclosure for every script and document. | `AI_USE.md` |
-| 11 | Functionality frozen and independently re-checked: 73 tests pass, 12 of 12 deliberate refusal cases pass, and all model self-tests pass. | `docs/functionality-freeze-2026-10-17.md` |
+| 11 | Functionality frozen and independently re-checked: 84 reproducible tests pass with no environment-dependent skips, 12 of 12 deliberate refusal cases pass, and all model self-tests pass. | `docs/functionality-freeze-2026-10-17.md` |
 | 12 | Buyer-feedback protocol, response sheet and honest empty findings record prepared. | `docs/buyer-feedback/` |
 | 13 | Final technical report updated from the 17 Oct version; two-page summary and three-minute video script prepared from the saved evidence. | `docs/submission/` |
 
@@ -88,7 +88,7 @@ Unparsed reports are listed in `failed_files.txt`. Nothing is guessed or filled 
 | 1 Nov | **Implementation submission** | Repository opens from a private browser window and this README runs |
 | 9 to 14 Nov | If we reach the final: rehearse the live demo | Demo runs on the day's real report |
 
-**Still to do (18 Oct 2026):** conduct and record one to three real buyer sessions; choose the repository's open-source licence; create the public Render service; add its URL to the README and report; record the final three-minute video on that public build; then complete a private-browser submission rehearsal. The final technical report is updated and the two-page summary is a submission-ready draft; pending buyer and public-URL fields are labelled rather than invented. The daily refresh remains a deliberate local script rather than a cloud schedule because the complete price table is not redistributed.
+**Still to do (18 Oct 2026):** conduct and document one to three real buyer sessions; complete and verify the public Render service; add its exact URL to the README and report; record the final three-minute video on that public build; then complete a private-browser submission rehearsal. The final technical report is updated and the two-page summary is a submission-ready draft; pending buyer and public-URL fields are labelled rather than invented. The daily refresh remains a deliberate local script rather than a cloud schedule because the complete price table is not redistributed.
 
 **What we cut first if time runs short:** (1) gradient-boosting challenger models, (2) Sinhala and Tamil versions of the interface, (3) automated daily refresh, replaced by a script the user runs, (4) the 1-day and 5-day horizons, keeping 3 days, (5) buyer interviews reduced from 3 to 1 or 2. We never cut the freshness check, the refusal rules or the honest evaluation.
 
@@ -113,8 +113,11 @@ python3 download_cbsl_reports.py                # full run
 # 2. Extract prices (writes failed_files.txt and warnings.txt in the current folder)
 python3 extract_prices.py data/raw prices_all.csv
 
-# 3. Tests (needs the sample PDFs listed in test_extract_prices.py)
-SAMPLES_DIR=samples python3 test_extract_prices.py
+# 3a. Reproducible automated tests (no external fixtures required)
+python3 -m pytest -q
+
+# 3b. Optional validation against locally held original reports
+SAMPLES_DIR=samples python3 validate_extract_prices_real.py
 
 # 4. Analysis
 python3 coverage.py prices_all.csv
@@ -133,7 +136,8 @@ python3 decision_backtest.py prices_all.csv
 |---|---|
 | `download_cbsl_reports.py` | Polite downloader and manifest writer |
 | `extract_prices.py` | PDF table extractor |
-| `test_extract_prices.py` | Extractor tests against each report's own summary text |
+| `test_extract_prices_unit.py` | Reproducible unit tests for extractor helpers; runs in CI without external fixtures |
+| `validate_extract_prices_real.py` | Optional local validation against each original report's own summary text |
 | `coverage.py`, `coverage.csv` | Which item / market series are complete enough to model |
 | `jump_check.py`, `model_check.py` | Jump-persistence feasibility checks (negative result) |
 | `leadlag_check.py` | First lead-lag check |
@@ -150,6 +154,7 @@ python3 decision_backtest.py prices_all.csv
 - **Reuse response:** the Statistics Department replied on 12 Oct 2026 that the published data are publicly available and do not require specific approval or permission for use. It requested attribution to the "Statistics Department, Central Bank of Sri Lanka" and stated that CBSL bears no responsibility for, and does not endorse, derived content, findings or interpretations. A redacted public copy is in [`docs/cbsl_reply_2026-10-12.pdf`](docs/cbsl_reply_2026-10-12.pdf).
 - **We do:** credit CBSL, use the data only for this non-commercial project, and keep the raw PDFs out of the repository.
 - **Personal data:** none. The data are prices by item and market only.
+- **Code licence:** the original software in this repository is released under the [`MIT License`](LICENSE). CBSL data, source reports, the Sri Lankan national emblem and other third-party material remain the property of their respective owners and are not relicensed by the MIT file.
 
 ## 9. AI assistance
 
@@ -183,7 +188,7 @@ python3 -m streamlit run app.py
 - **Website** in `web/` (Flask + SQLite, no build step). Run: `python3 model.py prices_all.csv`, `python3 web/build_db.py`, `python3 web/server.py`. See `web/README.md`. The server applies the same guard on every request and withholds numbers when a report is stale, unread or not ok.
 - **Public holidays:** `data/holidays.csv` (2026 public holidays, taken from a published calendar). Add `date,name` rows (YYYY-MM-DD) and the guard stops counting those days as working days. Override the file with `PRICE_SIGNAL_HOLIDAYS`.
 - **Refusal results:** `python3 refusal_report.py` runs 12 synthetic cases, each with one deliberate fault, and writes `results_refusal.txt`. These test the guard's logic, not any real report.
-- **CI:** `.github/workflows/tests.yml` runs the tests and the refusal report on every push (Python 3.9). The verified local result on 17 Oct is **73 passed, 3 skipped**; the three skips need the git-ignored real-PDF fixtures documented in `test_extract_prices.py`.
+- **CI:** `.github/workflows/tests.yml` runs the reproducible tests and the refusal report on every push (Python 3.9). The verified local result on 18 Oct is **84 passed, 0 skipped**. The separate `validate_extract_prices_real.py` check uses git-ignored original PDFs and is invoked explicitly, so a fresh clone no longer reports environment-dependent skips.
 - **Permission:** the Central Bank's Statistics Department replied on 12 Oct 2026 about use of the Daily Price Reports; page 1 of the reply is in `docs/cbsl_reply_2026-10-12.pdf` (contact details removed). This project is not endorsed by the Central Bank; the data is theirs, the analysis is ours.
 
 

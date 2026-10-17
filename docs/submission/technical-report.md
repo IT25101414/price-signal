@@ -19,7 +19,7 @@ The completed system has a polite, resumable PDF collector; a position-based tab
 
 On held-out data from 2024 onward, adding Dambulla information improved forecasts beyond an own-history model in all three Colombo series. At three report days, the improvement in squared-error skill was 9.7 percentage points for wholesale Pettah, 8.3 for retail Pettah and 12.1 for retail Narahenpita. The stated 80% ranges contained 77.4% to 81.5% of unseen three-day outcomes. In a simulation, following the Dambulla model cost 1.22% to 1.57% less than always buying today. These are modest modelling results, not observed buyer savings.
 
-The implementation is frozen and verified: 73 automated tests pass; three optional extractor tests are skipped because their real-PDF fixtures are intentionally not published; all 12 deliberate refusal cases pass; and the model, robustness and decision-policy synthetic self-tests pass. Real buyer feedback and public deployment remain pending external actions and are not claimed as complete.
+The implementation is frozen and verified: 84 repository-owned automated tests pass with no environment-dependent skips; all 12 deliberate refusal cases pass; and the model, robustness and decision-policy synthetic self-tests pass. The 125-value check against original CBSL PDFs remains a separate explicit local validation because those source files are intentionally not redistributed. Real buyer feedback and public deployment remain pending external actions and are not claimed as complete.
 
 ## 2. Proposal versus implementation
 
@@ -99,7 +99,7 @@ The simulated policy chooses whether to buy today or after three report days, us
 
 Twelve constructed cases test fresh data, staleness, a newer unread report, Colombo or Dambulla closure, missing or `n.a.` prices, too little data, no clear signal and a holiday-adjusted freshness boundary. All 12 produce the specified state. Server tests verify that withheld cards and history contain no protected figures and that the interface never says “buy” or “sell”.
 
-On 17 October 2026, `pytest` reported 73 passed and three skipped. The skipped checks compare extracted values with private sample PDFs; their expected values remain in the test file, but the source PDFs are not in the public repository. The model, robustness and decision self-tests all pass on synthetic worlds with known answers. Python source compilation succeeds when its bytecode cache is directed to a writable project or temporary directory.
+On 18 October 2026, default `pytest` reported 84 passed and zero skipped. Eleven repository-owned tests cover the extractor's cell parsing, row grouping, name cleaning and cross-report consistency without external fixtures. The stronger 125-value check against original source reports remains in `validate_extract_prices_real.py` and is invoked explicitly with local PDFs, rather than appearing as three environment-dependent skips in a fresh clone. The model, robustness and decision self-tests all pass on synthetic worlds with known answers. Python source compilation succeeds when its bytecode cache is directed to a writable project or temporary directory.
 
 ## 8. What the user sees and why it is trustworthy
 
@@ -110,8 +110,8 @@ If the source listing cannot be checked, if it lists a newer unread report, if t
 ## 9. Limitations and unresolved work
 
 - Real buyers have not yet used the system. The central behavioural claim—whether a buyer understands and would act on a card—remains untested. A structured, consent-based protocol is ready in `docs/buyer-feedback/`.
-- The public Render service has not been created because it requires the repository owner to sign in, connect GitHub and approve an external service. The blueprint and verification steps are ready.
-- The repository owner must choose the open-source licence. No assistant-selected legal terms have been presented as the author's decision.
+- The public Render service has not yet been verified. The repository owner has begun the external service setup; the exact public URL will be recorded only after `/healthz` and the application pages respond successfully.
+- The repository owner selected the MIT License on 18 October 2026. It covers the project's original software; CBSL data and reports, the Sri Lankan national emblem and other third-party material remain under their respective terms.
 - The full generated table is local, so daily publication is manual. This avoids republishing the complete derived dataset until that choice is made explicitly.
 - The study covers 18–19 foods with a Dambulla wholesale series, a calm 2024–2026 test period and one main train/test split.
 - Report-day horizons span weekends and holidays; the current holiday file covers 2026 and needs extension.

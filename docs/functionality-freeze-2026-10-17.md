@@ -23,7 +23,7 @@ This is the stable baseline for buyer feedback, deployment and the final submiss
 
 ## Verification completed
 
-- `python3 -m pytest -q -rs`: **73 passed, 3 skipped**. The skips are the three real-PDF extractor spot checks, which need the local sample PDFs described in `test_extract_prices.py`.
+- `python3 -m pytest -q -rs`: **73 passed, 3 skipped** at the time of this freeze. Those real-PDF extractor spot checks were subsequently separated into `validate_extract_prices_real.py`; see the 18 October follow-up below.
 - `python3 refusal_report.py`: **12 of 12** deliberate refusal cases passed.
 - `python3 model.py --selftest`: passed for follower and non-follower synthetic worlds.
 - `python3 robust_check.py --selftest`: passed for supported and unsupported synthetic worlds.
@@ -34,4 +34,8 @@ This is the stable baseline for buyer feedback, deployment and the final submiss
 
 ## Not part of the functionality freeze
 
-The README, technical-report draft, two-page-summary draft and video script were completed after this freeze. These external or owner-dependent steps remain open: real buyer feedback, public hosting, the project owner's licence choice, recording the video and the final private-browser submission rehearsal.
+The README, technical-report draft, two-page-summary draft and video script were completed after this freeze. These external or owner-dependent steps remain open: real buyer feedback, public hosting, recording the video and the final private-browser submission rehearsal. The repository owner subsequently selected the MIT License on 18 October.
+
+## Reproducibility follow-up - 18 October 2026
+
+The three original-report checks were moved out of default pytest discovery and retained as an explicit local validation in `validate_extract_prices_real.py`. Eleven repository-owned extractor helper tests were added. The fresh-clone suite now reports **84 passed and 0 skipped**, while the original 125-value real-report evidence remains available when the git-ignored source PDFs are present.

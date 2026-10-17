@@ -40,7 +40,7 @@ Gain is the additional share of squared forecast error removed. The placebo is a
 
 Price Signal removes estimates when the Central Bank listing cannot be checked, a newer report has not been parsed, the latest good data are more than three working days old, a market is closed, a price is missing, recent paired history is insufficient or the gap is too small. The server applies the guard again on every request and withholds history as well as cards.
 
-Verification on 17 October 2026: **73 tests passed**, three optional real-PDF fixture checks were skipped, **12 of 12 deliberate refusal cases passed**, and the model, robustness and decision-policy synthetic self-tests passed.
+Verification on 18 October 2026: **84 reproducible tests passed with no environment-dependent skips**, **12 of 12 deliberate refusal cases passed**, and the model, robustness and decision-policy synthetic self-tests passed. The 125-value check against original CBSL reports remains a separate, explicit local validation because the source PDFs are not redistributed.
 
 ### Honest scope
 
@@ -48,11 +48,10 @@ The effect is modest and covers only 18–19 foods with a Dambulla wholesale pri
 
 ### Final submission actions
 
-1. Run one to three recorded buyer-feedback sessions and enter the actual results.
-2. Choose the repository licence as the project owner.
-3. Connect the GitHub repository to Render, verify `/healthz` and add the public URL.
-4. Update the report and this summary with those facts.
-5. Record the three-minute demonstration from the exact submitted build and complete the signed-out browser rehearsal.
+1. Run one to three documented buyer-feedback sessions and enter the actual results.
+2. Complete the Render deployment, verify `/healthz` and add the exact public URL.
+3. Update the report and this summary with those facts.
+4. Record the three-minute demonstration from the exact submitted build and complete the signed-out browser rehearsal.
 
 **Attribution:** Daily Price Report data — Statistics Department, Central Bank of Sri Lanka. CBSL does not endorse this project, its analysis or its conclusions.  
 **AI disclosure:** Claude and OpenAI Codex assisted with research, drafting, code and review; the repository's `AI_USE.md` gives the file-level account. The author reviewed the work and is responsible for the submission.

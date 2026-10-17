@@ -42,7 +42,7 @@ Record this only after the public URL, buyer-feedback result and final report ar
 
 **Show:** Help page or README and final commit.
 
-**Say:** “The pipeline, model and six-page site are reproducible from the public repository. Seventy-three automated tests pass and the code, permission evidence and AI-use disclosure are public. [ONE SENTENCE WITH REAL BUYER RESULT, OR: ‘Real buyer feedback remains a limitation and is not claimed.’] The key result is a modest, tested Dambulla lead presented with uncertainty and safe refusal.”
+**Say:** “The pipeline, model and six-page site are reproducible from the public repository. Eighty-four automated tests pass without environment-dependent skips, and the code, permission evidence, MIT licence and AI-use disclosure are public. [ONE SENTENCE WITH REAL BUYER RESULT, OR: ‘Real buyer feedback remains a limitation and is not claimed.’] The key result is a modest, tested Dambulla lead presented with uncertainty and safe refusal.”
 
 ## Before recording
 
