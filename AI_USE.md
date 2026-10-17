@@ -49,3 +49,7 @@ OpenAI Codex audited the pipeline, model, publication script, Flask APIs and bro
 
 OpenAI Codex expanded the Today interface with summary cards, an expected-change and uncertainty chart, strongest-signal list, filters, CSV export and data-safety checks. It then created the plain-language welcome page, simplified technical interface labels and added the supplied Sri Lanka emblem with a prominent independent-project notice. OpenAI's image tool removed the supplied image's checkerboard background and separate label to create `web/static/sri-lanka-national-emblem-clean.png`; the emblem design itself was retained. We tested the routes, scripts, responsive layout, navigation and browser console, and the project author remains responsible for reviewing and publishing the result.
 
+## Addendum 10: submission pack
+
+OpenAI Codex checked the final repository state against the ModelX 2.0 implementation rules, reconciled saved metrics with the code and test outputs, and drafted `docs/submission/technical-report.md`, `two-page-summary.md`, `video-script.md`, `readiness.md` and `private-browser-check.md`. It generated and visually checked PDF drafts of the report and summary outside the repository. Pending buyer results and the public URL are labelled rather than invented. The project author must review, complete and approve these materials before submission.
+

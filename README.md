@@ -4,7 +4,7 @@
 
 ModelX 2.0 (IEEE CIS Student Chapter, IIT) · Domain: Cost of living and everyday economics · Author: Nivetha, SLIIT
 
-**Status (16 Oct 2026):** pipeline, refresh, guard, model, Streamlit dashboard and Flask/SQLite website built and tested; proposal ready for 19 Oct. See section 11 for the latest changes.
+**Status (17 Oct 2026):** functionality frozen at `v1.0.0-rc1`; the pipeline, model, safety guard, Streamlit dashboard and six-page Flask/SQLite website are built and tested. The committed cards use the 15 Oct report. The buyer study pack, deployment blueprint and submission-document drafts are prepared; real buyer sessions, public hosting, a licence choice and the final video remain open. See [`docs/submission/readiness.md`](docs/submission/readiness.md) for the live checklist.
 
 ---
 
@@ -12,7 +12,7 @@ ModelX 2.0 (IEEE CIS Student Chapter, IIT) · Domain: Cost of living and everyda
 
 Small food buyers in Colombo (canteens, small restaurants, shops) cannot tell when a price jump at Dambulla, the main wholesale source, is about to reach Pettah or Narahenpita, so they buy vegetables at the wrong time. The Central Bank publishes the prices every working day, but only as a PDF that compares a price with yesterday or last Friday. It does not say whether a Colombo price is lagging behind Dambulla, or how much of the gap usually closes.
 
-**Planned output:** one card per item showing whether the buyer's market is lagging behind Dambulla, how much of the gap has typically closed within 1, 3 and 5 report days, how uncertain that is, and the date of the data. When the data cannot support a view the card says "no clear signal" or "insufficient data". It never says "buy" or "sell".
+**Delivered output:** one card per item showing whether the buyer's market is lagging behind Dambulla, how much of the gap is expected to close within 3 report days, an 80% likely range and the date of the data. The evaluation also checks 1- and 5-report-day horizons. When the data cannot support a view, the card says "no clear signal" or gives the refusal reason. It never says "buy" or "sell".
 
 ## 2. Results so far
 
@@ -46,8 +46,11 @@ Gain is the share of squared forecast error removed, in percentage points, again
 | 6 | Robustness of the lead-lag signal: ridge model, placebo, month-resampled 95% intervals, per-year and per-item checks, self-test on synthetic data. | `robust_check.py`, `results_leadlag.txt` |
 | 7 | Rupee backtest of the buying decision against four baselines, thresholds fixed on pre-2024 data. | `decision_backtest.py`, `results_decision.txt` |
 | 8 | Written response received from CBSL on **12 Oct 2026**: the published data are publicly available, do not require specific approval for use, and should be attributed to the Statistics Department. CBSL does not endorse the project. | [`docs/cbsl_reply_2026-10-12.pdf`](docs/cbsl_reply_2026-10-12.pdf) |
-| 9 | Phase 1 project proposal written. | submitted for 19 Oct |
+| 9 | Phase 1 project proposal written. | ready for the 19 Oct submission |
 | 10 | AI-use disclosure for every script and document. | `AI_USE.md` |
+| 11 | Functionality frozen and independently re-checked: 73 tests pass, 12 of 12 deliberate refusal cases pass, and all model self-tests pass. | `docs/functionality-freeze-2026-10-17.md` |
+| 12 | Buyer-feedback protocol, response sheet and honest empty findings record prepared. | `docs/buyer-feedback/` |
+| 13 | Submission report, two-page summary and three-minute video script prepared from the saved evidence. | `docs/submission/` |
 
 ### Coverage
 
@@ -73,7 +76,7 @@ Unparsed reports are listed in `failed_files.txt`. Nothing is guessed or filled 
 - Some pages are scaled differently, carry footnote markers inside prices, or have a file date that differs from the report date. The extractor handles these.
 - About 0.5% of compared prior-versus-today pairs differ across consecutive reports; they are flagged.
 
-## 4. Work to do, and timeline
+## 4. Submission readiness and timeline
 
 | Dates | Work | Done when |
 |---|---|---|
@@ -81,11 +84,11 @@ Unparsed reports are listed in `failed_files.txt`. Nothing is guessed or filled 
 | 20 to 22 Oct | Re-run the checks on the final data; close remaining parser gaps; handle CBSL's reply | Coverage numbers final; results re-confirmed |
 | 23 to 26 Oct | Calibrated prediction intervals; extend the decision backtest | An 80% interval contains 75 to 85% of outcomes; backtest table written |
 | 27 to 29 Oct | Guard and refusal rules; daily refresh; interface | Stale, missing and closed-market tests pass; dashboard runs on the latest real report |
-| 30 to 31 Oct | Technical report, two-page summary, three-minute video; buyer feedback (2 to 3 buyers) | Drafts reviewed by a second person |
+| 30 to 31 Oct | Finalise the technical report and two-page summary after buyer feedback and public deployment; record the three-minute video | Final files reviewed by a second person |
 | 1 Nov | **Implementation submission** | Repository opens from a private browser window and this README runs |
 | 9 to 14 Nov | If we reach the final: rehearse the live demo | Demo runs on the day's real report |
 
-**Still to do (16 Oct 2026):** buyer interviews, hosting the website, a scheduled cloud refresh, and the two-page summary and video. Built and tested: refresh, guard (with holiday support), model with calibrated ranges, Streamlit dashboard, Flask and SQLite website, refusal report and CI.
+**Still to do (17 Oct 2026):** conduct and record one to three real buyer sessions; choose the repository's open-source licence; create the public Render service; add its URL to the README and report; record the final three-minute video on that public build; then complete a private-browser submission rehearsal. The report and two-page summary are prepared as submission-ready drafts, with the buyer and public-URL fields clearly marked pending. The daily refresh remains a deliberate local script rather than a cloud schedule because the complete price table is not redistributed.
 
 **What we cut first if time runs short:** (1) gradient-boosting challenger models, (2) Sinhala and Tamil versions of the interface, (3) automated daily refresh, replaced by a script the user runs, (4) the 1-day and 5-day horizons, keeping 3 days, (5) buyer interviews reduced from 3 to 1 or 2. We never cut the freshness check, the refusal rules or the honest evaluation.
 
@@ -175,12 +178,12 @@ python3 -m streamlit run app.py
 
 **Crawler note:** robots.txt is read with our own identifiable User-Agent (the default Python one gets HTTP 403 from the site), the 10-second crawl delay is obeyed, and the crawler stops on anything other than HTTP 200.
 
-## 11. Update (16 Oct 2026): website, holidays, CI, refusal results
+## 11. Update (17 Oct 2026): website, holidays, CI, refusal results
 
 - **Website** in `web/` (Flask + SQLite, no build step). Run: `python3 model.py prices_all.csv`, `python3 web/build_db.py`, `python3 web/server.py`. See `web/README.md`. The server applies the same guard on every request and withholds numbers when a report is stale, unread or not ok.
 - **Public holidays:** `data/holidays.csv` (2026 public holidays, taken from a published calendar). Add `date,name` rows (YYYY-MM-DD) and the guard stops counting those days as working days. Override the file with `PRICE_SIGNAL_HOLIDAYS`.
 - **Refusal results:** `python3 refusal_report.py` runs 12 synthetic cases, each with one deliberate fault, and writes `results_refusal.txt`. These test the guard's logic, not any real report.
-- **CI:** `.github/workflows/tests.yml` runs the tests and the refusal report on every push (Python 3.9). Tests that need the git-ignored sample PDFs are skipped when those are absent.
+- **CI:** `.github/workflows/tests.yml` runs the tests and the refusal report on every push (Python 3.9). The verified local result on 17 Oct is **73 passed, 3 skipped**; the three skips need the git-ignored real-PDF fixtures documented in `test_extract_prices.py`.
 - **Permission:** the Central Bank's Statistics Department replied on 12 Oct 2026 about use of the Daily Price Reports; page 1 of the reply is in `docs/cbsl_reply_2026-10-12.pdf` (contact details removed). This project is not endorsed by the Central Bank; the data is theirs, the analysis is ours.
 
 
