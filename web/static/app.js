@@ -168,7 +168,7 @@
     wrap.appendChild(box);
     PS.responsive(box, function (w) {
       box.appendChild(PS.legend([{ label: "Dambulla", color: "--dambulla" }, { label: "Colombo", color: "--colombo" }]));
-      box.appendChild(PS.lineChart({ width: w, dates: dates, aria: "Line chart of Dambulla wholesale and Colombo prices over the last " + dates.length + " report days",
+      box.appendChild(PS.lineChart({ floorZero: true, width: w, dates: dates, aria: "Line chart of Dambulla wholesale and Colombo prices over the last " + dates.length + " report days",
         series: [{ label: "Dambulla", color: "--dambulla", values: d, fmt: rs }, { label: "Colombo", color: "--colombo", values: c, fmt: rs }] }));
     });
     wrap.appendChild(PS.table("Show the prices as a table", ["Report date", "Dambulla (Rs)", "Colombo (Rs)"],

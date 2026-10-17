@@ -80,7 +80,7 @@
     PS.responsive(box, function (w) {
       box.appendChild(PS.legend([{ label: "Dambulla wholesale", color: "--dambulla" }, { label: name, color: "--colombo" }]));
       box.appendChild(PS.lineChart({
-        width: w, dates: dates, aria: "Line chart of " + h.item + " prices, Dambulla and " + name + ", last " + dates.length + " report days",
+        floorZero: true, width: w, dates: dates, aria: "Line chart of " + h.item + " prices, Dambulla and " + name + ", last " + dates.length + " report days",
         axisFmt: base ? function (v) { return v.toFixed(0); } : function (v) { return Math.round(v).toLocaleString("en-US"); },
         series: [{ label: "Dambulla", color: "--dambulla", values: dv, fmt: base ? function (v) { return v.toFixed(1); } : PS.rs },
                  { label: "Colombo", color: "--colombo", values: cv, fmt: base ? function (v) { return v.toFixed(1); } : PS.rs }]

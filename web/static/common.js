@@ -117,7 +117,7 @@
   // ---------- chart helpers ----------
   function niceStep(raw) {
     var p = Math.pow(10, Math.floor(Math.log(raw) / Math.LN10)), f = raw / p;
-    return (f <= 1 ? 1 : f <= 2 ? 2 : f <= 2.5 ? 2.5 : f <= 5 ? 5 : 10) * p;
+    return (f <= 1 ? 1 : f <= 2 ? 2 : f <= 2.5 ? 2.5 : f <= 6.5 ? 5 : 10) * p;
   }
   PS.ticks = function (lo, hi, n) {
     if (hi === lo) { hi = lo + 1; }

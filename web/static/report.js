@@ -27,7 +27,9 @@
       var phone = W < 520, L = phone ? 122 : 150, R = 44, rowH = 30, T = 8, B = 26, H = T + rows.length * rowH + B;
       var m = 0;
       rows.forEach(function (r) { m = Math.max(m, Math.abs(r.dambulla.change_pct), Math.abs(r.colombo.change_pct)); });
-      var ticks = PS.ticks(-m * 1.05, m * 1.05, 4), lo = ticks[0], hi = ticks[ticks.length - 1];
+      var ticks = PS.ticks(-m * 1.05, m * 1.05, 4), step = ticks.length > 1 ? ticks[1] - ticks[0] : 10;
+      while (ticks[ticks.length - 1] < m * 1.05) ticks.push(+(ticks[ticks.length - 1] + step).toFixed(6));   // cover the biggest bar
+      var lo = ticks[0], hi = ticks[ticks.length - 1];
       var X = function (v) { return L + (v - lo) / (hi - lo) * (W - L - R); };
       box.appendChild(PS.legend([{ label: "Dambulla wholesale", color: "--dambulla" }, { label: name, color: "--colombo" }]));
       var svg = PS.s("svg", { width: W, height: H, viewBox: "0 0 " + W + " " + H, role: "img",
