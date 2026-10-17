@@ -13,7 +13,7 @@ Checked 18 October 2026 against the ModelX 2.0 implementation requirements. This
 | Public hosting | Technically prepared | `render.yaml` and `web/DEPLOY.md` are ready; the repository owner must sign in to Render, connect GitHub and approve service creation |
 | README run instructions | Complete | Root README plus `web/README.md`; public URL must be added after deployment |
 | Open-source licence | Complete | Repository owner selected and committed the MIT License on 18 Oct 2026; third-party data and emblem exclusions are stated in the README |
-| Technical report | Source updated; final PDF pending URL | Buyer results and resulting changes are in `technical-report.md`; regenerate the reviewed PDF after adding the verified public URL |
+| Technical report | Source and interim PDF updated; final URL insertion pending | Buyer results, resulting changes, 85-test result and licence state are in both report formats; re-export once more after adding the verified public URL |
 | Two-page summary | Submission-ready draft | Buyer result is included; add the verified public URL if the submission format requires it |
 | Three-minute video | Script ready | Buyer result is included; record after deployment so the video matches the submitted build |
 | Private-browser rehearsal | Pending deployment/video | Open repository, website and video without an authenticated session; follow `docs/submission/private-browser-check.md` |
