@@ -14,7 +14,9 @@ cd "$(dirname "$0")" || exit 1
 python3 refresh.py || echo "refresh did not add a report (see the message above)"
 python3 model.py prices_all.csv || { echo "model failed; cards.csv not updated"; exit 1; }
 
-git add -f cards.csv data/refresh_log.csv
+python3 export_recent.py prices_all.csv || echo "recent price slice not updated"
+
+git add -f cards.csv data/refresh_log.csv data/recent_prices.csv 2>/dev/null || git add -f cards.csv data/refresh_log.csv
 if git diff --cached --quiet; then
     echo "cards.csv unchanged; nothing to publish"
 else

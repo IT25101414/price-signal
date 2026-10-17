@@ -60,3 +60,16 @@ Environment variables: `PRICE_SIGNAL_DB`, `PRICE_SIGNAL_LOG`, `PRICE_SIGNAL_TODA
 - Page behaviour and charts: `static/app.js`
 - Database layout: `schema.sql`; loading: `build_db.py`
 - API and guard: `server.py`
+
+## Pages
+
+| Page | What it shows |
+|---|---|
+| `/` Today | The cards for the latest report, with each estimate's 80% range |
+| `/explore` | Past prices of one item: Dambulla wholesale against a Colombo price, the gap between them, 1 week to 1 year |
+| `/report` | This week against last week for every item, biggest moves, small charts, CSV download, print to PDF |
+| `/method` | The evidence, read from `results_*.txt` in the repository |
+| `/help` | How to read the page, what the signals mean, what it cannot do |
+
+Price history comes from `prices_all.csv` if present, otherwise from `data/recent_prices.csv`. With neither, the history pages say so. `python3 web/build_db.py --synthetic-history` builds invented history for layout demos; every page then shows a demo-data notice.
+

@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Help and support · Price Signal</title>
+<meta name="description" content="Answers, a glossary, why items are withheld, data source and how to report a problem.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230b5c5c'/%3E%3Cpath d='M16 6v20M7 16h18' stroke='%23fff' stroke-width='2'/%3E%3Crect x='10' y='12' width='9' height='5' fill='%23fff'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="/static/app.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to the content</a>
+<header class="top">
+  <div class="wrap top-row">
+    <p class="brand"><a href="/">Price Signal</a></p>
+    <nav class="nav" id="nav" aria-label="Pages"></nav>
+    <button id="theme" class="ghost" type="button" aria-label="Switch colour theme">Theme</button>
+  </div>
+</header>
+<main class="wrap" id="main" tabindex="-1">
+  <section class="page-head">
+    <h1>Help and support</h1>
+    <p class="lede">Quick answers, what the words mean, why some items show no figures, and how to tell us about a problem.</p>
+  </section>
+  <section class="prose faq" aria-labelledby="faq-h">
+    <h2 id="faq-h">Quick answers</h2>
+    <details><summary>What am I looking at?</summary><p>For each vegetable or fruit, the page compares its Dambulla wholesale price with a Colombo price and shows how much the Colombo price is expected to change over the next 3 report days, with a range. A report day is a day the Central Bank publishes a price report, so a weekend is skipped.</p></details>
+    <details><summary>Should I buy or wait because of this?</summary><p>This page never tells you to buy or sell. The estimates are statistical and the ranges are wide; a change of a few percent is often smaller than the uncertainty. Use it as one more piece of information next to what you see at the market.</p></details>
+    <details><summary>Why does an item show no figures?</summary><p>Because the page would rather say nothing than something unreliable. The table below lists every reason and how many items are affected right now.</p></details>
+    <details><summary>The whole page says the data are too old. What now?</summary><p>The latest Central Bank report the site has is more than 3 working days old, or the Central Bank site lists a newer report that has not been read yet. Estimates come back as soon as the site reads the new report. Public holidays do not count as working days.</p></details>
+    <details><summary>Where do the prices come from?</summary><p>The Daily Price Report of the Statistics Department, Central Bank of Sri Lanka. Prices are rounded to the nearest Rs 5 or 10 in the report, so cheap items move in steps.</p></details>
+    <details><summary>Does the Central Bank back this project?</summary><p>No. The data are theirs; the analysis and this website are ours. The Central Bank bears no responsibility for the project or its findings and does not endorse them.</p></details>
+    <details><summary>How good are the estimates?</summary><p>The Method page shows the evidence: how much Dambulla adds, whether the 80% range holds up, and what a simulated buyer would have saved. The saving was modest, 1.2 to 1.6% of the purchase value in the test.</p></details>
+    <details><summary>Does the page work with a screen reader or keyboard?</summary><p>Yes. Everything can be reached with the keyboard, direction is shown with arrows and signs as well as colour, and every chart has a table version under it. The Theme button switches between light and dark.</p></details>
+  </section>
+  <section class="fig" aria-labelledby="why-h">
+    <h2 id="why-h">Why an item can show no figures</h2>
+    <p class="cap" id="why-c">Counts for the latest report.</p>
+    <div class="scroll-x"><table class="data text" id="why"><thead><tr><th>Reason</th><th>What it means</th><th>Items now</th></tr></thead><tbody></tbody></table></div>
+  </section>
+  <section class="prose" aria-labelledby="gl-h">
+    <h2 id="gl-h">Glossary</h2>
+    <dl class="gloss">
+      <div><dt>Report day</dt><dd>A day with a Central Bank price report. Weekends and listed public holidays are skipped.</dd></div>
+      <div><dt>Dambulla wholesale</dt><dd>The wholesale price at the Dambulla dedicated economic centre, the main source of vegetables for Colombo.</dd></div>
+      <div><dt>Colombo price</dt><dd>One of three prices from the same report: wholesale at Pettah, retail at Pettah, or retail at Narahenpita.</dd></div>
+      <div><dt>Colombo vs its usual gap</dt><dd>How far today's Colombo price sits from where it normally is relative to Dambulla. Zero means a normal gap.</dd></div>
+      <div><dt>Middle estimate</dt><dd>The model's single best guess for the change in the Colombo price over the next 3 report days.</dd></div>
+      <div><dt>80% range</dt><dd>The range that held the real change about 8 times in 10 when we checked on past prices. Wide ranges mean the model is unsure.</dd></div>
+      <div><dt>Strong and weak signal</dt><dd>How large the middle estimate is compared with the model's typical estimate. Strong does not mean certain; the range still applies.</dd></div>
+      <div><dt>Withheld</dt><dd>The page chose not to show a figure. The reason is always given.</dd></div>
+    </dl>
+  </section>
+  <section class="prose" aria-labelledby="rep-h">
+    <h2 id="rep-h">Report a problem or ask a question</h2>
+    <p>If a price looks wrong, a page does not load, or something here is unclear, tell us on the project's <a href="https://github.com/IT25101414/price-signal/issues">issue page</a>. Please include the report date shown at the top of the page, the item and the Colombo price, and what you expected to see. If you cannot use that page, the project author is listed in the repository README.</p>
+    <p>For anything about the Central Bank's reports themselves, contact the Statistics Department of the Central Bank of Sri Lanka directly.</p>
+    <h2>Limits</h2>
+    <p>These are statistical estimates from past prices, not forecasts you can rely on, and not financial or business advice. The site was built for a student competition and is not an official service.</p>
+  </section>
+</main>
+<footer class="wrap foot" id="foot"></footer>
+<div id="tip" class="tip" role="status" hidden></div>
+<script src="/static/common.js"></script>
+<script src="/static/help.js"></script>
+</body>
+</html>

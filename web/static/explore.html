@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Explore past prices · Price Signal</title>
+<meta name="description" content="Past Dambulla and Colombo prices for each item, with a gap chart.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230b5c5c'/%3E%3Cpath d='M16 6v20M7 16h18' stroke='%23fff' stroke-width='2'/%3E%3Crect x='10' y='12' width='9' height='5' fill='%23fff'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="/static/app.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to the content</a>
+<header class="top">
+  <div class="wrap top-row">
+    <p class="brand"><a href="/">Price Signal</a></p>
+    <nav class="nav" id="nav" aria-label="Pages"></nav>
+    <button id="theme" class="ghost" type="button" aria-label="Switch colour theme">Theme</button>
+  </div>
+</header>
+<main class="wrap" id="main" tabindex="-1">
+  <section class="page-head">
+    <h1>Explore past prices</h1>
+    <p class="lede" id="lede">Choose an item to see how its Dambulla wholesale price and a Colombo price moved over time.</p>
+  </section>
+  <section class="ctl-row" aria-label="Choose what to show">
+    <label class="field">Item <select class="ps" id="item"></select></label>
+    <div class="field"><span id="l-series">Colombo price</span><div class="seg" id="series" role="radiogroup" aria-labelledby="l-series"></div></div>
+    <div class="field"><span id="l-range">Period</span><div class="seg" id="range" role="radiogroup" aria-labelledby="l-range"></div></div>
+    <div class="field"><span id="l-mode">Show as</span><div class="seg" id="mode" role="radiogroup" aria-labelledby="l-mode"></div></div>
+  </section>
+  <div id="msg" class="msg" hidden></div>
+  <div id="out" hidden>
+    <div class="facts tight" id="facts"></div>
+    <section class="fig"><h2 id="c1-t">Prices</h2><p class="cap" id="c1-c"></p><div class="chart-box" id="c1"></div></section>
+    <section class="fig"><h2>The gap between them</h2><p class="cap">How far the Colombo price sits above the Dambulla wholesale price, as a share of the Dambulla price. The dashed line is the average over the period. The model looks at how far today's gap is from its own usual level.</p><div class="chart-box" id="c2"></div></section>
+  </div>
+</main>
+<footer class="wrap foot" id="foot"></footer>
+<div id="tip" class="tip" role="status" hidden></div>
+<script src="/static/common.js"></script>
+<script src="/static/explore.js"></script>
+</body>
+</html>

@@ -32,3 +32,8 @@ Claude (Anthropic) wrote first versions of the Flask server, the SQLite loader a
 ## Addendum 4: hosting files and server hardening
 
 Claude (Anthropic) wrote the Render blueprint (`render.yaml`), the deployment guide (`web/DEPLOY.md`), the Sri Lanka time handling, cache headers and logging in `web/server.py`, their tests, and the change to `run_daily.sh` that also publishes the refresh log. We ran the tests and the production server command and reviewed everything. We are responsible for it.
+
+## Addendum 6: website pages and history slice
+
+Claude (Anthropic) wrote the Explore, Weekly report, Method and Help pages (`web/static/`), the routes and result-file reader behind them (`web/server.py`, `web/evidence.py`), `export_recent.py`, the history fallback in `web/build_db.py`, and their tests. We ran the tests, looked at every page on desktop and phone in light and dark themes, and reviewed everything. We are responsible for it.
+

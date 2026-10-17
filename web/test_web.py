@@ -110,3 +110,165 @@ def test_today_is_sri_lanka_date(monkeypatch):
     from datetime import datetime, timedelta, timezone
     expect = (datetime.now(timezone.utc) + timedelta(hours=5, minutes=30)).date()
     assert abs((server.today() - expect).days) <= 1      # tolerates running across midnight
+
+
+# ---------------- the pages and APIs added later: the guard must hold on every one ----------------
+import evidence  # noqa: E402
+
+
+@pytest.fixture()
+def hist_client(tmp_path, monkeypatch):
+    """A database with (invented) price history for all three Colombo series, so history routes have something to hide."""
+    db = tmp_path / "h.db"
+    build_db.build(db, FIXTURE, prices=None, synthetic=True)
+    monkeypatch.setenv("PRICE_SIGNAL_DB", str(db))
+    monkeypatch.setenv("PRICE_SIGNAL_LOG", str(tmp_path / "missing_log.csv"))
+
+    def make(today):
+        monkeypatch.setenv("PRICE_SIGNAL_TODAY", today)
+        return server.create_app().test_client()
+    return make
+
+
+def first_card(client, series="retail Pettah", status=None):
+    cards = client.get(f"/api/cards?series={series}").get_json()["cards"]
+    return next(c for c in cards if status is None or c["status"] == status)
+
+
+def test_pages_exist(hist_client):
+    c = hist_client("2026-10-12")
+    for path in ("/", "/explore", "/report", "/method", "/help"):
+        r = c.get(path)
+        assert r.status_code == 200 and b"<html" in r.data
+
+
+def test_history_for_an_ok_card_has_prices(hist_client):
+    c = hist_client("2026-10-12")
+    item = first_card(c, status="ok")["item"]
+    h = c.get(f"/api/history?item={item}&series=retail%20Pettah&days=22").get_json()
+    assert h["state"] == "ok" and len(h["dates"]) == 22
+    assert len(h["dambulla"]) == len(h["colombo"]) == 22
+
+
+def test_history_is_shown_for_no_clear_signal_but_not_for_missing_data(hist_client):
+    c = hist_client("2026-10-12")
+    cards = c.get("/api/cards?series=retail%20Pettah").get_json()["cards"]
+    weak = next(x for x in cards if x["status"] == "no_clear_signal")
+    assert c.get(f"/api/history?item={weak['item']}&series=retail%20Pettah&days=22").get_json()["state"] == "ok"
+    gone = next((x for x in cards if x["status"] not in ("ok", "no_clear_signal")), None)
+    if gone:
+        h = c.get(f"/api/history?item={gone['item']}&series=retail%20Pettah&days=22").get_json()
+        assert h["state"] == "withheld" and h["dates"] == [] and h["dambulla"] == []
+
+
+def test_stale_page_hides_history_weekly_and_items(hist_client):
+    c = hist_client("2026-10-30")              # far past the 3 working day limit
+    item = "Carrot"
+    h = c.get(f"/api/history?item={item}&series=retail%20Pettah&days=22").get_json()
+    assert h["state"] == "stale" and h["dates"] == []
+    w = c.get("/api/weekly?series=retail%20Pettah").get_json()
+    assert w["state"] == "stale" and w["items"] == []
+    assert c.get("/api/weekly.csv?series=retail%20Pettah").status_code == 409
+    items = c.get("/api/items").get_json()
+    assert items["state"] == "stale" and all(not any(i["history"].values()) for i in items["items"])
+
+
+def test_unread_newer_report_hides_history(hist_client, tmp_path, monkeypatch):
+    c = hist_client("2026-10-12")
+    log = tmp_path / "log.csv"
+    log.write_text("run_at_utc,newest_listed\n2026-10-13T00:00:00,2026-10-12\n")
+    monkeypatch.setenv("PRICE_SIGNAL_LOG", str(log))
+    h = c.get("/api/history?item=Carrot&series=retail%20Pettah&days=22").get_json()
+    assert h["state"] == "report_not_read" and h["dates"] == []
+
+
+def test_weekly_is_arithmetic_on_the_last_ten_report_days(tmp_path, monkeypatch):
+    import sqlite3
+    db = tmp_path / "w.db"
+    build_db.build(db, FIXTURE, prices=None, synthetic=False)
+    con = sqlite3.connect(db)
+    item = con.execute("SELECT item FROM cards WHERE series='retail Pettah' AND status='ok' LIMIT 1").fetchone()[0]
+    days = ["2026-09-28", "2026-09-29", "2026-09-30", "2026-10-01", "2026-10-02",
+            "2026-10-05", "2026-10-06", "2026-10-07", "2026-10-08", "2026-10-09"]
+    for i, d in enumerate(days):
+        last = i < 5
+        con.execute("INSERT INTO prices VALUES (?,?,?,?)", (d, item, "wholesale Dambulla", 100.0 if last else 110.0))
+        con.execute("INSERT INTO prices VALUES (?,?,?,?)", (d, item, "retail Pettah", 200.0 if last else 190.0))
+    con.commit(); con.close()
+    monkeypatch.setenv("PRICE_SIGNAL_DB", str(db))
+    monkeypatch.setenv("PRICE_SIGNAL_LOG", str(tmp_path / "none.csv"))
+    monkeypatch.setenv("PRICE_SIGNAL_TODAY", "2026-10-12")
+    w = server.create_app().test_client().get("/api/weekly?series=retail%20Pettah").get_json()
+    row = next(r for r in w["items"] if r["item"] == item)
+    assert w["this_week"] == ["2026-10-05", "2026-10-09"] and w["last_week"] == ["2026-09-28", "2026-10-02"]
+    assert row["dambulla"]["change_pct"] == pytest.approx(10.0) and row["colombo"]["change_pct"] == pytest.approx(-5.0)
+    assert row["dambulla"]["last"] == pytest.approx(100.0) and row["colombo"]["this"] == pytest.approx(190.0)
+
+
+def test_weekly_csv_has_one_row_per_item(hist_client):
+    c = hist_client("2026-10-12")
+    r = c.get("/api/weekly.csv?series=retail%20Pettah")
+    assert r.status_code == 200 and r.mimetype == "text/csv"
+    lines = r.data.decode().strip().splitlines()
+    assert lines[0].startswith("item,series,") and len(lines) > 5
+
+
+def test_bad_arguments_are_refused_with_json(hist_client):
+    c = hist_client("2026-10-12")
+    assert c.get("/api/history?item=Carrot&series=nope&days=22").status_code == 400
+    assert c.get("/api/history?item=Carrot&series=retail%20Pettah&days=7").status_code == 400
+    assert c.get("/api/history?item=Carrot&series=retail%20Pettah&days=x").status_code == 400
+    assert c.get("/api/history?item=NoSuchThing&series=retail%20Pettah&days=22").status_code == 404
+    assert "error" in c.get("/api/weekly?series=nope").get_json()
+
+
+def test_summary_has_counts_and_no_prices(hist_client):
+    s = hist_client("2026-10-12").get("/api/summary").get_json()
+    assert s["total"] == sum(s["by_status"].values()) and s["by_status"]
+    assert not any(k in s for k in server.NUMBER_FIELDS)
+
+
+REPO = HERE.parent
+
+
+def test_evidence_matches_the_result_files_in_the_repo():
+    e = evidence.build(REPO)
+    if not (REPO / "results_model.txt").exists():
+        pytest.skip("no results files in this checkout")
+    assert len(e["calibration"]) == 9 and len(e["gain"]) == 9 and len(e["decision"]) == 3
+    three = {r["series"]: r["inside"] for r in e["calibration"] if r["h"] == 3}
+    text = (REPO / "results_model.txt").read_text()
+    for series, inside in three.items():
+        assert f"{inside:.1f}%" in text and series in text
+    for r in e["gain"]:
+        assert r["lo"] <= r["gain"] <= r["hi"]
+    for r in e["decision"]:
+        assert r["d_all"]["pct"] > r["hindsight_pct"]         # a real buyer cannot beat hindsight
+
+
+def test_recent_slice_is_used_when_the_full_table_is_absent(tmp_path, monkeypatch):
+    import build_db
+    slice_ = tmp_path / "recent.csv"
+    slice_.write_text("report_date,item,series,price_rs\n"
+                      "2026-10-08,Carrot,wholesale Dambulla,200\n2026-10-08,Carrot,retail Pettah,260\n"
+                      "2026-10-08,Nothing,retail Pettah,5\n2026-10-08,Carrot,fish Negombo,9\n")
+    monkeypatch.setattr(build_db, "RECENT", slice_)
+    monkeypatch.setattr(build_db, "DEFAULT_PRICES", tmp_path / "prices_all.csv")      # does not exist
+    db = tmp_path / "s.db"
+    n_cards, n_prices, source = build_db.build(db, FIXTURE, prices=tmp_path / "prices_all.csv")
+    assert source == "data/recent_prices.csv" and n_prices == 2        # unknown item and unknown series are dropped
+
+
+def test_recent_frame_keeps_only_shown_series_and_items(tmp_path):
+    import build_db
+    full = tmp_path / "prices_all.csv"
+    full.write_text("report_date,item,price_type,market,price_today,price_today_status\n"
+                    "2026-10-08,Carrot,wholesale,Dambulla,200,ok\n"
+                    "2026-10-08,Carrot,retail,Pettah,260,ok\n"
+                    "2026-10-08,Carrot,retail,Pettah,265,ok\n"           # duplicate: the last one wins
+                    "2026-10-08,Carrot,wholesale,Peliyagoda,90,ok\n"      # not a series we show
+                    "2026-10-08,Carrot,retail,Narahenpita,,ok\n"          # no price
+                    "2026-10-08,Carrot,retail,Narahenpita,300,n.a.\n"     # not an ok price
+                    "2026-10-08,Fish,retail,Pettah,900,ok\n")             # not an item on the cards
+    df = build_db.recent_frame(full, {"Carrot"})
+    assert sorted(zip(df["series"], df["price_rs"])) == [("retail Pettah", 265.0), ("wholesale Dambulla", 200.0)]

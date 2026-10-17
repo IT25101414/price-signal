@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Weekly report · Price Signal</title>
+<meta name="description" content="This week against last week for every item, Dambulla and Colombo.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230b5c5c'/%3E%3Cpath d='M16 6v20M7 16h18' stroke='%23fff' stroke-width='2'/%3E%3Crect x='10' y='12' width='9' height='5' fill='%23fff'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="/static/app.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to the content</a>
+<header class="top">
+  <div class="wrap top-row">
+    <p class="brand"><a href="/">Price Signal</a></p>
+    <nav class="nav" id="nav" aria-label="Pages"></nav>
+    <button id="theme" class="ghost" type="button" aria-label="Switch colour theme">Theme</button>
+  </div>
+</header>
+<main class="wrap" id="main" tabindex="-1">
+  <section class="page-head">
+    <h1 id="h1">Weekly report</h1>
+    <p class="lede" id="lede"></p>
+  </section>
+  <section class="ctl-row" aria-label="Choose what to show">
+    <div class="field"><span id="l-series">Colombo price</span><div class="seg" id="series" role="radiogroup" aria-labelledby="l-series"></div></div>
+    <button class="btn" id="print" type="button">Print or save as PDF</button>
+    <a class="btn alt" id="csv" href="#">Download CSV</a>
+  </section>
+  <div id="msg" class="msg" hidden></div>
+  <div id="out" hidden>
+    <p class="print-only" id="print-note"></p>
+    <section class="fig"><h2>Biggest moves</h2><p class="cap" id="movers-c"></p><div class="chart-box" id="movers"></div></section>
+    <section class="fig"><h2>The six biggest Dambulla moves, day by day</h2><p class="cap" id="multi-c"></p><div class="grid-sm" id="multi"></div></section>
+    <section class="fig"><h2>All items</h2><p class="cap">Average price over the five report days of each week.</p><div class="scroll-x" id="table"></div></section>
+  </div>
+</main>
+<footer class="wrap foot" id="foot"></footer>
+<div id="tip" class="tip" role="status" hidden></div>
+<script src="/static/common.js"></script>
+<script src="/static/report.js"></script>
+</body>
+</html>
