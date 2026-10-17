@@ -12,6 +12,8 @@ public one-year history. It does **not** need `prices_all.csv`, which stays on y
 4. Open `/healthz` on that address. It should answer `{"ok":true}`. Then open the address itself.
 5. Put the address in the README (top, under the title) and in the report.
 
+6. In GitHub, open **Settings → Secrets and variables → Actions → Variables**, create a repository variable named `PUBLIC_SITE_URL`, and paste the public address without a trailing slash. The `public-site-smoke` workflow then checks `/healthz`, `/api/status` and all six pages every weekday. It can also be run manually from **Actions → public-site-smoke → Run workflow**.
+
 A free service sleeps after a period without visitors, and the first request afterwards can take about a minute.
 Open the page once shortly before any demo or video.
 
@@ -29,6 +31,7 @@ guard withholds every number once the report is more than 3 working days old.
 
 ```
 curl -s https://YOUR-ADDRESS.onrender.com/api/status
+python3 web/smoke_test.py https://YOUR-ADDRESS.onrender.com
 ```
 
 `state` is `ok`, `stale` or `report_not_read`; `report_date` should be the latest report.

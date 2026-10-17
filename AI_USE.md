@@ -35,7 +35,7 @@ Claude (Anthropic) wrote the Render blueprint (`render.yaml`), the deployment gu
 
 ## Addendum 6: website pages and history slice
 
-Claude (Anthropic) wrote the Explore, Weekly report, Method and Help pages (`web/static/`), the routes and result-file reader behind them (`web/server.py`, `web/evidence.py`), `export_recent.py`, the history fallback in `web/build_db.py`, and their tests. We ran the tests, looked at every page on desktop and phone in light and dark themes, and reviewed everything. We are responsible for it.
+Claude (Anthropic) wrote the first versions of the Explore, Weekly report, How it works and Help pages (`web/static/`), the routes and result-file reader behind them (`web/server.py`, `web/evidence.py`), `export_recent.py`, the history fallback in `web/build_db.py`, and their tests. We ran the tests, looked at every page on desktop and phone in light and dark themes, and reviewed everything. We are responsible for it.
 
 ## Addendum 7: CBSL permission evidence
 
@@ -56,4 +56,12 @@ OpenAI Codex checked the final repository state against the ModelX 2.0 implement
 ## Addendum 11: reproducibility and buyer-feedback revision
 
 OpenAI Codex separated the optional original-PDF validation from default pytest discovery and added repository-owned extractor helper tests, so a fresh clone no longer reports environment-dependent skips. The project author then supplied three anonymised participant records, session dates and confirmation of permission to publish the anonymous responses. OpenAI Codex aggregated only those supplied observations, updated the submission documents and added plain-language explanations for the possible range, shared report days, the start-at-100 comparison, blank weekly values and source-data date. It also added a regression check for those explanations. OpenAI Codex did not generate participant outcomes. The author reviewed the records and remains responsible for their accuracy and publication.
+
+## Addendum 12: advanced release evidence
+
+OpenAI Codex added the rolling-origin recent-data stress test, public-service smoke checker and weekday GitHub workflow, accessibility regression checker, theme-button state description, and a buyer wording-retest guide. It ran the rolling analysis on the committed recent-price slice, ran the accessibility and rendered-page structure checks, and tested the smoke checker against the local service. It did not invent buyer-retest outcomes or claim a public deployment that had not been verified. The project author remains responsible for reviewing and submitting these changes.
+
+## Addendum 13: public wording and final document rebuild
+
+OpenAI Codex simplified the Today summary cards, replaced the purple stronger-signal accent with the established green system colour, redesigned Explore's Colombo-Dambulla difference panel, and renamed Method to How it works with public-facing explanations of the evidence, limits and sources. It updated the proposal, technical report, two-page summary, readiness checklist, demonstration script and related README text to match the current interface and 86-test result. It rebuilt and visually reviewed the three submission PDFs. The public deployment URL and video remain unclaimed until they are genuinely completed, and the project author remains responsible for the final submission.
 

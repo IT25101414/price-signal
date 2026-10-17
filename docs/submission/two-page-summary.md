@@ -14,7 +14,7 @@ Small canteens, restaurants and shops in Colombo must buy food while prices move
 
 Price Signal turns the Daily Price Reports into cautious three-report-day estimates for supported foods. Each card shows the latest Dambulla and Colombo prices, how unusual their gap is, the expected Colombo change and an 80% likely range. It never says “buy” or “sell”. It is designed as one input beside stock, spoilage, urgency, transport and cash flow.
 
-The product includes a plain-language Welcome page, a live-status Today dashboard, historical Explore charts, a guarded Weekly report, a Method evidence page and Help. It runs as a small Flask/SQLite website and also has a Streamlit dashboard.
+The product includes a plain-language Welcome page, a live-status Today dashboard, historical Explore charts, a guarded Weekly report, a public-facing How it works evidence page and Help. It runs as a small Flask/SQLite website and also has a Streamlit dashboard.
 
 ### From source to user
 
@@ -36,11 +36,15 @@ The model asks a focused question: after accounting for a Colombo price's own re
 
 Gain is the additional share of squared forecast error removed. The placebo is approximately zero. The simulated cost result is not observed savings: it assumes a buyer can defer a purchase without shortage, spoilage or operating cost. The ranges are wide, so the interface makes uncertainty visible.
 
+A separate rolling-origin check refitted the three-day model before three non-overlapping May–October 2026 test windows. All 9 Dambulla gains were positive (+5.5 to +13.7 points), all 9 wrong-item placebos were zero or negative, and a majority of items benefited in all 9 comparisons. This strengthens recent stability evidence but does not test the 2022 crisis.
+
 ### Safe refusal is a feature
 
 Price Signal removes estimates when the Central Bank listing cannot be checked, a newer report has not been parsed, the latest good data are more than three working days old, a market is closed, a price is missing, recent paired history is insufficient or the gap is too small. The server applies the guard again on every request and withholds history as well as cards.
 
-Verification on 18 October 2026: **85 reproducible tests passed with no environment-dependent skips**, **12 of 12 deliberate refusal cases passed**, and the model, robustness and decision-policy synthetic self-tests passed. The 125-value check against original CBSL reports remains a separate, explicit local validation because the source PDFs are not redistributed.
+Verification on 18 October 2026: **86 reproducible tests passed with no environment-dependent skips**, **12 of 12 deliberate refusal cases passed**, and the model, robustness and decision-policy synthetic self-tests passed. The 125-value check against original CBSL reports remains a separate, explicit local validation because the source PDFs are not redistributed.
+
+All six pages also pass a reproducible accessibility structure and principal-colour contrast check; a rendered-browser audit found no unnamed controls or broken label relationships. An 8/8 local service smoke test covers health, safety status and every page, and the same check is ready to run automatically against the public URL.
 
 ### What three buyers understood
 
@@ -53,7 +57,7 @@ The effect is modest and covers only 18–19 foods with a Dambulla wholesale pri
 ### Final submission actions
 
 1. Complete the Render deployment, verify `/healthz` and add the exact public URL.
-2. Regenerate the final report PDF with the verified URL and current buyer results.
+2. Add the verified URL to the already-reviewed proposal, technical report and two-page summary PDFs.
 3. Record the three-minute demonstration from the exact submitted build and complete the signed-out browser rehearsal.
 
 **Attribution:** Daily Price Report data — Statistics Department, Central Bank of Sri Lanka. CBSL does not endorse this project, its analysis or its conclusions.  

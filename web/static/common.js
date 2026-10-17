@@ -4,7 +4,7 @@
   var MINUS = "−";
   var SVGNS = "http://www.w3.org/2000/svg";
   var MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-  var PAGES = [["/today", "Today"], ["/explore", "Explore"], ["/report", "Weekly report"], ["/method", "Method"], ["/help", "Help"]];
+  var PAGES = [["/today", "Today"], ["/explore", "Explore"], ["/report", "Weekly report"], ["/method", "How it works"], ["/help", "Help"]];
   var PS = window.PS = {};
 
   PS.MINUS = MINUS;
@@ -47,12 +47,23 @@
   PS.initTheme = function () {
     var b = PS.$("theme");
     if (!b) return;
-    b.addEventListener("click", function () {
-      var cur = document.documentElement.getAttribute("data-theme") ||
+    function currentTheme() {
+      return document.documentElement.getAttribute("data-theme") ||
         (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+    }
+    function describeTheme() {
+      var cur = currentTheme();
+      b.setAttribute("aria-label", "Switch to " + (cur === "dark" ? "light" : "dark") + " theme");
+      b.setAttribute("aria-pressed", String(cur === "dark"));
+      b.title = "Current theme: " + cur;
+    }
+    describeTheme();
+    b.addEventListener("click", function () {
+      var cur = currentTheme();
       var next = cur === "dark" ? "light" : "dark";
       applyTheme(next);
       try { localStorage.setItem("ps-theme", next); } catch (e) { /* ignore */ }
+      describeTheme();
       window.dispatchEvent(new Event("resize"));
     });
   };

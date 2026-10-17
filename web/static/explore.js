@@ -48,6 +48,13 @@
     if (sub) f.appendChild(el("span", null, sub));
     return f;
   }
+  function gapStat(label, value, note) {
+    var s = el("div", "gap-stat");
+    s.appendChild(el("span", null, label));
+    s.appendChild(el("strong", null, value));
+    s.appendChild(el("small", null, note));
+    return s;
+  }
   function render(h) {
     var dates = h.dates, d = h.dambulla, c = h.colombo;
     var paired = [];
@@ -71,7 +78,18 @@
     f.textContent = "";
     f.appendChild(fact("Dambulla wholesale", PS.rs(d[lastPair]), PS.arrow(chD) + PS.signed(chD) + "% from the first to latest day with both prices"));
     f.appendChild(fact(name, PS.rs(c[lastPair]), PS.arrow(chC) + PS.signed(chC) + "% from the first to latest day with both prices"));
-    f.appendChild(fact("Average gap", PS.signed(gavg, 0) + "%", "Colombo above Dambulla, based on " + gv.length + " days when both prices were available"));
+    f.appendChild(fact("Typical price difference", PS.signed(gavg, 0) + "%", "Based on " + gv.length + " days when both prices were available"));
+
+    var latestGap = gap[lastPair];
+    var gapDelta = latestGap - gavg;
+    var summary = $("gap-summary");
+    summary.textContent = "";
+    summary.appendChild(gapStat("Latest difference", PS.signed(latestGap, 0) + "%", "Selected Colombo price compared with Dambulla"));
+    summary.appendChild(gapStat("Typical difference", PS.signed(gavg, 0) + "%", "Average across the selected period"));
+    summary.appendChild(gapStat("Latest versus typical", PS.signed(gapDelta, 0) + " points", Math.abs(gapDelta) < 0.5 ? "Close to the period average" : (gapDelta > 0 ? "Above the period average" : "Below the period average")));
+    $("gap-reading").textContent = Math.abs(gapDelta) < 0.5 ?
+      "The latest difference is close to its typical level for this period." :
+      "The latest difference is " + Math.abs(gapDelta).toFixed(1) + " percentage points " + (gapDelta > 0 ? "above" : "below") + " its typical level for this period.";
 
     $("c1-t").textContent = h.item + ": Dambulla and " + name;
     $("c1-c").textContent = base ? "To compare the shapes, each market starts at 100 on " + PS.date(dates[firstPair], true) + ", the first day both prices were available. A value of 110 means 10% above that starting price. Missing prices remain gaps." : "Price in rupees, in the unit used for this item in the source report. A gap means that market did not publish a price for that item on that report day.";
@@ -89,12 +107,12 @@
     });
     var b2 = $("c2");
     PS.responsive(b2, function (w) {
-      b2.appendChild(PS.legend([{ label: "Gap", color: "--accent" }, { label: "Average " + PS.signed(gavg, 0) + "%", color: "--ink-3", dash: true }]));
+      b2.appendChild(PS.legend([{ label: "Daily difference", color: "--accent" }, { label: "Typical " + PS.signed(gavg, 0) + "%", color: "--ink-3", dash: true }]));
       b2.appendChild(PS.lineChart({
-        width: w, height: 200, dates: dates, aria: "Line chart of the gap between the Colombo and Dambulla prices of " + h.item,
+        width: w, height: 230, dates: dates, aria: "Line chart of the percentage difference between the Colombo and Dambulla prices of " + h.item,
         axisFmt: function (v) { return PS.signed(v, 0) + "%"; },
         ref: gavg == null ? null : { value: gavg },
-        series: [{ label: "Gap", color: "--accent", values: gap, fmt: function (v) { return PS.signed(v, 1) + "%"; } }]
+        series: [{ label: "Daily difference", color: "--accent", values: gap, fmt: function (v) { return PS.signed(v, 1) + "%"; } }]
       }));
     });
   }

@@ -14,3 +14,5 @@ jobs:
       - run: pip install -r requirements.lock -r web/requirements.lock
       - run: python -m pytest -q
       - run: python refusal_report.py
+      - run: python web/accessibility_check.py
+      - run: python rolling_stress_check.py data/recent_prices.csv --strict

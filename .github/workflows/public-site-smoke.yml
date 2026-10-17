@@ -1,0 +1,28 @@
+name: public-site-smoke
+
+on:
+  workflow_dispatch:
+    inputs:
+      site_url:
+        description: Public Price Signal base URL (leave blank to use the PUBLIC_SITE_URL repository variable)
+        required: false
+        type: string
+  schedule:
+    - cron: "17 2 * * 1-5"
+
+jobs:
+  smoke:
+    if: ${{ github.event_name == 'workflow_dispatch' || vars.PUBLIC_SITE_URL != '' }}
+    runs-on: ubuntu-latest
+    env:
+      SITE_URL: ${{ inputs.site_url || vars.PUBLIC_SITE_URL }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check configured URL
+        run: |
+          if [ -z "$SITE_URL" ]; then
+            echo "::error::Enter site_url or create the PUBLIC_SITE_URL repository variable."
+            exit 1
+          fi
+      - name: Check health, status and all public pages
+        run: python3 web/smoke_test.py "$SITE_URL"

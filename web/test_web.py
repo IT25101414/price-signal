@@ -283,6 +283,7 @@ def test_evidence_matches_the_result_files_in_the_repo():
     if not (REPO / "results_model.txt").exists():
         pytest.skip("no results files in this checkout")
     assert len(e["calibration"]) == 9 and len(e["gain"]) == 9 and len(e["decision"]) == 3
+    assert len(e["rolling"]) == 9
     three = {r["series"]: r["inside"] for r in e["calibration"] if r["h"] == 3}
     text = (REPO / "results_model.txt").read_text()
     for series, inside in three.items():
@@ -291,6 +292,13 @@ def test_evidence_matches_the_result_files_in_the_repo():
         assert r["lo"] <= r["gain"] <= r["hi"]
     for r in e["decision"]:
         assert r["d_all"]["pct"] > r["hindsight_pct"]         # a real buyer cannot beat hindsight
+    assert all(r["gain"] > 0 and r["placebo"] <= 0 for r in e["rolling"])
+
+
+def test_method_page_mentions_buyer_sessions_and_rolling_check(hist_client):
+    body = hist_client("2026-10-12").get("/method").data
+    assert b"Three buyers completed short usability sessions" in body
+    assert b"Does the relationship stay useful over time?" in body
 
 
 def test_recent_slice_is_used_when_the_full_table_is_absent(tmp_path, monkeypatch):

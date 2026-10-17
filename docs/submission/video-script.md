@@ -22,9 +22,11 @@ Record this only after the public URL and final report are updated. Use the publ
 
 ## 1:25–1:50 — evidence, not decoration
 
-**Show:** Method page.
+**Show:** How it works page.
 
 **Say:** “On data from 2024 onward, adding Dambulla removed about six to twelve percentage points of squared forecast error beyond the price’s own history. A placebo showed almost nothing. The stated 80 percent range covered 77.4 to 81.5 percent of unseen three-day outcomes. In simulation, the model cost 1.2 to 1.6 percent less than always buying today, but this is not observed buyer savings.”
+
+**Optional if time allows:** “The result also stayed positive in all nine combinations of three later time windows and three Colombo markets; all nine wrong-item placebos were non-positive.”
 
 ## 1:50–2:20 — fail safely
 
@@ -42,7 +44,7 @@ Record this only after the public URL and final report are updated. Use the publ
 
 **Show:** Help page or README and final commit.
 
-**Say:** “The pipeline, model and six-page site are reproducible from the public repository. Eighty-five automated tests pass without environment-dependent skips, and the code, permission evidence, MIT licence and AI-use disclosure are public. Three food buyers rated understanding, trust and usefulness at a median four out of five; their difficulty with the range, history terms and blank weekly values led to clearer explanations. The key result is a modest, tested Dambulla lead presented with uncertainty and safe refusal.”
+**Say:** “The pipeline, model and six-page site are reproducible from the public repository. Eighty-six automated tests pass without environment-dependent skips, and the code, permission evidence, MIT licence and AI-use disclosure are public. Three food buyers rated understanding, trust and usefulness at a median four out of five; their difficulty with the range, history terms and blank weekly values led to clearer explanations. The key result is a modest, tested Dambulla lead presented with uncertainty and safe refusal.”
 
 ## Before recording
 

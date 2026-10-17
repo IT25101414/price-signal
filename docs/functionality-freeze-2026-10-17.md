@@ -7,7 +7,7 @@ This is the stable baseline for buyer feedback, deployment and the final submiss
 - Daily CBSL report discovery, download, parsing, quarantine and refresh logging.
 - Dambulla-to-Colombo model, calibrated 80% ranges and item-level refusal rules.
 - Streamlit dashboard and Flask/SQLite website.
-- Today, Explore, Weekly report, Method and Help pages.
+- Today, Explore, Weekly report, How it works and Help pages.
 - One-year public history slice, weekly CSV export and the saved evidence files.
 
 ## Release-safety decisions
@@ -30,12 +30,12 @@ This is the stable baseline for buyer feedback, deployment and the final submiss
 - `python3 decision_backtest.py --selftest`: passed for buyer-policy synthetic worlds.
 - Python compilation, JavaScript syntax, shell syntax and `git diff --check`: passed.
 - Browser: all five pages loaded on the current real cards and history; no console warnings or errors.
-- Responsive check: Today, Explore, Weekly report, Method and Help had no page overflow at a 390 × 844 viewport.
+- Responsive check: Today, Explore, Weekly report, How it works and Help had no page overflow at a 390 × 844 viewport.
 
 ## Not part of the functionality freeze
 
-The README, technical-report draft, two-page-summary draft and video script were completed after this freeze. These external or owner-dependent steps remain open: real buyer feedback, public hosting, recording the video and the final private-browser submission rehearsal. The repository owner subsequently selected the MIT License on 18 October.
+The README, technical report, two-page summary and video script were completed after this freeze. Buyer feedback and the MIT licence were subsequently completed. The remaining external or owner-dependent steps are public hosting, recording the video and the final private-browser submission rehearsal.
 
 ## Reproducibility follow-up - 18 October 2026
 
-The three original-report checks were moved out of default pytest discovery and retained as an explicit local validation in `validate_extract_prices_real.py`. Eleven repository-owned extractor helper tests were added. After the buyer-feedback wording regression check was added, the fresh-clone suite reports **85 passed and 0 skipped**, while the original 125-value real-report evidence remains available when the git-ignored source PDFs are present.
+The three original-report checks were moved out of default pytest discovery and retained as an explicit local validation in `validate_extract_prices_real.py`. Eleven repository-owned extractor helper tests were added. After the buyer-feedback and rolling-evidence regressions were added, the current fresh-clone suite reports **86 passed and 0 skipped**, while the original 125-value real-report evidence remains available when the git-ignored source PDFs are present.

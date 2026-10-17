@@ -91,6 +91,22 @@
       (out.length ? " One year is outside the band: " + out.join(", ") + "; we report it rather than hide it." : " Every year is inside the band.");
   }
 
+  function rolling(list) {
+    if (!list.length) return;
+    $("r-table").appendChild(PS.table("Show the rolling-time results as a table",
+      ["Window", "Test period", "Colombo price", "Gain", "Wrong-item placebo", "Items with a gain"],
+      list.map(function (r) { return [r.window, PS.date(r.test_start, true) + " to " + PS.date(r.test_end, true),
+        PS.NAMES[r.series], PS.signed(r.gain) + " points", PS.signed(r.placebo) + " points",
+        r.items_positive + " of " + r.items]; })));
+    var gains = list.map(function (r) { return r.gain; });
+    var nonPositivePlacebos = list.filter(function (r) { return r.placebo <= 0; }).length;
+    var majority = list.filter(function (r) { return r.items_positive > r.items / 2; }).length;
+    $("r-read").textContent = "All " + list.length + " market-window gains are positive, from " +
+      Math.min.apply(null, gains).toFixed(1) + " to " + Math.max.apply(null, gains).toFixed(1) +
+      " points. " + nonPositivePlacebos + " of " + list.length + " wrong-item placebos are zero or negative, and a majority of items benefit in " +
+      majority + " of " + list.length + " comparisons. This recent-data check does not test the 2022 crisis.";
+  }
+
   function decide(list) {
     if (!list.length) return;
     var groups = list.map(function (r) {
@@ -113,13 +129,13 @@
 
   PS.start();
   PS.get("/api/evidence").then(function (e) {
-    var any = e.gain.length + e.calibration.length + e.decision.length;
+    var any = e.gain.length + e.calibration.length + e.decision.length + e.rolling.length;
     if (!any) {
       var m = $("msg"); m.hidden = false;
       m.textContent = "The result files are not in this copy of the site, so no charts are shown. They are saved in the repository as results_*.txt.";
       return;
     }
     $("out").hidden = false;
-    gain(e.gain); calib(e.calibration); decide(e.decision);
+    gain(e.gain); rolling(e.rolling); calib(e.calibration); decide(e.decision);
   }).catch(function (e) { var m = $("msg"); m.hidden = false; m.textContent = "Could not load the evidence: " + e.message; });
 })();

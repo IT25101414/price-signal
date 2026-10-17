@@ -73,11 +73,29 @@ Environment variables: `PRICE_SIGNAL_DB`, `PRICE_SIGNAL_LOG`, `PRICE_SIGNAL_TODA
 | Page | What it shows |
 |---|---|
 | `/` Welcome | Plain-language project introduction, independence notice and entry to the price guide |
-| `/today` Today | Source health, signal summary, expected-change and uncertainty chart, strongest-signal list, filters, safe CSV export and item cards with each estimate's likely range |
-| `/explore` | Past prices of one item: Dambulla wholesale against a Colombo price, the gap between them, 1 week to 1 year |
+| `/today` Today | Source health, plain-language estimate summary, expected-change and uncertainty chart, strongest-signal list, filters, safe CSV export and item cards with each estimate's possible range |
+| `/explore` | Past prices of one item plus the latest, typical and historical Colombo-Dambulla price difference, from 1 week to 1 year |
 | `/report` | This week against last week for every item, biggest moves, small charts, CSV download, print to PDF |
-| `/method` | The evidence, read from `results_*.txt` in the repository |
+| `/method` | How the estimates work, their evidence and their limits, read from `results_*.txt` |
 | `/help` | How to read the page, what the signals mean, what it cannot do |
 
 Price history comes from `prices_all.csv` if present, otherwise from `data/recent_prices.csv`. With neither, the history pages say so. `python3 web/build_db.py --synthetic-history` builds invented history for layout demos; every page then shows a demo-data notice.
+
+## Release checks
+
+Run the accessibility regression check whenever page structure or colours change:
+
+```bash
+python3 web/accessibility_check.py
+```
+
+It checks all six pages for landmarks, heading order, working skip links, accessible names, ARIA references, keyboard order, focus/reduced-motion support and the principal light/dark WCAG AA contrast pairs.
+
+After starting the server, check the same endpoints used by the public monitor:
+
+```bash
+python3 web/smoke_test.py http://127.0.0.1:5000
+```
+
+For a deployed service, replace the local address with its public HTTPS URL.
 

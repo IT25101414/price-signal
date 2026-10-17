@@ -92,10 +92,10 @@
     var falls = ok.filter(function (c) { return c.direction === "down"; }).length;
     var avgWidth = ok.length ? ok.reduce(function (n, c) { return n + intervalWidth(c); }, 0) / ok.length : null;
     var safe = state.status.state === "ok";
-    kpis.appendChild(kpi("Items with estimates", safe ? ok.length + " / " + state.cards.length : "—", "Items with enough current information", "accent"));
-    kpis.appendChild(kpi("Stronger signals", safe ? String(strong.length) : "—", "Items with the clearest signal today", "strong-tone"));
-    kpis.appendChild(kpi("Expected direction", safe ? rises + " rise · " + falls + " fall" : "—", "A guide, not a recommendation"));
-    kpis.appendChild(kpi("Average uncertainty", safe && avgWidth != null ? avgWidth.toFixed(1) + " points" : "—", "A smaller range means less uncertainty"));
+    kpis.appendChild(kpi("Available estimates", safe ? ok.length + " of " + state.cards.length : "—", safe ? (state.cards.length - ok.length) + " items do not have enough reliable information today" : "Estimates are currently hidden", "accent"));
+    kpis.appendChild(kpi("Clearer estimates", safe ? String(strong.length) : "—", "These have the strongest support from the recent price pattern", "accent"));
+    kpis.appendChild(kpi("Likely movement", safe ? rises + " may rise · " + falls + " may fall" : "—", "A summary of the estimates shown below"));
+    kpis.appendChild(kpi("Average range width", safe && avgWidth != null ? avgWidth.toFixed(1) + " points" : "—", "The distance from each range's low end to high end; smaller is more precise"));
     renderSignalMap(safe ? ok : []);
     renderWatchlist(safe ? ok : []);
     renderOps();

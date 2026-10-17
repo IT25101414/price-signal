@@ -7,7 +7,7 @@ Run this only after the public site and video exist. Record the date, browser an
 - [ ] Wait through a free-host cold start if needed, then reload once.
 - [ ] Open `/healthz`; it returns `{"ok": true}`.
 - [ ] Open `/api/status`; record `state`, `report_date` and `newest_listed`.
-- [ ] Welcome, Today, Explore, Weekly report, Method and Help all load.
+- [ ] Welcome, Today, Explore, Weekly report, How it works and Help all load.
 - [ ] Today shows a report date and either safe estimates or a plain refusal reason.
 - [ ] Explore and Weekly report do not expose history when the guard refuses.
 - [ ] Check a 390 px-wide viewport for horizontal page overflow.

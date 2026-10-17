@@ -7,6 +7,7 @@ cannot drift apart. If a file is missing, that part is simply absent and the pag
     results_model.txt, results_model_h1.txt, results_model_h5.txt   calibration of the 80% range (model.py --evaluate)
     results_robust.txt                                              does Dambulla add skill? (robust_check.py)
     results_decision.txt                                            decision backtest (decision_backtest.py)
+    results_rolling_stress.txt                                      recent rolling-origin stability check
 """
 import re
 from pathlib import Path
@@ -84,6 +85,29 @@ def decision(root):
     return out
 
 
+def rolling(root):
+    text = _read(root, "results_rolling_stress.txt")
+    out = []
+    pattern = re.compile(
+        rf"^(W\d)\s+(\d{{4}}-\d{{2}}-\d{{2}})\s+"
+        rf"(\d{{4}}-\d{{2}}-\d{{2}}) to (\d{{4}}-\d{{2}}-\d{{2}})\s+"
+        rf"{SERIES_RE}\s+(\d+)\s+(\d+)\s+([+-][\d.]+)%\s+"
+        rf"([+-][\d.]+)%\s+(\d+)/(\d+)$"
+    )
+    for line in (text or "").splitlines():
+        match = pattern.match(line)
+        if not match:
+            continue
+        g = match.groups()
+        out.append(dict(window=g[0], train_end=g[1], test_start=g[2], test_end=g[3],
+                        series=f"{g[4]} {g[5]}", train_rows=int(g[6]), test_rows=int(g[7]),
+                        gain=float(g[8]), placebo=float(g[9]),
+                        items_positive=int(g[10]), items=int(g[11])))
+    return out
+
+
 def build(root):
-    files = [n for n in list(CAL_FILES.values()) + ["results_robust.txt", "results_decision.txt"] if (Path(root) / n).exists()]
-    return dict(calibration=calibration(root), gain=gain(root), decision=decision(root), sources=files)
+    files = [n for n in list(CAL_FILES.values()) + ["results_robust.txt", "results_decision.txt",
+                                                    "results_rolling_stress.txt"] if (Path(root) / n).exists()]
+    return dict(calibration=calibration(root), gain=gain(root), decision=decision(root),
+                rolling=rolling(root), sources=files)
