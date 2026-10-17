@@ -61,6 +61,7 @@
   function pos(v) { return (50 + (v / state.scale) * 50).toFixed(2) + "%"; }
 
   function intervalWidth(c) { return c.high_pct - c.low_pct; }
+  function signalLabel(v) { return v === "strong" ? "stronger signal" : v === "weak" ? "early signal" : "signal"; }
 
   function filteredCards() {
     var q = state.q.trim().toLowerCase();
@@ -90,10 +91,10 @@
     var falls = ok.filter(function (c) { return c.direction === "down"; }).length;
     var avgWidth = ok.length ? ok.reduce(function (n, c) { return n + intervalWidth(c); }, 0) / ok.length : null;
     var safe = state.status.state === "ok";
-    kpis.appendChild(kpi("Active estimates", safe ? ok.length + " / " + state.cards.length : "—", "Items passing all refusal rules", "accent"));
-    kpis.appendChild(kpi("Strong evidence", safe ? String(strong.length) : "—", "Highest evidence tier today", "strong-tone"));
-    kpis.appendChild(kpi("Direction split", safe ? rises + " rise · " + falls + " fall" : "—", "Middle estimates, not recommendations"));
-    kpis.appendChild(kpi("Mean 80% range", safe && avgWidth != null ? avgWidth.toFixed(1) + " pp" : "—", "Lower means less model uncertainty"));
+    kpis.appendChild(kpi("Items with estimates", safe ? ok.length + " / " + state.cards.length : "—", "Items with enough current information", "accent"));
+    kpis.appendChild(kpi("Stronger signals", safe ? String(strong.length) : "—", "Items with the clearest signal today", "strong-tone"));
+    kpis.appendChild(kpi("Expected direction", safe ? rises + " rise · " + falls + " fall" : "—", "A guide, not a recommendation"));
+    kpis.appendChild(kpi("Average uncertainty", safe && avgWidth != null ? avgWidth.toFixed(1) + " points" : "—", "A smaller range means less uncertainty"));
     renderSignalMap(safe ? ok : []);
     renderWatchlist(safe ? ok : []);
     renderOps();
@@ -111,7 +112,7 @@
     var maxU = Math.ceil(Math.max.apply(null, cards.map(intervalWidth)) / 10) * 10 || 10;
     var X = function (v) { return L + ((v + xAbs) / (2 * xAbs)) * (W - L - R); };
     var Y = function (v) { return H - B - (v / maxU) * (H - T - B); };
-    var svg = PS.s("svg", { viewBox: "0 0 " + W + " " + H, role: "img", "aria-label": "Scatter plot of expected price change against width of the 80 percent uncertainty range" });
+    var svg = PS.s("svg", { viewBox: "0 0 " + W + " " + H, role: "img", "aria-label": "Chart comparing the expected price change and uncertainty for each item" });
     [-xAbs, -xAbs / 2, 0, xAbs / 2, xAbs].forEach(function (v) {
       var x = X(v);
       svg.appendChild(PS.s("line", { x1: x, x2: x, y1: T, y2: H - B, stroke: "var(--line)", "stroke-width": v === 0 ? 2 : 1 }));
@@ -129,10 +130,10 @@
         fill: c.signal === "strong" ? "var(--accent)" : "var(--colombo)", opacity: c.signal === "strong" ? .95 : .72,
         stroke: "var(--surface)", "stroke-width": 2 });
       g.appendChild(dot);
-      function show(e) { showTip(e.clientX || 40, e.clientY || 80, [tipText(c), "80% range width " + intervalWidth(c).toFixed(1) + " pp"]); }
+      function show(e) { showTip(e.clientX || 40, e.clientY || 80, [tipText(c), "Uncertainty " + intervalWidth(c).toFixed(1) + " percentage points"]); }
       g.addEventListener("pointermove", show);
       g.addEventListener("pointerleave", hideTip);
-      g.addEventListener("focus", function () { showTip(window.innerWidth / 2, 160, [tipText(c), "80% range width " + intervalWidth(c).toFixed(1) + " pp"]); });
+      g.addEventListener("focus", function () { showTip(window.innerWidth / 2, 160, [tipText(c), "Uncertainty " + intervalWidth(c).toFixed(1) + " percentage points"]); });
       g.addEventListener("blur", hideTip);
       g.addEventListener("click", function () { openDetail(c); });
       g.addEventListener("keydown", function (e) { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openDetail(c); } });
@@ -159,7 +160,7 @@
       b.appendChild(el("span", "watch-rank", String(i + 1).padStart(2, "0")));
       var words = el("span", "watch-words");
       words.appendChild(el("b", null, c.item));
-      words.appendChild(el("small", null, c.signal + " evidence · range " + intervalWidth(c).toFixed(1) + " pp"));
+      words.appendChild(el("small", null, signalLabel(c.signal) + " · uncertainty " + intervalWidth(c).toFixed(1) + " points"));
       b.appendChild(words);
       b.appendChild(el("strong", "watch-value " + (c.direction || "flat"), PS.arrow(c.expected_change_pct) + signed(c.expected_change_pct) + "%"));
       b.addEventListener("click", function () { openDetail(c); });
@@ -172,13 +173,13 @@
     grid.textContent = "";
     var ok = s.state === "ok";
     chip.className = "status-chip " + (ok ? "ok" : "warn");
-    chip.textContent = ok ? "All safety gates passed" : "Outputs withheld";
+    chip.textContent = ok ? "All checks passed" : "Estimates are hidden";
     var checks = [
-      ["Source listing", ok ? "Verified" : "Attention required", ok],
-      ["Freshness gate", s.age_working_days + " / " + s.max_age_working_days + " working days", s.age_working_days <= s.max_age_working_days],
-      ["Cards loaded", state.cards.length + " records for this market", state.cards.length > 0],
-      ["History mode", s.history_source === "synthetic" ? "Synthetic demo" : s.history_source.replaceAll("_", " "), s.history_source !== "synthetic"],
-      ["Database build", s.built_at_utc ? s.built_at_utc.replace("T", " ").replace("+00:00", " UTC") : "Unknown", !!s.built_at_utc]
+      ["Source website", ok ? "Latest listing checked" : "Needs attention", ok],
+      ["Data freshness", s.age_working_days + " of " + s.max_age_working_days + " allowed working days", s.age_working_days <= s.max_age_working_days],
+      ["Items checked", state.cards.length + " items for this market", state.cards.length > 0],
+      ["Price history", s.history_source === "synthetic" ? "Made-up demonstration data" : "Observed source data", s.history_source !== "synthetic"],
+      ["Website updated", s.built_at_utc ? s.built_at_utc.replace("T", " ").replace("+00:00", " UTC") : "Unknown", !!s.built_at_utc]
     ];
     checks.forEach(function (x) {
       var item = el("div", "op-item");
@@ -202,7 +203,7 @@
   }
 
   function tipText(c) {
-    return c.item + ": middle " + signed(c.expected_change_pct) + "%, 80% range " + signed(c.low_pct) + " to " + signed(c.high_pct) + "%";
+    return c.item + ": best estimate " + signed(c.expected_change_pct) + "%, likely range " + signed(c.low_pct) + " to " + signed(c.high_pct) + "%";
   }
 
   function renderRows() {
@@ -217,7 +218,7 @@
     var rows = $("rows");
     rows.textContent = "";
     $("axishead").hidden = ok.length === 0;
-    $("view-count").textContent = ok.length + " active estimate" + (ok.length === 1 ? "" : "s") + " · " + no.length + " withheld";
+    $("view-count").textContent = ok.length + " with estimates · " + no.length + " without estimates";
     ok.forEach(function (c) {
       var li = el("li", "row");
       var b = el("button");
@@ -230,7 +231,7 @@
       name.appendChild(p);
       var num = el("span", "num");
       num.appendChild(el("b", null, (c.direction === "down" ? "▼ " : c.direction === "up" ? "▲ " : "") + signed(c.expected_change_pct) + "%"));
-      num.appendChild(el("small", null, signed(c.low_pct) + " to " + signed(c.high_pct) + (c.signal ? ", " + c.signal + " signal" : "")));
+      num.appendChild(el("small", null, signed(c.low_pct) + " to " + signed(c.high_pct) + (c.signal ? ", " + signalLabel(c.signal) : "")));
       b.appendChild(name); b.appendChild(ruler(c)); b.appendChild(num);
       b.setAttribute("aria-label", tipText(c) + ". Open details.");
       b.addEventListener("click", function () { openDetail(c); });
@@ -292,10 +293,10 @@
     var facts = el("div", "facts");
     facts.appendChild(fact("Dambulla wholesale", rs(c.dambulla_rs)));
     facts.appendChild(fact("Colombo price", rs(c.colombo_rs)));
-    facts.appendChild(fact("Colombo vs its usual gap", signed(c.gap_vs_usual_pct) + "%"));
-    facts.appendChild(fact("Middle estimate, following 3 report days", (c.direction === "down" ? "▼ " : c.direction === "up" ? "▲ " : "") + signed(c.expected_change_pct) + "%"));
+    facts.appendChild(fact("Current gap compared with usual", signed(c.gap_vs_usual_pct) + "%"));
+    facts.appendChild(fact("Best estimate for the following 3 report days", (c.direction === "down" ? "▼ " : c.direction === "up" ? "▲ " : "") + signed(c.expected_change_pct) + "%"));
     body.appendChild(facts);
-    body.appendChild(el("p", "note", "80% range for the change in the Colombo price: " + signed(c.low_pct) + " to " + signed(c.high_pct) + "% (scale " + MINUS + state.scale + "% to +" + state.scale + "%)."));
+    body.appendChild(el("p", "note", "Likely range for the Colombo price change: " + signed(c.low_pct) + " to " + signed(c.high_pct) + "% (chart scale " + MINUS + state.scale + "% to +" + state.scale + "%)."));
     body.appendChild(ruler(c, "big"));
     var holder = el("div");
     holder.appendChild(el("p", "note", "Loading price history"));

@@ -72,7 +72,8 @@ Environment variables: `PRICE_SIGNAL_DB`, `PRICE_SIGNAL_LOG`, `PRICE_SIGNAL_TODA
 
 | Page | What it shows |
 |---|---|
-| `/` Today | Market command centre: source health, signal KPIs, impact-versus-uncertainty map, evidence-ranked watchlist, filters, safe CSV export and item cards with each estimate's 80% range |
+| `/` Welcome | Plain-language project introduction, independence notice and entry to the price guide |
+| `/today` Today | Source health, signal summary, expected-change and uncertainty chart, strongest-signal list, filters, safe CSV export and item cards with each estimate's likely range |
 | `/explore` | Past prices of one item: Dambulla wholesale against a Colombo price, the gap between them, 1 week to 1 year |
 | `/report` | This week against last week for every item, biggest moves, small charts, CSV download, print to PDF |
 | `/method` | The evidence, read from `results_*.txt` in the repository |

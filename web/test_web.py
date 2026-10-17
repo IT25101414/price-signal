@@ -161,9 +161,16 @@ def first_card(client, series="retail Pettah", status=None):
 
 def test_pages_exist(hist_client):
     c = hist_client("2026-10-12")
-    for path in ("/", "/explore", "/report", "/method", "/help"):
+    for path in ("/", "/today", "/explore", "/report", "/method", "/help"):
         r = c.get(path)
         assert r.status_code == 200 and b"<html" in r.data
+
+
+def test_welcome_page_leads_to_today_and_states_independence(hist_client):
+    body = hist_client("2026-10-12").get("/").data
+    assert b'href="/today"' in body
+    assert b"Not an official government service" in body
+    assert b"sri-lanka-national-emblem-clean.png" in body
 
 
 def test_history_for_an_ok_card_has_prices(hist_client):

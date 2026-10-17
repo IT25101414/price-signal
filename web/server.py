@@ -124,6 +124,10 @@ def create_app():
 
     @app.get("/")
     def index():
+        return app.send_static_file("welcome.html")
+
+    @app.get("/today")
+    def page_today():
         return app.send_static_file("index.html")
 
     @app.get("/healthz")

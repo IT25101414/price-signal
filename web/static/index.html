@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Price Signal</title>
+<title>Today’s price guide · Sri Lanka Food Price Signal</title>
 <meta name="description" content="Do Colombo food prices lag Dambulla wholesale, and how much of the gap tends to close in 3 report days?">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230b5c5c'/%3E%3Cpath d='M16 6v20M7 16h18' stroke='%23fff' stroke-width='2'/%3E%3Crect x='10' y='12' width='9' height='5' fill='%23fff'/%3E%3C/svg%3E">
 <link rel="stylesheet" href="/static/app.css">
@@ -20,7 +20,7 @@
 
 <main class="wrap">
   <section class="status" id="status" aria-live="polite" aria-busy="true">
-    <p class="eyebrow">Market command centre · 3-report-day horizon</p>
+    <p class="eyebrow">Colombo food price guide · following 3 report days</p>
     <h1 id="headline">Checking the latest report</h1>
     <p id="reason" class="lede"></p>
     <div id="status-meta" class="status-meta" aria-label="Source status"></div>
@@ -34,25 +34,25 @@
       <article class="panel map-panel" aria-labelledby="map-h">
         <div class="panel-head">
           <div>
-            <p class="panel-kicker">Model landscape</p>
-            <h2 id="map-h">Impact × uncertainty</h2>
+            <p class="panel-kicker">Compare the estimates</p>
+            <h2 id="map-h">Expected change and uncertainty</h2>
           </div>
-          <p class="panel-note">Each point is one active estimate</p>
+          <p class="panel-note">Each point represents one item</p>
         </div>
         <div id="signal-map" class="signal-map"></div>
-        <div class="map-key" aria-hidden="true"><span><i class="dot strong"></i>Strong signal</span><span><i class="dot weak"></i>Weak signal</span><span>Higher on chart = wider 80% range</span></div>
+        <div class="map-key" aria-hidden="true"><span><i class="dot strong"></i>Stronger signal</span><span><i class="dot weak"></i>Early signal</span><span>Higher on chart = more uncertainty</span></div>
       </article>
 
       <article class="panel watch-panel" aria-labelledby="watch-h">
         <div class="panel-head">
           <div>
-            <p class="panel-kicker">Evidence queue</p>
-            <h2 id="watch-h">High-attention signals</h2>
+            <p class="panel-kicker">What to check first</p>
+            <h2 id="watch-h">Strongest signals today</h2>
           </div>
           <span id="watch-count" class="count-pill"></span>
         </div>
         <ol id="watchlist" class="watchlist"></ol>
-        <p class="panel-foot">Ranked by evidence strength, then absolute middle estimate. This is not buying advice.</p>
+        <p class="panel-foot">Items with stronger signals appear first. This is information, not buying advice.</p>
       </article>
     </div>
   </section>
@@ -62,7 +62,7 @@
     <label class="search"><span class="sr">Filter items</span>
       <input id="q" type="search" placeholder="Filter items" autocomplete="off">
     </label>
-    <label class="field compact">Direction
+    <label class="field compact">Expected move
       <select id="direction" class="ps">
         <option value="all">All directions</option>
         <option value="up">Expected rise</option>
@@ -70,11 +70,11 @@
         <option value="flat">Near zero</option>
       </select>
     </label>
-    <label class="field compact">Evidence
+    <label class="field compact">Signal strength
       <select id="signal" class="ps">
         <option value="all">All strengths</option>
-        <option value="strong">Strong only</option>
-        <option value="weak">Weak only</option>
+        <option value="strong">Stronger signals</option>
+        <option value="weak">Early signals</option>
       </select>
     </label>
     <label class="field compact">Sort
@@ -90,8 +90,8 @@
   <section id="list" class="list-wrap" tabindex="-1">
     <div class="section-title-row">
       <div>
-        <p class="panel-kicker">Item-level detail</p>
-        <h2>Signal register</h2>
+        <p class="panel-kicker">Price guide</p>
+        <h2>All item estimates</h2>
       </div>
       <p id="view-count" class="section-count" aria-live="polite"></p>
     </div>
@@ -107,8 +107,8 @@
   <section class="ops panel" aria-labelledby="ops-h">
     <div class="panel-head">
       <div>
-        <p class="panel-kicker">Operational assurance</p>
-        <h2 id="ops-h">Pipeline health</h2>
+        <p class="panel-kicker">Data safety checks</p>
+        <h2 id="ops-h">Is today’s information ready?</h2>
       </div>
       <span id="ops-state" class="status-chip">Checking</span>
     </div>
@@ -117,8 +117,8 @@
 
   <section class="how" aria-labelledby="how-h">
     <h2 id="how-h">How to read this</h2>
-    <p>Each bar is the model's 80% range for the change in the Colombo price over the 3 report days after the dated source report. The mark inside it is the middle estimate. All bars share one scale, so a longer bar means more uncertainty.</p>
-    <p>Dambulla wholesale prices have led Colombo prices in past reports. These are statistical estimates from the Central Bank of Sri Lanka's Daily Price Reports, not forecasts you can rely on, and not advice. The data are published by the Statistics Department, Central Bank of Sri Lanka, which bears no responsibility for and does not endorse this project or its findings.</p>
+    <p>Each bar shows the likely range for the Colombo price change during the three report days after the dated source report. The mark inside the bar is the best single estimate. A longer bar means the result is more uncertain.</p>
+    <p>Past reports show that Dambulla wholesale prices often move before Colombo prices. These estimates are uncertain and should be used as one piece of information, not as instructions to buy, wait or sell. The data are published by the Statistics Department, Central Bank of Sri Lanka, which bears no responsibility for and does not endorse this project or its findings.</p>
   </section>
 </main>
 

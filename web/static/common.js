@@ -4,7 +4,7 @@
   var MINUS = "−";
   var SVGNS = "http://www.w3.org/2000/svg";
   var MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-  var PAGES = [["/", "Today"], ["/explore", "Explore"], ["/report", "Weekly report"], ["/method", "Method"], ["/help", "Help"]];
+  var PAGES = [["/today", "Today"], ["/explore", "Explore"], ["/report", "Weekly report"], ["/method", "Method"], ["/help", "Help"]];
   var PS = window.PS = {};
 
   PS.MINUS = MINUS;
