@@ -37,3 +37,7 @@ Claude (Anthropic) wrote the Render blueprint (`render.yaml`), the deployment gu
 
 Claude (Anthropic) wrote the Explore, Weekly report, Method and Help pages (`web/static/`), the routes and result-file reader behind them (`web/server.py`, `web/evidence.py`), `export_recent.py`, the history fallback in `web/build_db.py`, and their tests. We ran the tests, looked at every page on desktop and phone in light and dark themes, and reviewed everything. We are responsible for it.
 
+## Addendum 7: CBSL permission evidence
+
+OpenAI Codex inspected the CBSL email reply for personal contact information, produced the one-page redacted public copy in `docs/cbsl_reply_2026-10-12.pdf`, and corrected the README's earlier "no reply yet" statements. The original email PDF remains private. We reviewed the redacted copy against the original and are responsible for publishing it.
+

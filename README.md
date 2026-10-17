@@ -45,7 +45,7 @@ Gain is the share of squared forecast error removed, in percentage points, again
 | 5 | Feasibility checks: jump persistence (negative), lead-lag (positive). | `jump_check.py`, `model_check.py`, `leadlag_check.py` |
 | 6 | Robustness of the lead-lag signal: ridge model, placebo, month-resampled 95% intervals, per-year and per-item checks, self-test on synthetic data. | `robust_check.py`, `results_leadlag.txt` |
 | 7 | Rupee backtest of the buying decision against four baselines, thresholds fixed on pre-2024 data. | `decision_backtest.py`, `results_decision.txt` |
-| 8 | Written permission requested from CBSL on **11 Oct 2026**; reply: **none yet**. | this README |
+| 8 | Written response received from CBSL on **12 Oct 2026**: the published data are publicly available, do not require specific approval for use, and should be attributed to the Statistics Department. CBSL does not endorse the project. | [`docs/cbsl_reply_2026-10-12.pdf`](docs/cbsl_reply_2026-10-12.pdf) |
 | 9 | Phase 1 project proposal written. | submitted for 19 Oct |
 | 10 | AI-use disclosure for every script and document. | `AI_USE.md` |
 
@@ -144,7 +144,7 @@ python3 decision_backtest.py prices_all.csv
 
 - **Source:** Central Bank of Sri Lanka, Statistics Department, Daily Price Report: https://www.cbsl.gov.lk/en/statistics/economic-indicators/price-report
 - **Access:** robots.txt permits automated access at a 10-second crawl delay and blocks only search and system paths, which we avoid.
-- **Reuse terms:** we have not found a statement of reuse terms on the CBSL site. Written permission was requested on 11 Oct 2026; reply: none yet. This section will be updated when CBSL replies.
+- **Reuse response:** the Statistics Department replied on 12 Oct 2026 that the published data are publicly available and do not require specific approval or permission for use. It requested attribution to the "Statistics Department, Central Bank of Sri Lanka" and stated that CBSL bears no responsibility for, and does not endorse, derived content, findings or interpretations. A redacted public copy is in [`docs/cbsl_reply_2026-10-12.pdf`](docs/cbsl_reply_2026-10-12.pdf).
 - **We do:** credit CBSL, use the data only for this non-commercial project, and keep the raw PDFs out of the repository.
 - **Personal data:** none. The data are prices by item and market only.
 

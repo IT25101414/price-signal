@@ -1,5 +1,6 @@
 data/raw/
 *.pdf
+!docs/cbsl_reply_2026-10-12.pdf
 samples/
 year_test/
 all/
