@@ -14,7 +14,7 @@ Small canteens, restaurants and shops in Colombo must buy food while prices move
 
 Price Signal turns the Daily Price Reports into cautious three-report-day estimates for supported foods. Each card shows the latest Dambulla and Colombo prices, how unusual their gap is, the expected Colombo change and an 80% likely range. It never says “buy” or “sell”. It is designed as one input beside stock, spoilage, urgency, transport and cash flow.
 
-The product includes a plain-language Welcome page, a live-status Today dashboard, historical Explore charts, a guarded Weekly report, a public-facing How it works evidence page and Help. It runs as a small Flask/SQLite website and also has a Streamlit dashboard.
+The product includes a plain-language Welcome page, a live-status Today dashboard, historical Explore charts, a guarded Weekly report, a public-facing How it works evidence page and Help. A welcome-page selector provides a persistent English, Sinhala or Tamil core experience for local users while preserving official item, market, date and source values. It runs as a small Flask/SQLite website and also has a Streamlit dashboard.
 
 ### From source to user
 
@@ -42,7 +42,7 @@ A separate rolling-origin check refitted the three-day model before three non-ov
 
 Price Signal removes estimates when the Central Bank listing cannot be checked, a newer report has not been parsed, the latest good data are more than three working days old, a market is closed, a price is missing, recent paired history is insufficient or the gap is too small. The server applies the guard again on every request and withholds history as well as cards.
 
-Verification on 18 October 2026: **86 reproducible tests passed with no environment-dependent skips**, **12 of 12 deliberate refusal cases passed**, and the model, robustness and decision-policy synthetic self-tests passed. The 125-value check against original CBSL reports remains a separate, explicit local validation because the source PDFs are not redistributed.
+Verification on 18 October 2026: **87 reproducible tests passed with no environment-dependent skips**, **12 of 12 deliberate refusal cases passed**, and the model, robustness and decision-policy synthetic self-tests passed. The 125-value check against original CBSL reports remains a separate, explicit local validation because the source PDFs are not redistributed.
 
 All six pages also pass a reproducible accessibility structure and principal-colour contrast check; a rendered-browser audit found no unnamed controls or broken label relationships. An 8/8 local service smoke test covers health, safety status and every page, and the same check is ready to run automatically against the public URL.
 

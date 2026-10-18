@@ -3,7 +3,8 @@
   var MINUS = PS.MINUS;
   var state = { series: null, cards: [], status: null, q: "", direction: "all", signal: "all", sort: "expected", scale: 10 };
   var seq = 0;
-  var $ = PS.$, el = PS.el, signed = PS.signed, rs = PS.rs, get = PS.get, NAMES = PS.NAMES;
+  var $ = PS.$, el = PS.el, signed = PS.signed, rs = PS.rs, get = PS.get, NAMES = PS.NAMES, t = PS.t;
+  PS.initLanguage();
   PS.initTheme();
   PS.menu();
 
@@ -14,11 +15,11 @@
     box.setAttribute("aria-busy", "false");
     var n = state.cards.filter(function (c) { return c.status === "ok"; }).length;
     if (s.state === "ok") {
-      $("headline").textContent = n ? n + " of " + state.cards.length + " items have an estimate" : "No item has a clear signal today";
-      $("reason").textContent = "Based on the CBSL Daily Price Report of " + s.report_date_label + ". Each estimate compares Dambulla wholesale with a Colombo price.";
+      $("headline").textContent = n ? t("estimateHeadline", { ok: n, total: state.cards.length }) : t("noClearToday");
+      $("reason").textContent = t("basedOn", { date: s.report_date_label });
     } else {
-      $("headline").textContent = s.state === "stale" ? "The data are too old" :
-        (s.state === "source_unavailable" ? "The source could not be checked" : "A newer report is not read yet");
+      $("headline").textContent = s.state === "stale" ? t("dataOld") :
+        (s.state === "source_unavailable" ? t("sourceUnavailable") : t("newerUnread"));
       $("reason").textContent = s.reason;
     }
     var demo = $("demo");
@@ -29,11 +30,11 @@
     var meta = $("status-meta");
     meta.textContent = "";
     [
-      ["Price data " + s.report_date_label, "neutral"],
-      [s.state === "ok" ? "Source verified" : "Source withheld", s.state === "ok" ? "ok" : "warn"],
-      [s.age_working_days + " working day" + (s.age_working_days === 1 ? "" : "s") + " old", s.age_working_days <= s.max_age_working_days ? "ok" : "warn"],
+      [t("priceData", { date: s.report_date_label }), "neutral"],
+      [s.state === "ok" ? t("sourceVerified") : t("sourceWithheld"), s.state === "ok" ? "ok" : "warn"],
+      [s.age_working_days === 1 ? t("workingAgeOne") : t("workingAgeMany", { count: s.age_working_days }), s.age_working_days <= s.max_age_working_days ? "ok" : "warn"],
       [NAMES[state.series] || state.series || "Loading market", "neutral"],
-      [s.history_source === "synthetic" ? "Synthetic history" : "Observed history", s.history_source === "synthetic" ? "warn" : "neutral"]
+      [s.history_source === "synthetic" ? t("syntheticHistory") : t("observedHistory"), s.history_source === "synthetic" ? "warn" : "neutral"]
     ].forEach(function (x) {
       var chip = el("span", "meta-chip " + x[1], x[0]);
       meta.appendChild(chip);
@@ -62,7 +63,7 @@
   function pos(v) { return (50 + (v / state.scale) * 50).toFixed(2) + "%"; }
 
   function intervalWidth(c) { return c.high_pct - c.low_pct; }
-  function signalLabel(v) { return v === "strong" ? "stronger signal" : v === "weak" ? "early signal" : "signal"; }
+  function signalLabel(v) { return v === "strong" ? t("strongerSignal") : v === "weak" ? t("earlySignal") : "signal"; }
 
   function filteredCards() {
     var q = state.q.trim().toLowerCase();
@@ -92,10 +93,10 @@
     var falls = ok.filter(function (c) { return c.direction === "down"; }).length;
     var avgWidth = ok.length ? ok.reduce(function (n, c) { return n + intervalWidth(c); }, 0) / ok.length : null;
     var safe = state.status.state === "ok";
-    kpis.appendChild(kpi("Available estimates", safe ? ok.length + " of " + state.cards.length : "—", safe ? (state.cards.length - ok.length) + " items do not have enough reliable information today" : "Estimates are currently hidden", "accent"));
-    kpis.appendChild(kpi("Clearer estimates", safe ? String(strong.length) : "—", "These have the strongest support from the recent price pattern", "accent"));
-    kpis.appendChild(kpi("Likely movement", safe ? rises + " may rise · " + falls + " may fall" : "—", "A summary of the estimates shown below"));
-    kpis.appendChild(kpi("Average range width", safe && avgWidth != null ? avgWidth.toFixed(1) + " points" : "—", "The distance from each range's low end to high end; smaller is more precise"));
+    kpis.appendChild(kpi(t("availableEstimates"), safe ? t("availableValue", { ok: ok.length, total: state.cards.length }) : "—", safe ? t("unavailableNote", { count: state.cards.length - ok.length }) : t("estimatesHiddenShort"), "accent"));
+    kpis.appendChild(kpi(t("clearerEstimates"), safe ? String(strong.length) : "—", t("clearerNote"), "accent"));
+    kpis.appendChild(kpi(t("directionOutlook"), safe ? t("directionValue", { up: rises, down: falls }) : "—", t("directionNote"), "accent"));
+    kpis.appendChild(kpi(t("averageRange"), safe && avgWidth != null ? t("averageRangeValue", { value: avgWidth.toFixed(1) }) : "—", t("averageRangeNote"), "accent"));
     renderSignalMap(safe ? ok : []);
     renderWatchlist(safe ? ok : []);
     renderOps();
@@ -105,7 +106,7 @@
     var host = $("signal-map");
     host.textContent = "";
     if (!cards.length) {
-      host.appendChild(el("p", "empty-panel", "No active estimates are available for the map."));
+      host.appendChild(el("p", "empty-panel", t("noMap")));
       return;
     }
     var W = 760, H = 310, L = 56, R = 18, T = 20, B = 44;
@@ -150,9 +151,9 @@
       var evidence = (b.signal === "strong") - (a.signal === "strong");
       return evidence || Math.abs(b.expected_change_pct) - Math.abs(a.expected_change_pct) || intervalWidth(a) - intervalWidth(b);
     }).slice(0, 5);
-    $("watch-count").textContent = ranked.length + " shown";
+    $("watch-count").textContent = t("shown", { count: ranked.length });
     if (!ranked.length) {
-      list.appendChild(el("li", "empty-panel", "No signals are available."));
+      list.appendChild(el("li", "empty-panel", t("noSignals")));
       return;
     }
     ranked.forEach(function (c, i) {
@@ -161,7 +162,7 @@
       b.appendChild(el("span", "watch-rank", String(i + 1).padStart(2, "0")));
       var words = el("span", "watch-words");
       words.appendChild(el("b", null, c.item));
-      words.appendChild(el("small", null, signalLabel(c.signal) + " · uncertainty " + intervalWidth(c).toFixed(1) + " points"));
+      words.appendChild(el("small", null, signalLabel(c.signal) + " · " + t("uncertainty") + " " + intervalWidth(c).toFixed(1) + " " + t("averageRangeValue", { value: "" }).trim()));
       b.appendChild(words);
       b.appendChild(el("strong", "watch-value " + (c.direction || "flat"), PS.arrow(c.expected_change_pct) + signed(c.expected_change_pct) + "%"));
       b.addEventListener("click", function () { openDetail(c); });
@@ -174,13 +175,13 @@
     grid.textContent = "";
     var ok = s.state === "ok";
     chip.className = "status-chip " + (ok ? "ok" : "warn");
-    chip.textContent = ok ? "All checks passed" : "Estimates are hidden";
+    chip.textContent = ok ? t("allChecks") : t("checksHidden");
     var checks = [
-      ["Source website", ok ? "Latest listing checked" : "Needs attention", ok],
-      ["Data freshness", s.age_working_days + " of " + s.max_age_working_days + " allowed working days", s.age_working_days <= s.max_age_working_days],
-      ["Items checked", state.cards.length + " items for this market", state.cards.length > 0],
-      ["Price history", s.history_source === "synthetic" ? "Made-up demonstration data" : "Observed source data", s.history_source !== "synthetic"],
-      ["Website updated", s.built_at_utc ? s.built_at_utc.replace("T", " ").replace("+00:00", " UTC") : "Unknown", !!s.built_at_utc]
+      [t("sourceWebsite"), ok ? t("latestChecked") : t("needsAttention"), ok],
+      [t("dataFreshness"), t("allowedDays", { age: s.age_working_days, max: s.max_age_working_days }), s.age_working_days <= s.max_age_working_days],
+      [t("itemsChecked"), t("itemsMarket", { count: state.cards.length }), state.cards.length > 0],
+      [t("priceHistory"), s.history_source === "synthetic" ? t("demoData") : t("observedData"), s.history_source !== "synthetic"],
+      [t("websiteUpdated"), s.built_at_utc ? s.built_at_utc.replace("T", " ").replace("+00:00", " UTC") : t("unknown"), !!s.built_at_utc]
     ];
     checks.forEach(function (x) {
       var item = el("div", "op-item");

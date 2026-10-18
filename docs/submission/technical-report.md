@@ -19,7 +19,7 @@ On held-out data from 2024 onward, adding Dambulla information improved forecast
 
 A separate rolling-origin stress check refitted the model before three non-overlapping test windows from May to October 2026. Dambulla improved the own-history model in all nine market-window combinations by 5.5 to 13.7 points, while all nine wrong-item placebo gains were zero or negative. This supports recent temporal stability, but it is not evidence about the 2022 crisis.
 
-The implementation is frozen and verified: 86 repository-owned automated tests pass with no environment-dependent skips; all 12 deliberate refusal cases pass; and the model, robustness and decision-policy synthetic self-tests pass. The 125-value check against original CBSL PDFs remains a separate explicit local validation because those source files are intentionally not redistributed. Public deployment remains pending external verification.
+The implementation is frozen and verified: 87 repository-owned automated tests pass with no environment-dependent skips; all 12 deliberate refusal cases pass; and the model, robustness and decision-policy synthetic self-tests pass. The 125-value check against original CBSL PDFs remains a separate explicit local validation because those source files are intentionally not redistributed. Public deployment remains pending external verification.
 
 ## 2. Proposal versus implementation
 
@@ -68,7 +68,7 @@ Python 3.9 is used end to end. Requests and `urllib.robotparser` provide explici
 
 The web product contains:
 
-- a plain-language Welcome page with a prominent independent-project notice;
+- a plain-language Welcome page with a prominent independent-project notice and persistent English, Sinhala and Tamil selection;
 - Today, with source health, summary counts, an uncertainty chart, filters, detailed cards and guarded CSV export;
 - Explore, with paired Dambulla and Colombo history and their gap;
 - Weekly report, comparing two complete five-report-day windows;
@@ -103,13 +103,13 @@ The simulated policy chooses whether to buy today or after three report days, us
 
 Twelve constructed cases test fresh data, staleness, a newer unread report, Colombo or Dambulla closure, missing or `n.a.` prices, too little data, no clear signal and a holiday-adjusted freshness boundary. All 12 produce the specified state. Server tests verify that withheld cards and history contain no protected figures and that the interface never says “buy” or “sell”.
 
-On 18 October 2026, default `pytest` reported 86 passed and zero skipped. Eleven repository-owned tests cover the extractor's cell parsing, row grouping, name cleaning and cross-report consistency without external fixtures; interface regression checks cover the explanations added after buyer feedback and the new rolling-evidence section. The stronger 125-value check against original source reports remains in `validate_extract_prices_real.py` and is invoked explicitly with local PDFs, rather than appearing as three environment-dependent skips in a fresh clone. The model, robustness and decision self-tests all pass on synthetic worlds with known answers. Python source compilation succeeds when its bytecode cache is directed to a writable project or temporary directory.
+On 18 October 2026, default `pytest` reported 87 passed and zero skipped. Eleven repository-owned tests cover the extractor's cell parsing, row grouping, name cleaning and cross-report consistency without external fixtures; interface regression checks cover the explanations added after buyer feedback, the new rolling-evidence section and the persistent local-language selector. The stronger 125-value check against original source reports remains in `validate_extract_prices_real.py` and is invoked explicitly with local PDFs, rather than appearing as three environment-dependent skips in a fresh clone. The model, robustness and decision self-tests all pass on synthetic worlds with known answers. Python source compilation succeeds when its bytecode cache is directed to a writable project or temporary directory.
 
 The release workflow now also runs the rolling stress check and a dependency-free accessibility regression. The accessibility check found no failures across the six pages and all tested light/dark colour pairs exceed the WCAG AA 4.5:1 contrast threshold. A rendered-browser structure audit found no unnamed visible controls, empty links, missing image alternatives, duplicate IDs, broken ARIA label references, positive tabindex values or heading-level jumps. A local service smoke test passed 8/8 checks across health, status and all public pages; the same test is prepared to run against the deployed URL on weekdays.
 
 ## 8. What the user sees and why it is trustworthy
 
-Every page names the data source, and the live status makes the report date prominent. Direction is carried by signs, arrows and words rather than colour alone. The Today summary states how many estimates are available, which have clearer support, their likely direction and the average width of their possible ranges. Explore gives the latest Colombo-Dambulla difference, its typical level and the difference between them before showing the chart. The strongest-signal list is a way to navigate, not a claim that an estimate is certain.
+Every page names the data source, and the live status makes the report date prominent. Visitors choose English, Sinhala or Tamil on the welcome page and the browser keeps that preference for the core welcome, navigation, source, safety, status and Today-summary journey; official item, market, date and numerical values stay unchanged. Direction is carried by signs, arrows and words rather than colour alone. The Today summary states how many estimates are available, which have clearer support, their expected direction and the average width of their possible ranges. The direction count uses the neutral form “Upward: 3 · Downward: 4”, not purchasing language. Explore gives the latest Colombo-Dambulla difference, its typical level and the difference between them before showing the chart. The strongest-signal list is a way to navigate, not a claim that an estimate is certain.
 
 If the source listing cannot be checked, if it lists a newer unread report, if the data exceed three working days, or if an item's inputs are incomplete, the website removes numbers server-side. Weekly comparisons require five observations in both weeks. Historical comparisons require dates shared by both series. These choices reduce apparent coverage, but they prevent a polished interface from hiding weak evidence.
 

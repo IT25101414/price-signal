@@ -15,8 +15,16 @@
   <div class="wrap welcome-nav">
     <a class="welcome-brand" href="/">Sri Lanka Food Price Signal</a>
     <div class="welcome-actions">
-      <span class="independent-badge">Independent student project</span>
-      <button id="theme" class="ghost" type="button" aria-label="Switch colour theme">Theme</button>
+      <span class="independent-badge" data-i18n="welcomeBadge">Independent student project</span>
+      <label class="language-control welcome-language">
+        <span class="language-label" data-i18n="chooseLanguage">Choose language</span>
+        <select id="language" aria-label="Choose language">
+          <option value="en">English</option>
+          <option value="si">සිංහල</option>
+          <option value="ta">தமிழ்</option>
+        </select>
+      </label>
+      <button id="theme" class="ghost" type="button" aria-label="Switch colour theme" data-i18n="theme">Theme</button>
     </div>
   </div>
 </header>
@@ -24,16 +32,16 @@
 <main id="welcome-main">
   <section class="welcome-hero wrap">
     <div class="welcome-copy">
-      <p class="eyebrow">A clearer view of everyday food prices</p>
-      <h1>See how Dambulla price changes may reach Colombo markets</h1>
-      <p class="welcome-lede">Price Signal turns daily price reports into a simple, careful guide for canteens, restaurants, shops and other small food buyers.</p>
+      <p class="eyebrow" data-i18n="welcomeEyebrow">A clearer view of everyday food prices</p>
+      <h1 data-i18n="welcomeTitle">See how Dambulla price changes may reach Colombo markets</h1>
+      <p class="welcome-lede" data-i18n="welcomeLede">Price Signal turns daily price reports into a simple, careful guide for canteens, restaurants, shops and other small food buyers.</p>
       <div class="welcome-cta">
-        <a class="btn welcome-primary" href="/today">Open today’s price guide <span aria-hidden="true">→</span></a>
-        <a class="btn alt" href="/help">Learn how it works</a>
+        <a class="btn welcome-primary" href="/today"><span data-i18n="welcomeOpen">Open today’s price guide</span> <span aria-hidden="true">→</span></a>
+        <a class="btn alt" href="/help" data-i18n="welcomeLearn">Learn how it works</a>
       </div>
       <div id="welcome-live" class="welcome-live" aria-live="polite">
         <span class="live-dot" aria-hidden="true"></span>
-        <span>Checking the latest report…</span>
+        <span data-i18n="welcomeChecking">Checking the latest report…</span>
       </div>
     </div>
 
@@ -43,58 +51,56 @@
       </div>
       <p class="emblem-country">Sri Lanka</p>
       <p class="emblem-title">Food Price Signal</p>
-      <p class="emblem-note"><strong>Not an official government service.</strong> The emblem identifies the country only. This independent student project is not endorsed by the Government of Sri Lanka, the Central Bank of Sri Lanka or its Statistics Department.</p>
+      <p class="emblem-note"><strong data-i18n="notOfficial">Not an official government service.</strong> <span data-i18n="notOfficialBody">The emblem identifies the country only. This independent student project is not endorsed by the Government of Sri Lanka, the Central Bank of Sri Lanka or its Statistics Department.</span></p>
     </aside>
   </section>
 
   <section class="welcome-strip" aria-label="Project facts">
     <div class="wrap fact-strip">
-      <div><strong>Official source data</strong><span>CBSL Daily Price Reports</span></div>
-      <div><strong>Made for practical use</strong><span>Small food buyers in Colombo</span></div>
-      <div><strong>Short-term view</strong><span>The following 3 report days</span></div>
-      <div><strong>Safety first</strong><span>No estimate when data are not ready</span></div>
+      <div><strong data-i18n="officialSource">Official source data</strong><span data-i18n="officialSourceValue">CBSL Daily Price Reports</span></div>
+      <div><strong data-i18n="practicalUse">Made for practical use</strong><span data-i18n="practicalUseValue">Small food buyers in Colombo</span></div>
+      <div><strong data-i18n="shortView">Short-term view</strong><span data-i18n="shortViewValue">The following 3 report days</span></div>
+      <div><strong data-i18n="safetyFirst">Safety first</strong><span data-i18n="safetyFirstValue">No estimate when data are not ready</span></div>
     </div>
   </section>
 
   <section class="wrap welcome-explain" aria-labelledby="explain-h">
     <div class="welcome-section-head">
-      <p class="eyebrow">What the website helps you do</p>
-      <h2 id="explain-h">From a daily report to a useful price check</h2>
-      <p>You stay in control. The website explains what the data suggest and where the uncertainty is; it never tells you to buy, wait or sell.</p>
+      <p class="eyebrow" data-i18n="helps">What the website helps you do</p>
+      <h2 id="explain-h" data-i18n="reportToCheck">From a daily report to a useful price check</h2>
+      <p data-i18n="control">You stay in control. The website explains what the data suggest and where the uncertainty is; it never tells you to buy, wait or sell.</p>
     </div>
     <ol class="welcome-steps">
-      <li><span>01</span><div><h3>Choose your market</h3><p>Compare Dambulla wholesale prices with Pettah or Narahenpita.</p></div></li>
-      <li><span>02</span><div><h3>Read the likely direction</h3><p>See whether the Colombo price may rise or fall over the following three report days.</p></div></li>
-      <li><span>03</span><div><h3>Check the uncertainty</h3><p>Use the likely range and signal strength before deciding how much confidence to place in the estimate.</p></div></li>
+      <li><span>01</span><div><h3 data-i18n="chooseMarket">Choose your market</h3><p data-i18n="chooseMarketBody">Compare Dambulla wholesale prices with Pettah or Narahenpita.</p></div></li>
+      <li><span>02</span><div><h3 data-i18n="likelyDirection">Read the expected direction</h3><p data-i18n="likelyDirectionBody">See whether the current estimate points upward or downward over the following three report days.</p></div></li>
+      <li><span>03</span><div><h3 data-i18n="checkUncertainty">Check the uncertainty</h3><p data-i18n="checkUncertaintyBody">Use the possible range and signal strength before deciding how much confidence to place in the estimate.</p></div></li>
     </ol>
   </section>
 
   <section class="wrap welcome-preview" aria-labelledby="preview-h">
     <div class="preview-copy">
-      <p class="eyebrow">One website, several views</p>
-      <h2 id="preview-h">Start simple, then explore the evidence</h2>
-      <p>Today gives you the quick view. Explore shows price history. Weekly Report compares recent weeks. Method explains how the estimates were checked.</p>
-      <a class="text-link" href="/today">Go to today’s guide <span aria-hidden="true">→</span></a>
+      <p class="eyebrow" data-i18n="severalViews">One website, several views</p>
+      <h2 id="preview-h" data-i18n="startSimple">Start simple, then explore the evidence</h2>
+      <p data-i18n="viewsBody">Today gives you the quick view. Explore shows price history. Weekly Report compares recent weeks. How it works explains how the estimates were checked.</p>
+      <a class="text-link" href="/today"><span data-i18n="goToday">Go to today’s guide</span> <span aria-hidden="true">→</span></a>
     </div>
     <div class="preview-stack" aria-label="Available website sections">
-      <a href="/today"><b>Today</b><span>Current estimates and data checks</span><i aria-hidden="true">01</i></a>
-      <a href="/explore"><b>Explore</b><span>Past prices and market gaps</span><i aria-hidden="true">02</i></a>
-      <a href="/report"><b>Weekly report</b><span>This week compared with last week</span><i aria-hidden="true">03</i></a>
-      <a href="/method"><b>How it works</b><span>Testing, limits and evidence</span><i aria-hidden="true">04</i></a>
+      <a href="/today"><b data-i18n="navToday">Today</b><span data-i18n="todayDesc">Current estimates and data checks</span><i aria-hidden="true">01</i></a>
+      <a href="/explore"><b data-i18n="navExplore">Explore</b><span data-i18n="exploreDesc">Past prices and market gaps</span><i aria-hidden="true">02</i></a>
+      <a href="/report"><b data-i18n="navWeekly">Weekly report</b><span data-i18n="weeklyDesc">This week compared with last week</span><i aria-hidden="true">03</i></a>
+      <a href="/method"><b data-i18n="navMethod">How it works</b><span data-i18n="methodDesc">Testing, limits and evidence</span><i aria-hidden="true">04</i></a>
     </div>
   </section>
 
   <section class="welcome-disclaimer">
     <div class="wrap">
-      <h2>Use it as information, not advice</h2>
-      <p>Price Signal uses Daily Price Reports published by the Statistics Department, Central Bank of Sri Lanka. Estimates are statistical and uncertain. The Central Bank bears no responsibility for and does not endorse this project or its findings.</p>
+      <h2 data-i18n="infoNotAdvice">Use it as information, not advice</h2>
+      <p data-i18n="disclaimer">Price Signal uses Daily Price Reports published by the Statistics Department, Central Bank of Sri Lanka. Estimates are statistical and uncertain. The Central Bank bears no responsibility for and does not endorse this project or its findings.</p>
     </div>
   </section>
 </main>
 
-<footer class="wrap foot welcome-foot">
-  <p><a href="/today">Today</a> · <a href="/explore">Explore</a> · <a href="/report">Weekly report</a> · <a href="/method">How it works</a> · <a href="/help">Help</a> · <a href="https://github.com/IT25101414/price-signal">Source code</a></p>
-</footer>
+<footer class="wrap foot welcome-foot" id="foot"></footer>
 
 <script src="/static/common.js"></script>
 <script src="/static/welcome.js"></script>

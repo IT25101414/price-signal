@@ -65,3 +65,7 @@ OpenAI Codex added the rolling-origin recent-data stress test, public-service sm
 
 OpenAI Codex simplified the Today summary cards, replaced the purple stronger-signal accent with the established green system colour, redesigned Explore's Colombo-Dambulla difference panel, and renamed Method to How it works with public-facing explanations of the evidence, limits and sources. It updated the proposal, technical report, two-page summary, readiness checklist, demonstration script and related README text to match the current interface and 86-test result. It rebuilt and visually reviewed the three submission PDFs. The public deployment URL and video remain unclaimed until they are genuinely completed, and the project author remains responsible for the final submission.
 
+## Addendum 14: local-language interface
+
+OpenAI Codex added a persistent English, Sinhala and Tamil selector to the welcome page and a compact selector on the remaining pages. It translated the core welcome, navigation, source, safety, status and Today-summary wording while deliberately preserving official item names, market names, dates and numerical values. It also replaced the informal "may rise / may fall" count with a neutral expected-direction summary, applied the established green treatment consistently to all four summary cards, added regression tests and checked the rendered Sinhala and Tamil layouts. The project author remains responsible for reviewing the translations with native speakers before public submission.
+

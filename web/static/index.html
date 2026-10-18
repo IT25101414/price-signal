@@ -20,8 +20,8 @@
 
 <main class="wrap">
   <section class="status" id="status" aria-live="polite" aria-busy="true">
-    <p class="eyebrow">Colombo food price guide · following 3 report days</p>
-    <h1 id="headline">Checking the latest report</h1>
+    <p class="eyebrow" data-i18n="todayEyebrow">Colombo food price guide · following 3 report days</p>
+    <h1 id="headline" data-i18n="checkingReport">Checking the latest report</h1>
     <p id="reason" class="lede"></p>
     <div id="status-meta" class="status-meta" aria-label="Source status"></div>
     <p id="demo" class="demo" hidden></p>
@@ -34,25 +34,25 @@
       <article class="panel map-panel" aria-labelledby="map-h">
         <div class="panel-head">
           <div>
-            <p class="panel-kicker">Compare the estimates</p>
-            <h2 id="map-h">Expected change and uncertainty</h2>
+            <p class="panel-kicker" data-i18n="compareEstimates">Compare the estimates</p>
+            <h2 id="map-h" data-i18n="expectedChange">Expected change and uncertainty</h2>
           </div>
-          <p class="panel-note">Each point represents one item</p>
+          <p class="panel-note" data-i18n="eachPoint">Each point represents one item</p>
         </div>
         <div id="signal-map" class="signal-map"></div>
-        <div class="map-key" aria-hidden="true"><span><i class="dot strong"></i>Stronger signal</span><span><i class="dot weak"></i>Early signal</span><span>Higher on chart = more uncertainty</span></div>
+        <div class="map-key" aria-hidden="true"><span><i class="dot strong"></i><span data-i18n="strongerSignal">Stronger signal</span></span><span><i class="dot weak"></i><span data-i18n="earlySignal">Early signal</span></span><span data-i18n="higherUncertain">Higher on chart = more uncertainty</span></div>
       </article>
 
       <article class="panel watch-panel" aria-labelledby="watch-h">
         <div class="panel-head">
           <div>
-            <p class="panel-kicker">What to check first</p>
-            <h2 id="watch-h">Strongest signals today</h2>
+            <p class="panel-kicker" data-i18n="checkFirst">What to check first</p>
+            <h2 id="watch-h" data-i18n="strongestToday">Strongest signals today</h2>
           </div>
           <span id="watch-count" class="count-pill"></span>
         </div>
         <ol id="watchlist" class="watchlist"></ol>
-        <p class="panel-foot">Items with stronger signals appear first. This is information, not buying advice.</p>
+        <p class="panel-foot" data-i18n="watchFoot">Items with stronger signals appear first. This is information, not buying advice.</p>
       </article>
     </div>
   </section>

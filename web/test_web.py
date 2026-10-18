@@ -172,7 +172,7 @@ def test_buyer_feedback_explanations_are_present(hist_client):
     assert b"shared report day means" in c.get("/explore").data
     assert b"A blank means" in c.get("/report").data
     assert b"Blank weekly value" in c.get("/help").data
-    assert b"Price data " in c.get("/static/app.js").data
+    assert b'priceData: "Price data {date}"' in c.get("/static/common.js").data
 
 
 def test_welcome_page_leads_to_today_and_states_independence(hist_client):
@@ -180,6 +180,17 @@ def test_welcome_page_leads_to_today_and_states_independence(hist_client):
     assert b'href="/today"' in body
     assert b"Not an official government service" in body
     assert b"sri-lanka-national-emblem-clean.png" in body
+    assert b'id="language"' in body
+    assert "සිංහල".encode() in body and "தமிழ்".encode() in body
+
+
+def test_today_uses_professional_localised_direction_summary(hist_client):
+    c = hist_client("2026-10-12")
+    common = c.get("/static/common.js").data
+    app = c.get("/static/app.js").data
+    assert b"Upward: {up}" in common
+    assert b"may rise" not in app and b"may fall" not in app
+    assert b"PS.initLanguage()" in app
 
 
 def test_history_for_an_ok_card_has_prices(hist_client):

@@ -47,6 +47,10 @@ body { margin: 0; background: var(--bg); color: var(--ink); font: 16px/1.5 var(-
 .brand { margin: 0; font-weight: 700; font-size: 17px; letter-spacing: .01em; }
 .ghost { font: inherit; font-size: 14px; color: var(--ink-2); background: transparent; border: 1px solid var(--line); border-radius: 8px; padding: 6px 12px; cursor: pointer; }
 .ghost:hover { color: var(--ink); border-color: var(--ink-3); }
+.language-control { display: inline-flex; align-items: center; gap: 8px; min-height: 34px; padding: 3px 4px 3px 10px; border: 1px solid var(--line); border-radius: 9px; background: var(--surface); color: var(--ink-2); }
+.language-label { font-size: 12px; font-weight: 700; white-space: nowrap; }
+.language-control select { appearance: auto; max-width: 112px; border: 0; border-radius: 7px; background: var(--bg); color: var(--ink); padding: 5px 7px; font: inherit; font-size: 13px; font-weight: 650; cursor: pointer; }
+.language-control select:focus-visible { outline-offset: 1px; }
 
 .status { position: relative; padding: 46px 32px 30px; margin: 24px 0 18px; overflow: hidden; border: 1px solid var(--line); border-radius: 22px; background: linear-gradient(135deg, var(--surface) 0%, color-mix(in srgb, var(--accent-soft) 58%, var(--surface)) 100%); }
 .status::after { content: ""; position: absolute; width: 280px; height: 280px; right: -105px; top: -125px; border: 42px solid color-mix(in srgb, var(--accent) 12%, transparent); border-radius: 50%; pointer-events: none; }
@@ -307,9 +311,11 @@ table.data.text td:nth-child(3), table.data.text th:nth-child(3) { white-space: 
 .welcome-nav { min-height: 68px; display: flex; align-items: center; justify-content: space-between; gap: 18px; }
 .welcome-brand { color: var(--ink); text-decoration: none; font-size: 16px; font-weight: 800; letter-spacing: -.01em; }
 .welcome-actions { display: flex; align-items: center; gap: 10px; }
+.welcome-language { background: color-mix(in srgb, var(--surface) 92%, transparent); }
 .independent-badge { border: 1px solid var(--line); border-radius: 999px; padding: 5px 10px; color: var(--ink-2); font-size: 12px; font-weight: 650; }
 .welcome-hero { min-height: 640px; display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(310px, .65fr); align-items: center; gap: clamp(42px, 7vw, 96px); padding-top: 72px; padding-bottom: 72px; }
 .welcome-copy h1 { max-width: 15ch; margin-bottom: 22px; font-size: clamp(46px, 6vw, 78px); line-height: .98; letter-spacing: -.055em; }
+html[lang="si"] .welcome-copy h1, html[lang="ta"] .welcome-copy h1 { max-width: 18ch; font-size: clamp(38px, 5.2vw, 68px); line-height: 1.08; letter-spacing: -.035em; }
 .welcome-lede { max-width: 58ch; margin: 0; color: var(--ink-2); font-size: clamp(18px, 2vw, 22px); line-height: 1.55; }
 .welcome-cta { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 30px; }
 .welcome-cta .btn { padding: 12px 17px; }
@@ -362,6 +368,7 @@ table.data.text td:nth-child(3), table.data.text th:nth-child(3) { white-space: 
 .welcome-foot a { color: var(--ink-2); }
 
 @media (max-width: 780px) {
+  .independent-badge { display: none; }
   .welcome-hero { min-height: auto; grid-template-columns: 1fr; gap: 34px; padding-top: 48px; padding-bottom: 54px; }
   .welcome-copy h1 { font-size: clamp(40px, 12vw, 62px); }
   .emblem-card { min-height: 390px; }
@@ -375,6 +382,10 @@ table.data.text td:nth-child(3), table.data.text th:nth-child(3) { white-space: 
 @media (max-width: 520px) {
   .welcome-nav { min-height: 62px; }
   .welcome-brand { max-width: 15ch; line-height: 1.1; }
+  .welcome-actions { flex-wrap: wrap; justify-content: flex-end; }
+  .independent-badge { display: none; }
+  .welcome-language .language-label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  .welcome-language { padding-left: 4px; }
   .independent-badge { display: none; }
   .welcome-copy h1 { letter-spacing: -.045em; }
   .welcome-cta .btn { width: 100%; text-align: center; }
