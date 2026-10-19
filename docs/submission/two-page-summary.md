@@ -20,7 +20,7 @@ The product includes a plain-language Welcome page, a live-status Today dashboar
 
 `CBSL reports → polite collector → position-based PDF parser → local price table → ridge model → safety guard → website`
 
-The collector respects robots.txt and a ten-second crawl delay, downloads each file once and records its hash. It discovered 2,274 report records, downloaded 2,273 successfully and recorded one failure. Predefined layout, date and validation rules accepted 1,487 report days from 28 July 2020 onward. This was not manual selection: unfamiliar, scanned, undated or duplicate reports are rejected and logged rather than guessed. Historical data train and test the model, while the latest accepted report controls the interface. The committed build uses the 15 October 2026 report.
+The collector respects robots.txt and a ten-second crawl delay, downloads each file once and records its hash. It discovered 2,276 report records, downloaded 2,275 successfully and recorded one failure. Predefined layout, date and validation rules accepted 1,491 report days from 28 July 2020 through 19 October 2026. This was not manual selection: unfamiliar, scanned, undated or duplicate reports are rejected and logged rather than guessed. Historical data train and test the model, while the latest accepted report controls the interface. The verified local build uses the 19 October 2026 report.
 
 The Central Bank's Statistics Department replied on 12 October 2026 that the published data are publicly available and do not require specific approval for use. It requested attribution and stated that CBSL does not endorse derived results. The repository contains a redacted copy. Raw PDFs, the complete generated table and personal data are not published.
 

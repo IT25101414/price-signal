@@ -4,7 +4,7 @@
 
 ModelX 2.0 (IEEE CIS Student Chapter, IIT) · Domain: Cost of living and everyday economics · Author: Nivetha, SLIIT
 
-**Status (18 Oct 2026):** functionality frozen at `v1.0.0-rc1`; the pipeline, model, safety guard, Streamlit dashboard and six-page Flask/SQLite website are built and tested. The committed cards use the 15 Oct report. Three consented buyer sessions are documented and their main comprehension problems have been addressed in the interface. The project is MIT-licensed and the report PDF reflects the current evidence; verified public hosting, insertion of its URL and recording the video remain open. See [`docs/submission/readiness.md`](docs/submission/readiness.md) for the live checklist.
+**Status (19 Oct 2026):** functionality frozen at `v1.0.0-rc1`; the pipeline, model, safety guard, Streamlit dashboard and six-page Flask/SQLite website are built and tested. The current local build uses the 19 Oct report. Three consented buyer sessions are documented and their main comprehension problems have been addressed in the interface. The project is MIT-licensed and the report PDF reflects the current evidence; verified public hosting, insertion of its URL and recording the video remain open. See [`docs/submission/readiness.md`](docs/submission/readiness.md) for the live checklist.
 
 ---
 
@@ -42,7 +42,7 @@ Gain is the share of squared forecast error removed, in percentage points, again
 
 | # | Work | Evidence in this repo |
 |---|---|---|
-| 1 | Downloader that obeys robots.txt (10-second crawl delay), downloads each PDF once and records a manifest. 2,274 records discovered through 15 Oct 2026; 2,273 downloads succeeded and one failed visibly. | `download_cbsl_reports.py`, `data/manifest.csv` |
+| 1 | Downloader that obeys robots.txt (10-second crawl delay), downloads each PDF once and records a manifest. 2,276 records discovered through 19 Oct 2026; 2,275 downloads succeeded and one failed visibly. | `download_cbsl_reports.py`, `data/manifest.csv` |
 | 2 | Position-based PDF table extractor. Reads each value by horizontal position, because the PDF text layer drops empty cells and splits numbers. Rejects any layout it was not built for instead of guessing. | `extract_prices.py` |
 | 3 | Extractor verification: repository-owned helper tests run in CI, and an optional local validation checks 125 extracted prices against figures quoted in the original reports' summary text. | `test_extract_prices_unit.py`, `validate_extract_prices_real.py` |
 | 4 | Full extraction run: **1,487 supported report days parsed from 28 Jul 2020 onward.** Older layouts and eight supported-layout exceptions are listed rather than guessed. | `failed_files.txt`, `coverage.py`, `coverage.csv` |

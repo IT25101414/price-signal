@@ -6,7 +6,7 @@
 **Domain:** Economy and livelihoods — cost of living and everyday economics  
 **Repository:** <https://github.com/IT25101414/price-signal>  
 **Release reviewed:** `v1.0.0-rc1`, plus the documented 19 October 2026 interface, reporting and validation updates  
-**Data shown by the committed build:** Statistics Department, Central Bank of Sri Lanka Daily Price Report, 15 October 2026  
+**Data shown by the verified local build:** Statistics Department, Central Bank of Sri Lanka Daily Price Report, 19 October 2026  
 **Public application:** `[PENDING — add the Render URL after owner-authorised deployment]`
 
 ## 1. Executive summary
@@ -48,9 +48,9 @@ Price Signal delivers that missing comparison. For each supported food and Colom
 
 ## 4. Data, access and temporality
 
-The source is the Statistics Department, Central Bank of Sri Lanka, Daily Price Report. The collector discovered 2,274 manifest records through 15 October 2026; 2,273 have an `ok` download status and one is recorded as a failed PDF download. Predefined layout, date and validation rules accepted 1,487 report days beginning on 28 July 2020 for analysis. This was not a manual selection of favourable reports: older layouts, scans without a text layer, undated headers and an exact duplicate are rejected rather than guessed, with the reasons retained in `failed_files.txt` and coverage recorded in `coverage.csv`.
+The source is the Statistics Department, Central Bank of Sri Lanka, Daily Price Report. The collector discovered 2,276 manifest records through 19 October 2026; 2,275 have an `ok` download status and one is recorded as a failed PDF download. Predefined layout, date and validation rules accepted 1,491 report days beginning on 28 July 2020 for analysis. This was not a manual selection of favourable reports: older layouts, scans without a text layer, undated headers and an exact duplicate are rejected rather than guessed, with the reasons retained in `failed_files.txt` and coverage recorded in `coverage.csv`.
 
-The data are both historical and current. Years of history are required to learn and test the relationship, while the latest accepted report drives the user interface. `refresh.py` checks the newest listing, downloads and parses unseen reports, appends accepted data once and records each run. The committed cards and one-year public history slice end on 15 October 2026.
+The data are both historical and current. Years of history are required to learn and test the relationship, while the latest accepted report drives the user interface. `refresh.py` checks the newest listing, downloads and parses unseen reports, appends accepted data once and records each run. The verified local cards and one-year public history slice end on 19 October 2026.
 
 The source contains important irregularities: report layouts change; some cells are blank while others explicitly say “n.a.”; markets may be closed; item names drift; prices are rounded; and Monday reports often compare with Friday. The extractor keeps these states distinct and records the comparison basis. A disagreement between one report's summary and table is retained as a documented source issue.
 

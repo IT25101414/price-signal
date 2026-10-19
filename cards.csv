@@ -1,57 +1,57 @@
 date,item,series,dambulla_rs,colombo_rs,gap_vs_usual_pct,expected_change_pct,low_pct,high_pct,direction,signal,status,reason
-2026-10-15,Banana (Sour),wholesale Pettah,115.0,150.0,-10.2,,,,,,no_clear_signal,the Dambulla-to-Colombo gap is too small for the model to say anything
-2026-10-15,Beans,wholesale Pettah,325.0,450.0,-20.4,-5.1,-29.5,27.7,down,weak,ok,data are current (15 Oct 2026) and complete enough for Beans
-2026-10-15,Big Onion (Imp),wholesale Pettah,253.0,265.0,-3.1,,,,,,no_clear_signal,the Dambulla-to-Colombo gap is too small for the model to say anything
-2026-10-15,Brinjal,wholesale Pettah,275.0,400.0,-14.6,-4.8,-22.6,17.0,down,weak,ok,data are current (15 Oct 2026) and complete enough for Brinjal
-2026-10-15,Cabbage,wholesale Pettah,255.0,450.0,-34.6,-11.7,-35.6,21.2,down,strong,ok,data are current (15 Oct 2026) and complete enough for Cabbage
-2026-10-15,Carrot,wholesale Pettah,250.0,220.0,17.0,5.1,-24.4,46.0,up,weak,ok,data are current (15 Oct 2026) and complete enough for Carrot
-2026-10-15,Coconut (Avg.),wholesale Pettah,120.0,155.0,-6.0,,,,,,no_clear_signal,the Dambulla-to-Colombo gap is too small for the model to say anything
-2026-10-15,Dried Chilli (Imp),wholesale Pettah,1135.0,1121.0,0.8,,,,,,no_clear_signal,the Dambulla-to-Colombo gap is too small for the model to say anything
-2026-10-15,Green Chilli,wholesale Pettah,260.0,300.0,-3.8,,,,,,no_clear_signal,the Dambulla-to-Colombo gap is too small for the model to say anything
-2026-10-15,Lime,wholesale Pettah,1350.0,1100.0,9.3,,,,,,no_clear_signal,the Dambulla-to-Colombo gap is too small for the model to say anything
-2026-10-15,Papaw,wholesale Pettah,65.0,120.0,-25.2,-8.5,-22.7,8.3,down,strong,ok,data are current (15 Oct 2026) and complete enough for Papaw
-2026-10-15,Potato (Imp),wholesale Pettah,160.0,156.0,11.6,4.4,-5.5,15.4,up,weak,ok,data are current (15 Oct 2026) and complete enough for Potato (Imp)
-2026-10-15,Potato (Local),wholesale Pettah,215.0,258.0,3.8,,,,,,no_clear_signal,the Dambulla-to-Colombo gap is too small for the model to say anything
-2026-10-15,Pumpkin,wholesale Pettah,190.0,250.0,-6.9,,,,,,no_clear_signal,the Dambulla-to-Colombo gap is too small for the model to say anything
-2026-10-15,Red Onion (Local),wholesale Pettah,325.0,410.0,0.3,,,,,,no_clear_signal,the Dambulla-to-Colombo gap is too small for the model to say anything
-2026-10-15,Red Onion (lmp),wholesale Pettah,,,,,,,,,no_dambulla_price,no Dambulla wholesale price for Red Onion (lmp) in the 15 Oct 2026 report
-2026-10-15,Snake gourd,wholesale Pettah,260.0,400.0,-0.6,,,,,,no_clear_signal,the Dambulla-to-Colombo gap is too small for the model to say anything
-2026-10-15,Tomato,wholesale Pettah,435.0,600.0,-9.7,,,,,,no_clear_signal,the Dambulla-to-Colombo gap is too small for the model to say anything
-2026-10-15,Banana (Sour),retail Pettah,115.0,200.0,-11.0,,,,,,no_clear_signal,the Dambulla-to-Colombo gap is too small for the model to say anything
-2026-10-15,Beans,retail Pettah,325.0,500.0,-19.0,-2.9,-26.5,28.4,down,weak,ok,data are current (15 Oct 2026) and complete enough for Beans
-2026-10-15,Big Onion (Imp),retail Pettah,253.0,285.0,0.8,,,,,,no_clear_signal,the Dambulla-to-Colombo gap is too small for the model to say anything
-2026-10-15,Brinjal,retail Pettah,275.0,450.0,-12.6,-3.5,-20.2,16.5,down,weak,ok,data are current (15 Oct 2026) and complete enough for Brinjal
-2026-10-15,Cabbage,retail Pettah,255.0,500.0,-24.7,-7.7,-27.7,17.7,down,strong,ok,data are current (15 Oct 2026) and complete enough for Cabbage
-2026-10-15,Carrot,retail Pettah,250.0,270.0,19.7,4.7,-20.1,37.3,up,weak,ok,data are current (15 Oct 2026) and complete enough for Carrot
-2026-10-15,Coconut (Avg.),retail Pettah,120.0,168.0,-0.2,,,,,,no_clear_signal,the Dambulla-to-Colombo gap is too small for the model to say anything
-2026-10-15,Dried Chilli (Imp),retail Pettah,1135.0,1167.0,3.9,,,,,,no_clear_signal,the Dambulla-to-Colombo gap is too small for the model to say anything
-2026-10-15,Green Chilli,retail Pettah,260.0,350.0,-4.2,,,,,,no_clear_signal,the Dambulla-to-Colombo gap is too small for the model to say anything
-2026-10-15,Lime,retail Pettah,1350.0,1200.0,24.7,4.1,-14.2,26.4,up,weak,ok,data are current (15 Oct 2026) and complete enough for Lime
-2026-10-15,Papaw,retail Pettah,65.0,170.0,-29.6,-6.6,-18.2,6.7,down,strong,ok,data are current (15 Oct 2026) and complete enough for Papaw
-2026-10-15,Pineapple,retail Pettah,290.0,325.0,-6.0,,,,,,no_clear_signal,the Dambulla-to-Colombo gap is too small for the model to say anything
-2026-10-15,Potato (Imp),retail Pettah,160.0,193.0,7.1,3.3,-4.2,11.5,up,weak,ok,data are current (15 Oct 2026) and complete enough for Potato (Imp)
-2026-10-15,Potato (Local),retail Pettah,215.0,340.0,-7.7,,,,,,no_clear_signal,the Dambulla-to-Colombo gap is too small for the model to say anything
-2026-10-15,Pumpkin,retail Pettah,190.0,300.0,1.0,,,,,,no_clear_signal,the Dambulla-to-Colombo gap is too small for the model to say anything
-2026-10-15,Red Onion (Local),retail Pettah,325.0,465.0,6.7,,,,,,no_clear_signal,the Dambulla-to-Colombo gap is too small for the model to say anything
-2026-10-15,Red Onion (lmp),retail Pettah,,,,,,,,,no_dambulla_price,no Dambulla wholesale price for Red Onion (lmp) in the 15 Oct 2026 report
-2026-10-15,Snake gourd,retail Pettah,260.0,450.0,6.4,,,,,,no_clear_signal,the Dambulla-to-Colombo gap is too small for the model to say anything
-2026-10-15,Tomato,retail Pettah,435.0,650.0,-5.0,,,,,,no_clear_signal,the Dambulla-to-Colombo gap is too small for the model to say anything
-2026-10-15,Banana (Sour),retail Narahenpita,115.0,320.0,-13.3,,,,,,no_clear_signal,the Dambulla-to-Colombo gap is too small for the model to say anything
-2026-10-15,Beans,retail Narahenpita,325.0,700.0,-22.9,-6.9,-26.9,18.5,down,strong,ok,data are current (15 Oct 2026) and complete enough for Beans
-2026-10-15,Big Onion (Imp),retail Narahenpita,,,,,,,,,no_colombo_price,no retail Narahenpita price for Big Onion (Imp) in the 15 Oct 2026 report
-2026-10-15,Brinjal,retail Narahenpita,275.0,560.0,5.5,,,,,,no_clear_signal,the Dambulla-to-Colombo gap is too small for the model to say anything
-2026-10-15,Cabbage,retail Narahenpita,255.0,400.0,29.7,4.1,-11.9,23.0,up,weak,ok,data are current (15 Oct 2026) and complete enough for Cabbage
-2026-10-15,Carrot,retail Narahenpita,250.0,300.0,64.0,16.8,-1.4,38.3,up,strong,ok,data are current (15 Oct 2026) and complete enough for Carrot
-2026-10-15,Coconut (Avg.),retail Narahenpita,120.0,200.0,-1.9,,,,,,no_clear_signal,the Dambulla-to-Colombo gap is too small for the model to say anything
-2026-10-15,Dried Chilli (Imp),retail Narahenpita,1135.0,1240.0,4.0,,,,,,no_clear_signal,the Dambulla-to-Colombo gap is too small for the model to say anything
-2026-10-15,Green Chilli,retail Narahenpita,260.0,600.0,-19.8,-4.1,-21.9,17.8,down,weak,ok,data are current (15 Oct 2026) and complete enough for Green Chilli
-2026-10-15,Lime,retail Narahenpita,1350.0,1800.0,34.3,3.6,-8.1,16.7,up,weak,ok,data are current (15 Oct 2026) and complete enough for Lime
-2026-10-15,Papaw,retail Narahenpita,65.0,200.0,-18.6,,,,,,no_clear_signal,the Dambulla-to-Colombo gap is too small for the model to say anything
-2026-10-15,Pineapple,retail Narahenpita,290.0,450.0,-15.8,-4.3,-5.4,-3.3,down,weak,ok,data are current (15 Oct 2026) and complete enough for Pineapple
-2026-10-15,Potato (Imp),retail Narahenpita,160.0,220.0,5.4,,,,,,no_clear_signal,the Dambulla-to-Colombo gap is too small for the model to say anything
-2026-10-15,Potato (Local),retail Narahenpita,215.0,440.0,-12.4,,,,,,no_clear_signal,the Dambulla-to-Colombo gap is too small for the model to say anything
-2026-10-15,Pumpkin,retail Narahenpita,190.0,260.0,26.3,5.1,-15.6,30.9,up,weak,ok,data are current (15 Oct 2026) and complete enough for Pumpkin
-2026-10-15,Red Onion (Local),retail Narahenpita,325.0,700.0,14.6,3.7,-0.0,7.5,up,weak,ok,data are current (15 Oct 2026) and complete enough for Red Onion (Local)
-2026-10-15,Red Onion (lmp),retail Narahenpita,,,,,,,,,no_dambulla_price,no Dambulla wholesale price for Red Onion (lmp) in the 15 Oct 2026 report
-2026-10-15,Snake gourd,retail Narahenpita,260.0,480.0,31.5,4.5,-12.4,24.5,up,weak,ok,data are current (15 Oct 2026) and complete enough for Snake gourd
-2026-10-15,Tomato,retail Narahenpita,435.0,800.0,-1.4,,,,,,no_clear_signal,the Dambulla-to-Colombo gap is too small for the model to say anything
+2026-10-19,Banana (Sour),wholesale Pettah,105.0,150.0,-18.5,-4.4,-19.7,13.7,down,weak,ok,data are current (19 Oct 2026) and complete enough for Banana (Sour)
+2026-10-19,Beans,wholesale Pettah,400.0,550.0,-18.7,-7.0,-24.9,15.2,down,strong,ok,data are current (19 Oct 2026) and complete enough for Beans
+2026-10-19,Big Onion (Imp),wholesale Pettah,245.0,259.0,-4.0,,,,,,no_clear_signal,the Dambulla-to-Colombo gap is too small for the model to say anything
+2026-10-19,Brinjal,wholesale Pettah,300.0,300.0,23.8,8.7,-18.1,44.2,up,strong,ok,data are current (19 Oct 2026) and complete enough for Brinjal
+2026-10-19,Cabbage,wholesale Pettah,355.0,400.0,3.9,,,,,,no_clear_signal,the Dambulla-to-Colombo gap is too small for the model to say anything
+2026-10-19,Carrot,wholesale Pettah,210.0,180.0,19.9,8.2,-22.5,50.9,up,strong,ok,data are current (19 Oct 2026) and complete enough for Carrot
+2026-10-19,Coconut (Avg.),wholesale Pettah,138.0,156.0,7.5,,,,,,no_clear_signal,the Dambulla-to-Colombo gap is too small for the model to say anything
+2026-10-19,Dried Chilli (Imp),wholesale Pettah,1125.0,1117.0,0.3,,,,,,no_clear_signal,the Dambulla-to-Colombo gap is too small for the model to say anything
+2026-10-19,Green Chilli,wholesale Pettah,225.0,300.0,-16.5,-4.0,-35.6,43.1,down,weak,ok,data are current (19 Oct 2026) and complete enough for Green Chilli
+2026-10-19,Lime,wholesale Pettah,1250.0,1200.0,-7.4,-4.9,-23.1,17.5,down,weak,ok,data are current (19 Oct 2026) and complete enough for Lime
+2026-10-19,Papaw,wholesale Pettah,45.0,100.0,-37.0,-12.8,-27.5,4.7,down,strong,ok,data are current (19 Oct 2026) and complete enough for Papaw
+2026-10-19,Potato (Imp),wholesale Pettah,,,,,,,,,insufficient_data,the latest model inputs are incomplete for this item; no estimate is shown
+2026-10-19,Potato (Local),wholesale Pettah,215.0,248.0,8.2,,,,,,no_clear_signal,the Dambulla-to-Colombo gap is too small for the model to say anything
+2026-10-19,Pumpkin,wholesale Pettah,230.0,270.0,5.3,,,,,,no_clear_signal,the Dambulla-to-Colombo gap is too small for the model to say anything
+2026-10-19,Red Onion (Local),wholesale Pettah,320.0,424.0,-4.7,,,,,,no_clear_signal,the Dambulla-to-Colombo gap is too small for the model to say anything
+2026-10-19,Red Onion (lmp),wholesale Pettah,,,,,,,,,insufficient_data,only 26 recent report days (of 60 considered) have both prices for Red Onion (lmp); at least 40 are needed
+2026-10-19,Snake gourd,wholesale Pettah,255.0,400.0,-3.3,,,,,,no_clear_signal,the Dambulla-to-Colombo gap is too small for the model to say anything
+2026-10-19,Tomato,wholesale Pettah,525.0,650.0,1.6,,,,,,no_clear_signal,the Dambulla-to-Colombo gap is too small for the model to say anything
+2026-10-19,Banana (Sour),retail Pettah,105.0,200.0,-19.2,-3.2,-15.8,11.3,down,weak,ok,data are current (19 Oct 2026) and complete enough for Banana (Sour)
+2026-10-19,Beans,retail Pettah,400.0,600.0,-16.0,-4.3,-21.8,17.0,down,weak,ok,data are current (19 Oct 2026) and complete enough for Beans
+2026-10-19,Big Onion (Imp),retail Pettah,245.0,279.0,-0.7,,,,,,no_clear_signal,the Dambulla-to-Colombo gap is too small for the model to say anything
+2026-10-19,Brinjal,retail Pettah,300.0,350.0,22.2,7.2,-17.2,38.8,up,strong,ok,data are current (19 Oct 2026) and complete enough for Brinjal
+2026-10-19,Cabbage,retail Pettah,355.0,450.0,17.0,,,,,,no_clear_signal,the Dambulla-to-Colombo gap is too small for the model to say anything
+2026-10-19,Carrot,retail Pettah,210.0,230.0,17.8,6.5,-19.1,40.3,up,strong,ok,data are current (19 Oct 2026) and complete enough for Carrot
+2026-10-19,Coconut (Avg.),retail Pettah,138.0,168.0,14.4,,,,,,no_clear_signal,the Dambulla-to-Colombo gap is too small for the model to say anything
+2026-10-19,Dried Chilli (Imp),retail Pettah,1125.0,1167.0,2.8,,,,,,no_clear_signal,the Dambulla-to-Colombo gap is too small for the model to say anything
+2026-10-19,Green Chilli,retail Pettah,225.0,350.0,-16.7,-3.3,-32.2,38.0,down,weak,ok,data are current (19 Oct 2026) and complete enough for Green Chilli
+2026-10-19,Lime,retail Pettah,1250.0,1400.0,-2.1,-4.6,-21.9,16.5,down,weak,ok,data are current (19 Oct 2026) and complete enough for Lime
+2026-10-19,Papaw,retail Pettah,45.0,150.0,-44.0,-11.1,-22.9,2.4,down,strong,ok,data are current (19 Oct 2026) and complete enough for Papaw
+2026-10-19,Pineapple,retail Pettah,235.0,325.0,-23.4,-5.4,-14.6,4.8,down,strong,ok,data are current (19 Oct 2026) and complete enough for Pineapple
+2026-10-19,Potato (Imp),retail Pettah,,,,,,,,,insufficient_data,the latest model inputs are incomplete for this item; no estimate is shown
+2026-10-19,Potato (Local),retail Pettah,215.0,313.0,1.0,,,,,,no_clear_signal,the Dambulla-to-Colombo gap is too small for the model to say anything
+2026-10-19,Pumpkin,retail Pettah,230.0,350.0,5.4,,,,,,no_clear_signal,the Dambulla-to-Colombo gap is too small for the model to say anything
+2026-10-19,Red Onion (Local),retail Pettah,320.0,475.0,2.6,,,,,,no_clear_signal,the Dambulla-to-Colombo gap is too small for the model to say anything
+2026-10-19,Red Onion (lmp),retail Pettah,,,,,,,,,insufficient_data,only 21 recent report days (of 60 considered) have both prices for Red Onion (lmp); at least 40 are needed
+2026-10-19,Snake gourd,retail Pettah,255.0,450.0,3.4,,,,,,no_clear_signal,the Dambulla-to-Colombo gap is too small for the model to say anything
+2026-10-19,Tomato,retail Pettah,525.0,700.0,7.2,,,,,,no_clear_signal,the Dambulla-to-Colombo gap is too small for the model to say anything
+2026-10-19,Banana (Sour),retail Narahenpita,105.0,320.0,-20.6,,,,,,no_clear_signal,the Dambulla-to-Colombo gap is too small for the model to say anything
+2026-10-19,Beans,retail Narahenpita,400.0,700.0,-5.4,,,,,,no_clear_signal,the Dambulla-to-Colombo gap is too small for the model to say anything
+2026-10-19,Big Onion (Imp),retail Narahenpita,,,,,,,,,no_colombo_price,no retail Narahenpita price for Big Onion (Imp) in the 19 Oct 2026 report
+2026-10-19,Brinjal,retail Narahenpita,300.0,560.0,14.7,,,,,,no_clear_signal,the Dambulla-to-Colombo gap is too small for the model to say anything
+2026-10-19,Cabbage,retail Narahenpita,355.0,400.0,75.4,10.2,-6.6,30.1,up,strong,ok,data are current (19 Oct 2026) and complete enough for Cabbage
+2026-10-19,Carrot,retail Narahenpita,210.0,360.0,13.4,,,,,,no_clear_signal,the Dambulla-to-Colombo gap is too small for the model to say anything
+2026-10-19,Coconut (Avg.),retail Narahenpita,138.0,200.0,12.5,,,,,,no_clear_signal,the Dambulla-to-Colombo gap is too small for the model to say anything
+2026-10-19,Dried Chilli (Imp),retail Narahenpita,1125.0,1240.0,2.9,,,,,,no_clear_signal,the Dambulla-to-Colombo gap is too small for the model to say anything
+2026-10-19,Green Chilli,retail Narahenpita,225.0,600.0,-29.3,-7.5,-24.5,13.4,down,strong,ok,data are current (19 Oct 2026) and complete enough for Green Chilli
+2026-10-19,Lime,retail Narahenpita,1250.0,1800.0,22.1,,,,,,no_clear_signal,the Dambulla-to-Colombo gap is too small for the model to say anything
+2026-10-19,Papaw,retail Narahenpita,45.0,200.0,-43.4,-9.6,-23.4,6.8,down,strong,ok,data are current (19 Oct 2026) and complete enough for Papaw
+2026-10-19,Pineapple,retail Narahenpita,235.0,450.0,-31.1,-7.9,-8.9,-6.9,down,strong,ok,data are current (19 Oct 2026) and complete enough for Pineapple
+2026-10-19,Potato (Imp),retail Narahenpita,,,,,,,,,insufficient_data,the latest model inputs are incomplete for this item; no estimate is shown
+2026-10-19,Potato (Local),retail Narahenpita,215.0,440.0,-10.9,,,,,,no_clear_signal,the Dambulla-to-Colombo gap is too small for the model to say anything
+2026-10-19,Pumpkin,retail Narahenpita,230.0,240.0,64.1,12.5,-8.9,38.9,up,strong,ok,data are current (19 Oct 2026) and complete enough for Pumpkin
+2026-10-19,Red Onion (Local),retail Narahenpita,320.0,700.0,11.5,4.2,0.5,8.1,up,weak,ok,data are current (19 Oct 2026) and complete enough for Red Onion (Local)
+2026-10-19,Red Onion (lmp),retail Narahenpita,,,,,,,,,no_colombo_price,no retail Narahenpita price for Red Onion (lmp) in the 19 Oct 2026 report
+2026-10-19,Snake gourd,retail Narahenpita,255.0,460.0,33.9,5.9,-11.1,26.2,up,weak,ok,data are current (19 Oct 2026) and complete enough for Snake gourd
+2026-10-19,Tomato,retail Narahenpita,525.0,800.0,20.1,,,,,,no_clear_signal,the Dambulla-to-Colombo gap is too small for the model to say anything
