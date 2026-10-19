@@ -5,7 +5,7 @@
 **Author:** Nivetha Ramanan, Sri Lanka Institute of Information Technology  
 **Domain:** Economy and livelihoods — cost of living and everyday economics  
 **Repository:** <https://github.com/IT25101414/price-signal>  
-**Release reviewed:** `v1.0.0-rc1`, plus the documented 18 October 2026 interface and validation updates
+**Release reviewed:** `v1.0.0-rc1`, plus the documented 19 October 2026 interface, reporting and validation updates  
 **Data shown by the committed build:** Statistics Department, Central Bank of Sri Lanka Daily Price Report, 15 October 2026  
 **Public application:** `[PENDING — add the Render URL after owner-authorised deployment]`
 
@@ -48,7 +48,7 @@ Price Signal delivers that missing comparison. For each supported food and Colom
 
 ## 4. Data, access and temporality
 
-The source is the Statistics Department, Central Bank of Sri Lanka, Daily Price Report. The collector discovered 2,274 manifest records through 15 October 2026; 2,273 have an `ok` download status and one is recorded as a failed PDF download. The supported analysis begins on 28 July 2020. Older layouts, scans without a text layer, undated headers and an exact duplicate are rejected rather than guessed.
+The source is the Statistics Department, Central Bank of Sri Lanka, Daily Price Report. The collector discovered 2,274 manifest records through 15 October 2026; 2,273 have an `ok` download status and one is recorded as a failed PDF download. Predefined layout, date and validation rules accepted 1,487 report days beginning on 28 July 2020 for analysis. This was not a manual selection of favourable reports: older layouts, scans without a text layer, undated headers and an exact duplicate are rejected rather than guessed, with the reasons retained in `failed_files.txt` and coverage recorded in `coverage.csv`.
 
 The data are both historical and current. Years of history are required to learn and test the relationship, while the latest accepted report drives the user interface. `refresh.py` checks the newest listing, downloads and parses unseen reports, appends accepted data once and records each run. The committed cards and one-year public history slice end on 15 October 2026.
 
@@ -103,7 +103,7 @@ The simulated policy chooses whether to buy today or after three report days, us
 
 Twelve constructed cases test fresh data, staleness, a newer unread report, Colombo or Dambulla closure, missing or `n.a.` prices, too little data, no clear signal and a holiday-adjusted freshness boundary. All 12 produce the specified state. Server tests verify that withheld cards and history contain no protected figures and that the interface never says “buy” or “sell”.
 
-On 18 October 2026, default `pytest` reported 93 passed and zero skipped. Eleven repository-owned tests cover the extractor's cell parsing, row grouping, name cleaning and cross-report consistency without external fixtures; interface regression checks cover the explanations added after buyer feedback, the four reporting periods, the new rolling-evidence section and the persistent local-language selector. The stronger 125-value check against original source reports remains in `validate_extract_prices_real.py` and is invoked explicitly with local PDFs, rather than appearing as three environment-dependent skips in a fresh clone. The model, robustness and decision self-tests all pass on synthetic worlds with known answers. Python source compilation succeeds when its bytecode cache is directed to a writable project or temporary directory.
+On 19 October 2026, default `pytest` reported 93 passed and zero skipped. Eleven repository-owned tests cover the extractor's cell parsing, row grouping, name cleaning and cross-report consistency without external fixtures; interface regression checks cover the explanations added after buyer feedback, the four reporting periods, the new rolling-evidence section and the persistent local-language selector. The stronger 125-value check against original source reports remains in `validate_extract_prices_real.py` and is invoked explicitly with local PDFs, rather than appearing as three environment-dependent skips in a fresh clone. The model, robustness and decision self-tests all pass on synthetic worlds with known answers. Python source compilation succeeds when its bytecode cache is directed to a writable project or temporary directory.
 
 The release workflow now also runs the rolling stress check and a dependency-free accessibility regression. The accessibility check found no failures across the six pages and all tested light/dark colour pairs exceed the WCAG AA 4.5:1 contrast threshold. A rendered-browser structure audit found no unnamed visible controls, empty links, missing image alternatives, duplicate IDs, broken ARIA label references, positive tabindex values or heading-level jumps. A local service smoke test passed 8/8 checks across health, status and all public pages; the same test is prepared to run against the deployed URL on weekdays.
 

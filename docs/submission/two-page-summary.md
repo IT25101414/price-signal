@@ -20,7 +20,7 @@ The product includes a plain-language Welcome page, a live-status Today dashboar
 
 `CBSL reports → polite collector → position-based PDF parser → local price table → ridge model → safety guard → website`
 
-The collector respects robots.txt and a ten-second crawl delay, downloads each file once and records its hash. The parser reads table values by position because the PDFs drop empty cells from their text layer; unfamiliar layouts are rejected, not guessed. Historical data train and test the model, while the latest accepted report controls the interface. The committed build uses the 15 October 2026 report.
+The collector respects robots.txt and a ten-second crawl delay, downloads each file once and records its hash. It discovered 2,274 report records, downloaded 2,273 successfully and recorded one failure. Predefined layout, date and validation rules accepted 1,487 report days from 28 July 2020 onward. This was not manual selection: unfamiliar, scanned, undated or duplicate reports are rejected and logged rather than guessed. Historical data train and test the model, while the latest accepted report controls the interface. The committed build uses the 15 October 2026 report.
 
 The Central Bank's Statistics Department replied on 12 October 2026 that the published data are publicly available and do not require specific approval for use. It requested attribution and stated that CBSL does not endorse derived results. The repository contains a redacted copy. Raw PDFs, the complete generated table and personal data are not published.
 
@@ -42,7 +42,7 @@ A separate rolling-origin check refitted the three-day model before three non-ov
 
 Price Signal removes estimates when the Central Bank listing cannot be checked, a newer report has not been parsed, the latest good data are more than three working days old, a market is closed, a price is missing, recent paired history is insufficient or the gap is too small. The server applies the guard again on every request and withholds history as well as cards.
 
-Verification on 18 October 2026: **93 reproducible tests passed with no environment-dependent skips**, **12 of 12 deliberate refusal cases passed**, and the model, robustness and decision-policy synthetic self-tests passed. The 125-value check against original CBSL reports remains a separate, explicit local validation because the source PDFs are not redistributed.
+Verification on 19 October 2026: **93 reproducible tests passed with no environment-dependent skips**, **12 of 12 deliberate refusal cases passed**, and the model, robustness and decision-policy synthetic self-tests passed. The 125-value check against original CBSL reports remains a separate, explicit local validation because the source PDFs are not redistributed.
 
 All six pages also pass a reproducible accessibility structure and principal-colour contrast check; a rendered-browser audit found no unnamed controls or broken label relationships. An 8/8 local service smoke test covers health, safety status and every page, and the same check is ready to run automatically against the public URL.
 
