@@ -36,15 +36,15 @@ Record this only after the public URL and final report are updated. Use the publ
 
 ## 2:20–2:40 — history and report
 
-**Show:** Explore, change the item and time range; then Weekly report.
+**Show:** Explore, change the item and time range; then switch Reports between Daily, Weekly, Monthly and Annual.
 
-**Say:** “The buyer can compare past Dambulla and Colombo prices, inspect their gap, and download a guarded weekly comparison. History is hidden under the same freshness rules.”
+**Say:** “The buyer can compare past Dambulla and Colombo prices, inspect their gap, and download guarded daily, weekly, monthly or annual comparisons. Incomplete periods remain blank, and history is hidden under the same freshness rules.”
 
 ## 2:40–3:00 — honest close
 
 **Show:** Help page or README and final commit.
 
-**Say:** “The pipeline, model and six-page site are reproducible from the public repository. Eighty-six automated tests pass without environment-dependent skips, and the code, permission evidence, MIT licence and AI-use disclosure are public. Three food buyers rated understanding, trust and usefulness at a median four out of five; their difficulty with the range, history terms and blank weekly values led to clearer explanations. The key result is a modest, tested Dambulla lead presented with uncertainty and safe refusal.”
+**Say:** “The pipeline, model and six-page site are reproducible from the public repository. Ninety-three automated tests pass without environment-dependent skips, and the code, permission evidence, MIT licence and AI-use disclosure are public. Three food buyers rated understanding, trust and usefulness at a median four out of five; their difficulty with the range, history terms and blank weekly values led to clearer explanations. The key result is a modest, tested Dambulla lead presented with uncertainty and safe refusal.”
 
 ## Before recording
 

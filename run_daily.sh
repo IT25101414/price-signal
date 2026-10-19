@@ -19,6 +19,7 @@ python3 model.py prices_all.csv || { model_rc=$?; echo "model failed; cards.csv 
 
 if [ "$model_rc" -eq 0 ]; then
     python3 export_recent.py prices_all.csv || echo "recent price slice not updated"
+    python3 web/build_db.py || echo "local website database not rebuilt"
     git add -f cards.csv data/refresh_log.csv data/recent_prices.csv 2>/dev/null || git add -f cards.csv data/refresh_log.csv
 else
     # Publishing the refresh log is safety-critical: it can tell the hosted guard to hide old cards.

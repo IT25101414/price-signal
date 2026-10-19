@@ -170,7 +170,7 @@ def test_buyer_feedback_explanations_are_present(hist_client):
     c = hist_client("2026-10-12")
     assert b"about 8 times in 10" in c.get("/today").data
     assert b"shared report day means" in c.get("/explore").data
-    assert b"A blank means" in c.get("/report").data
+    assert b"A blank means" in c.get("/static/report.js").data
     assert b"Blank weekly value" in c.get("/help").data
     assert b'priceData: "Price data {date}"' in c.get("/static/common.js").data
 
@@ -271,6 +271,29 @@ def test_weekly_csv_has_one_row_per_item(hist_client):
     assert lines[0].startswith("item,series,") and len(lines) > 5
 
 
+@pytest.mark.parametrize("period,window", [("daily", 1), ("weekly", 5), ("monthly", 22), ("annual", 22)])
+def test_report_periods_are_supported(hist_client, period, window):
+    c = hist_client("2026-10-12")
+    report = c.get(f"/api/report?series=retail%20Pettah&period={period}").get_json()
+    assert report["state"] == "ok" and report["period"] == period
+    assert report["window_days"] == window and report["previous_period"] and report["current_period"]
+    assert len(report["items"]) > 5
+    csv_response = c.get(f"/api/report.csv?series=retail%20Pettah&period={period}")
+    assert csv_response.status_code == 200 and f"price-signal-{period}" in csv_response.headers["Content-Disposition"]
+
+
+def test_public_navigation_describes_all_report_periods(hist_client):
+    common = hist_client("2026-10-12").get("/static/common.js").data
+    assert b'navWeekly: "Reports"' in common
+    assert b"daily, weekly, monthly and annual movements" in common
+
+
+def test_annual_report_states_available_history_length(hist_client):
+    report = hist_client("2026-10-12").get(
+        "/api/report?series=retail%20Pettah&period=annual").get_json()
+    assert report["comparison"] == "one_year" and report["history_days"] == build_db.HISTORY_DAYS
+
+
 def test_bad_arguments_are_refused_with_json(hist_client):
     c = hist_client("2026-10-12")
     assert c.get("/api/history?item=Carrot&series=nope&days=22").status_code == 400
@@ -278,6 +301,7 @@ def test_bad_arguments_are_refused_with_json(hist_client):
     assert c.get("/api/history?item=Carrot&series=retail%20Pettah&days=x").status_code == 400
     assert c.get("/api/history?item=NoSuchThing&series=retail%20Pettah&days=22").status_code == 404
     assert "error" in c.get("/api/weekly?series=nope").get_json()
+    assert c.get("/api/report?period=quarterly").status_code == 400
 
 
 def test_summary_has_counts_and_no_prices(hist_client):

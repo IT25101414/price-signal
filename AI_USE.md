@@ -69,3 +69,7 @@ OpenAI Codex simplified the Today summary cards, replaced the purple stronger-si
 
 OpenAI Codex added a persistent English, Sinhala and Tamil selector to the welcome page and a compact selector on the remaining pages. It translated the core welcome, navigation, source, safety, status and Today-summary wording while deliberately preserving official item names, market names, dates and numerical values. It also replaced the informal "may rise / may fall" count with a neutral expected-direction summary, applied the established green treatment consistently to all four summary cards, added regression tests and checked the rendered Sinhala and Tamil layouts. The project author remains responsible for reviewing the translations with native speakers before public submission.
 
+## Addendum 15: reporting periods and scheduled refresh
+
+OpenAI Codex extended the guarded Reports page from Weekly only to Daily, Weekly, Monthly and Annual comparisons, added period-specific APIs and CSV exports, and added regression tests for every period. It also added a no-cost macOS daily scheduler around the existing refresh pipeline and made the pipeline rebuild the local website database after a successful model run. The scheduler refuses to activate without the author's private full-history table, because the public one-year display slice is not sufficient for valid model retraining. We ran the 93-test suite and reviewed the generated report periods. The project author remains responsible for the private data file, GitHub authentication and final activation.
+

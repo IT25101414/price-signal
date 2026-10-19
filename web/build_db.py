@@ -92,7 +92,7 @@ def insert_synthetic(con, end_iso):
     rnd = random.Random(7)
     end = date.fromisoformat(end_iso)
     days, d = [], end
-    while len(days) < 120:
+    while len(days) < HISTORY_DAYS:
         if d.weekday() < 5:
             days.append(d)
         d -= timedelta(days=1)

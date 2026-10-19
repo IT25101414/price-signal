@@ -75,11 +75,13 @@ Environment variables: `PRICE_SIGNAL_DB`, `PRICE_SIGNAL_LOG`, `PRICE_SIGNAL_TODA
 | `/` Welcome | Plain-language project introduction, independence notice, English/Sinhala/Tamil language choice and entry to the price guide |
 | `/today` Today | Source health, multilingual summary and safety labels, expected-change and uncertainty chart, strongest-signal list, filters, safe CSV export and item cards with each estimate's possible range |
 | `/explore` | Past prices of one item plus the latest, typical and historical Colombo-Dambulla price difference, from 1 week to 1 year |
-| `/report` | This week against last week for every item, biggest moves, small charts, CSV download, print to PDF |
+| `/report` | Daily, weekly, monthly and annual comparisons for every item, with charts, guarded CSV download and print to PDF |
 | `/method` | How the estimates work, their evidence and their limits, read from `results_*.txt` |
 | `/help` | How to read the page, what the signals mean, what it cannot do |
 
 Price history comes from `prices_all.csv` if present, otherwise from `data/recent_prices.csv`. With neither, the history pages say so. `python3 web/build_db.py --synthetic-history` builds invented history for layout demos; every page then shows a demo-data notice.
+
+The report windows are explicit: Daily compares the latest two report days; Weekly compares two complete five-report-day windows; Monthly compares two complete 22-report-day windows; Annual compares the earliest and latest complete 22-report-day averages within up to 250 available report days. A period value is blank unless every daily value required for that average exists.
 
 The language choice is stored only in the visitor's browser. English, Sinhala and Tamil cover the welcome page, site navigation and the main Today summary/status journey. Official item names, market names, dates, figures and source references are not translated or altered.
 

@@ -96,9 +96,9 @@ Unparsed reports are listed in `failed_files.txt`. Nothing is guessed or filled 
 | 1 Nov | **Implementation submission** | Repository opens from a private browser window and this README runs |
 | 9 to 14 Nov | If we reach the final: rehearse the live demo | Demo runs on the day's real report |
 
-**Still to do (18 Oct 2026):** complete and verify the public Render service; add its exact URL to the README and report; re-export the report PDF with that URL; record the final three-minute video on that public build; then complete a private-browser submission rehearsal. The buyer findings, interface changes and current evidence update to the PDF are complete. The daily refresh remains a deliberate local script rather than a cloud schedule because the complete price table is not redistributed.
+**Still to do (18 Oct 2026):** complete and verify the public Render service; add its exact URL to the README and report; re-export the report PDF with that URL; record the final three-minute video on that public build; then complete a private-browser submission rehearsal. The buyer findings and interface changes are complete. A no-cost macOS daily refresh schedule is now included, but it can only be activated on the author's Mac after the private `prices_all.csv` full-history file is present.
 
-**What we cut first if time runs short:** (1) gradient-boosting challenger models, (2) automated daily refresh, replaced by a script the user runs, (3) the 1-day and 5-day horizons, keeping 3 days. The three buyer sessions and the English, Sinhala and Tamil core interface are now complete. We never cut the freshness check, the refusal rules or the honest evaluation.
+**What we cut first if time runs short:** (1) additional challenger models beyond those already evaluated, (2) additional forecast horizons beyond the tested 1-, 3- and 5-report-day checks, and (3) decorative interface features. The three buyer sessions, local-language core interface, daily refresh schedule and four reporting periods are complete. We never cut the freshness check, refusal rules or honest evaluation.
 
 ## 5. Final outcome we are aiming for
 
@@ -142,6 +142,21 @@ python3 web/smoke_test.py http://127.0.0.1:5000
 ```
 
 `prices_all.csv` and the raw PDFs are generated locally and are not redistributed in this repository.
+
+### Automatic daily refresh on macOS
+
+The included no-cost scheduler checks for a new CBSL report every day at 18:30 local time. It runs the same guarded pipeline as `run_daily.sh`, rebuilds the local website database, and pushes a new safety state only through the configured Git remote. CBSL normally publishes on working days, so a weekend check usually finds no new report; weekend dates do not make Friday's report stale because freshness is counted in working days.
+
+The scheduler deliberately requires the private full-history `prices_all.csv`; the committed one-year display slice is not sufficient for valid model retraining.
+
+```bash
+# Run once after prices_all.csv has been generated in the repository root.
+bash automation/install_macos_refresh.sh
+
+# Optional: start one refresh immediately and inspect its log.
+launchctl kickstart -k gui/$(id -u)/com.price-signal.refresh
+tail -n 50 automation/daily-refresh.log
+```
 
 ## 7. Repository map
 
@@ -213,7 +228,7 @@ python3 -m streamlit run app.py
 
 **Hosting (added 16 Oct 2026):** `render.yaml` and `web/DEPLOY.md` describe a free Render deployment of the website. The site is built from the committed `cards.csv` and `data/refresh_log.csv` only; `run_daily.sh` refreshes, rebuilds the cards and pushes both files, and the host rebuilds on each push. The web server answers with `Cache-Control: no-store` and uses Sri Lanka time for the freshness check. The 80% range can be checked at other horizons with `python3 model.py prices_all.csv --evaluate --h 1` (and `--h 5`).
 
-**Website pages (added 17 Oct 2026):** Welcome gives a plain-language introduction and a prominent independent-project notice. Visitors can choose English, Sinhala or Tamil on that page; the choice persists across the site, and the core welcome, navigation, status, safety and Today-summary wording follows it. Official item, market, date and source values remain unchanged. Today shows source health, a signal summary, an expected-change and uncertainty chart, the clearest-estimate list, filters, safe CSV export and detailed cards. Explore shows past prices of any item as a chart, with the difference between Dambulla and Colombo, 1 week to 1 year, rupees or indexed to 100. Weekly report compares this week with last week for every item and includes a CSV download and print-to-PDF button. How it works presents the evidence charts read from `results_*.txt`; Help explains the interface. Every past-price view obeys the same guard as the cards: nothing is shown when the report is stale or a newer one is unread, and an item with missing data shows no prices. `data/recent_prices.csv` (written by `export_recent.py`, run by `run_daily.sh`) is a small slice of the Central Bank's published prices, so a fresh clone still has charts; the Central Bank's reply of 12 Oct 2026 says the data are public and asks for attribution to the Statistics Department.
+**Website pages (added 17 Oct 2026):** Welcome gives a plain-language introduction and a prominent independent-project notice. Visitors can choose English, Sinhala or Tamil on that page; the choice persists across the site, and the core welcome, navigation, status, safety and Today-summary wording follows it. Official item, market, date and source values remain unchanged. Today shows source health, a signal summary, an expected-change and uncertainty chart, the clearest-estimate list, filters, safe CSV export and detailed cards. Explore shows past prices of any item as a chart, with the difference between Dambulla and Colombo, 1 week to 1 year, rupees or indexed to 100. Reports offers strict Daily, Weekly, Monthly and Annual comparisons, with guarded CSV download and print-to-PDF output. How it works presents the evidence charts read from `results_*.txt`; Help explains the interface. Every past-price view obeys the same guard as the cards: nothing is shown when the report is stale or a newer one is unread, and an item with missing data shows no prices. `data/recent_prices.csv` (written by `export_recent.py`, run by `run_daily.sh`) is a small slice of the Central Bank's published prices, so a fresh clone still has charts; the Central Bank's reply of 12 Oct 2026 says the data are public and asks for attribution to the Statistics Department.
 
-**Advanced release checks (added 18 Oct 2026):** `rolling_stress_check.py` refits the three-day model before three non-overlapping recent test windows; all nine market-window gains were positive and all nine wrong-item placebo gains were non-positive. `web/accessibility_check.py` checks all six source pages and the principal light/dark contrast pairs in CI; the rendered pages were also inspected for accessible names and structure. `web/smoke_test.py` verifies `/healthz`, `/api/status` and every public page. The scheduled smoke workflow starts automatically after the repository owner sets the `PUBLIC_SITE_URL` repository variable.
+**Advanced release checks (added 18 Oct 2026):** `rolling_stress_check.py` refits the three-day model before three non-overlapping recent test windows; all nine market-window gains were positive and all nine wrong-item placebo gains were non-positive. `web/accessibility_check.py` checks all six source pages and the principal light/dark contrast pairs in CI; the rendered pages were also inspected for accessible names and structure. `web/smoke_test.py` verifies `/healthz`, `/api/status` and every public page. The scheduled smoke workflow starts automatically after the repository owner sets the `PUBLIC_SITE_URL` repository variable. The verified local suite now reports **93 passed, 0 skipped**.
 

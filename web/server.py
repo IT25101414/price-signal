@@ -66,8 +66,15 @@ def ensure_db():
 # History is a record of past prices, not an estimate, so it may be shown for a card that has no clear signal.
 # It is withheld for every other status (a missing or closed market, too little data, anything not understood).
 HISTORY_STATUSES = ("ok", "no_clear_signal")
-WEEK = 5                    # report days in "this week" and in "last week"
 RANGES = (5, 22, 65, 130, 250)
+REPORT_PERIODS = {
+    "daily": {"window": 1, "lookback": 2, "comparison": "adjacent"},
+    "weekly": {"window": 5, "lookback": 10, "comparison": "adjacent"},
+    "monthly": {"window": 22, "lookback": 44, "comparison": "adjacent"},
+    # One public year is stored. Compare its first and latest 22-report-day averages so
+    # the annual view is useful without pretending that a second full year is present.
+    "annual": {"window": 22, "lookback": 250, "min_dates": 44, "comparison": "one_year"},
+}
 
 
 def gate(report_date):
@@ -250,25 +257,40 @@ def create_app():
                     colombo=[by[d].get(series) for d in dates])
         return jsonify(base)
 
-    def weekly(series):
-        """This week (the last 5 report days) against last week (the 5 before), for every item that may show history."""
+    def period_arg():
+        period = request.args.get("period", "weekly")
+        if period not in REPORT_PERIODS:
+            abort(400, f"period must be one of {list(REPORT_PERIODS)}")
+        return period
+
+    def periodic(series, period):
+        """Compare complete averages for daily, weekly, monthly or annual report windows."""
         rd = report_date()
         st, reason, _ = gate(rd)
-        out = dict(state=st, reason=reason, series=series, report_date=rd.isoformat(), items=[],
-                   history_source=meta().get("history_source", "none"), this_week=None, last_week=None)
+        cfg = REPORT_PERIODS[period]
+        out = dict(state=st, reason=reason, series=series, period=period, report_date=rd.isoformat(), items=[],
+                   history_source=meta().get("history_source", "none"), current_period=None,
+                   previous_period=None, window_days=cfg["window"], comparison=cfg["comparison"], history_days=0)
         if st != "ok":
             return out
         allowed = {r["item"] for r in conn().execute("SELECT item, status FROM cards WHERE series = ?", (series,))
                    if r["status"] in HISTORY_STATUSES}
         dates = [r["d"] for r in conn().execute(
             "SELECT DISTINCT report_date AS d FROM prices WHERE series = ? ORDER BY d", (series,))]
-        if len(dates) < 2 * WEEK:
+        if len(dates) < cfg.get("min_dates", cfg["lookback"]):
             return out
-        this_w, last_w = dates[-WEEK:], dates[-2 * WEEK:-WEEK]
-        out["this_week"], out["last_week"] = [this_w[0], this_w[-1]], [last_w[0], last_w[-1]]
+        if cfg["comparison"] == "one_year":
+            annual_dates = dates[-cfg["lookback"]:]
+            out["history_days"] = len(annual_dates)
+            current, previous = annual_dates[-cfg["window"]:], annual_dates[:cfg["window"]]
+        else:
+            out["history_days"] = cfg["lookback"]
+            current = dates[-cfg["window"]:]
+            previous = dates[-2 * cfg["window"]:-cfg["window"]]
+        out["current_period"], out["previous_period"] = [current[0], current[-1]], [previous[0], previous[-1]]
         by = {}
         for r in conn().execute("SELECT report_date, item, series, price_rs FROM prices WHERE series IN (?, 'wholesale Dambulla') "
-                                "AND report_date >= ?", (series, last_w[0])):
+                                "AND report_date >= ?", (series, previous[0])):
             by.setdefault(r["item"], {}).setdefault(r["series"], {})[r["report_date"]] = r["price_rs"]
 
         def avg(d, days):
@@ -279,31 +301,52 @@ def create_app():
             dd, cc = by[item].get("wholesale Dambulla", {}), by[item].get(series, {})
             row = dict(item=item)
             for key, d in (("dambulla", dd), ("colombo", cc)):
-                (a, na), (b, nb) = avg(d, last_w), avg(d, this_w)
+                (a, na), (b, nb) = avg(d, previous), avg(d, current)
                 row[key] = dict(last=a, this=b, change_pct=(100 * (b / a - 1)) if a and b else None,
                                 last_n=na, this_n=nb,
-                                spark=[d.get(x) for x in last_w + this_w])
+                                spark=[d.get(x) for x in previous + current])
             if row["dambulla"]["this"] is not None or row["colombo"]["this"] is not None:
                 out["items"].append(row)
         return out
+
+    def weekly(series):
+        """Compatibility response for existing clients while the UI uses /api/report."""
+        out = periodic(series, "weekly")
+        out["this_week"], out["last_week"] = out["current_period"], out["previous_period"]
+        return out
+
+    @app.get("/api/report")
+    def api_report():
+        return jsonify(periodic(series_arg(), period_arg()))
 
     @app.get("/api/weekly")
     def api_weekly():
         return jsonify(weekly(series_arg()))
 
-    @app.get("/api/weekly.csv")
-    def api_weekly_csv():
-        w = weekly(series_arg())
+    def report_csv(w):
         if w["state"] != "ok":
             abort(409, w["reason"])
-        lines = ["item,series,dambulla_last_week_rs,dambulla_this_week_rs,dambulla_change_pct,"
-                 "colombo_last_week_rs,colombo_this_week_rs,colombo_change_pct"]
+        lines = ["item,series,period,dambulla_previous_rs,dambulla_current_rs,dambulla_change_pct,"
+                 "colombo_previous_rs,colombo_current_rs,colombo_change_pct"]
         f = lambda v, d=1: "" if v is None else f"{v:.{d}f}"
         for r in w["items"]:
             d, c = r["dambulla"], r["colombo"]
-            lines.append(",".join([f'"{r["item"]}"', f'"{w["series"]}"', f(d["last"]), f(d["this"]), f(d["change_pct"]),
+            lines.append(",".join([f'"{r["item"]}"', f'"{w["series"]}"', w["period"],
+                                   f(d["last"]), f(d["this"]), f(d["change_pct"]),
                                    f(c["last"]), f(c["this"]), f(c["change_pct"])]))
-        body = "\n".join(lines) + "\n"
+        return "\n".join(lines) + "\n"
+
+    @app.get("/api/report.csv")
+    def api_report_csv():
+        w = periodic(series_arg(), period_arg())
+        body = report_csv(w)
+        return app.response_class(body, mimetype="text/csv", headers={
+            "Content-Disposition": f'attachment; filename="price-signal-{w["period"]}-{w["series"].replace(" ", "-")}-{w["report_date"]}.csv"'})
+
+    @app.get("/api/weekly.csv")
+    def api_weekly_csv():
+        w = weekly(series_arg())
+        body = report_csv(w)
         return app.response_class(body, mimetype="text/csv", headers={
             "Content-Disposition": f'attachment; filename="price-signal-weekly-{w["series"].replace(" ", "-")}-{w["report_date"]}.csv"'})
 

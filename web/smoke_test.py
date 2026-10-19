@@ -19,7 +19,7 @@ PAGES = {
     "/": "Sri Lanka Food Price Signal",
     "/today": "Today’s price guide",
     "/explore": "Explore past prices",
-    "/report": "Weekly report",
+    "/report": "Price reports",
     "/method": "How Price Signal works",
     "/help": "Help and support",
 }
