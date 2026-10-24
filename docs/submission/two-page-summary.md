@@ -20,7 +20,7 @@ The product includes a plain-language Welcome page, a live-status Today dashboar
 
 `CBSL reports → polite collector → position-based PDF parser → local price table → ridge model → safety guard → website`
 
-The collector respects robots.txt and a ten-second crawl delay, downloads each file once and records its hash. It discovered 2,276 report records, downloaded 2,275 successfully and recorded one failure. Predefined layout, date and validation rules accepted 1,491 report days from 28 July 2020 through 19 October 2026. This was not manual selection: unfamiliar, scanned, undated or duplicate reports are rejected and logged rather than guessed. Historical data train and test the model, while the latest accepted report controls the interface. The verified local build uses the 19 October 2026 report.
+The collector respects robots.txt and a ten-second crawl delay, downloads each file once and records its hash. It discovered 2,280 report records, downloaded 2,279 successfully and recorded one failure. Predefined layout, date and validation rules accepted 1,495 report days from 28 July 2020 through 23 October 2026. This was not manual selection: unfamiliar, scanned, undated or duplicate reports are rejected and logged rather than guessed. Historical data train and test the model, while the latest accepted report controls the interface. The verified local build uses the 23 October 2026 report.
 
 The Central Bank's Statistics Department replied on 12 October 2026 that the published data are publicly available and do not require specific approval for use. It requested attribution and stated that CBSL does not endorse derived results. The repository contains a redacted copy. Raw PDFs, the complete generated table and personal data are not published.
 
@@ -36,13 +36,13 @@ The model asks a focused question: after accounting for a Colombo price's own re
 
 Gain is the additional share of squared forecast error removed. The placebo is approximately zero. The simulated cost result is not observed savings: it assumes a buyer can defer a purchase without shortage, spoilage or operating cost. The ranges are wide, so the interface makes uncertainty visible.
 
-A separate rolling-origin check refitted the three-day model before three non-overlapping May–October 2026 test windows. All 9 Dambulla gains were positive (+5.5 to +13.7 points), all 9 wrong-item placebos were zero or negative, and a majority of items benefited in all 9 comparisons. This strengthens recent stability evidence but does not test the 2022 crisis.
+A separate rolling-origin check refitted the three-day model before three non-overlapping 2026 test windows. In the frozen 19 October evaluation, all 9 Dambulla gains were positive (+3.4 to +13.1 points), all 9 wrong-item placebos were zero or negative, and a majority of items benefited in all 9 comparisons. A latest-data diagnostic through 23 October retains 9/9 positive gains, while one of nine wrong-item placebos is slightly positive (+0.2 points). This disclosed sensitivity still supports a modest recent relationship, but does not test the 2022 crisis.
 
 ### Safe refusal is a feature
 
 Price Signal removes estimates when the Central Bank listing cannot be checked, a newer report has not been parsed, the latest good data are more than three working days old, a market is closed, a price is missing, recent paired history is insufficient or the gap is too small. The server applies the guard again on every request and withholds history as well as cards.
 
-Verification on 19 October 2026: **93 reproducible tests passed with no environment-dependent skips**, **12 of 12 deliberate refusal cases passed**, and the model, robustness and decision-policy synthetic self-tests passed. The 125-value check against original CBSL reports remains a separate, explicit local validation because the source PDFs are not redistributed.
+Verification on 24 October 2026: **93 reproducible tests passed with no environment-dependent skips**, **12 of 12 deliberate refusal cases passed**, and the model, robustness and decision-policy synthetic self-tests passed. The 125-value check against original CBSL reports remains a separate, explicit local validation because the source PDFs are not redistributed.
 
 All six pages also pass a reproducible accessibility structure and principal-colour contrast check; a rendered-browser audit found no unnamed controls or broken label relationships. An 8/8 local service smoke test covers health, safety status and every page, and the same check is ready to run automatically against the public URL.
 

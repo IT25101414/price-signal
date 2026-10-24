@@ -26,7 +26,7 @@ Record this only after the public URL and final report are updated. Use the publ
 
 **Say:** “On data from 2024 onward, adding Dambulla removed about six to twelve percentage points of squared forecast error beyond the price’s own history. A placebo showed almost nothing. The stated 80 percent range covered 77.4 to 81.5 percent of unseen three-day outcomes. In simulation, the model cost 1.2 to 1.6 percent less than always buying today, but this is not observed buyer savings.”
 
-**Optional if time allows:** “The result also stayed positive in all nine combinations of three later time windows and three Colombo markets; all nine wrong-item placebos were non-positive.”
+**Optional if time allows:** “The frozen evaluation stayed positive in all nine combinations of three later time windows and three Colombo markets, with all nine wrong-item placebos non-positive. In a diagnostic with the newest data, the nine real gains stayed positive while one placebo became slightly positive, so I report that sensitivity rather than hiding it.”
 
 ## 1:50–2:20 — fail safely
 

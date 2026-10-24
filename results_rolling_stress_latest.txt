@@ -1,0 +1,24 @@
+ROLLING-ORIGIN STRESS CHECK (3 REPORT DAYS)
+source: data/recent_prices.csv
+Model C = Colombo own history; Model D = Model C + matching Dambulla history.
+gain = Model D error reduction beyond Model C, as points of no-change squared error.
+placebo = the same calculation with another item's Dambulla series.
+Windows are chronological and non-overlapping; each model is refitted using only earlier rows.
+This recent-slice check is not a crisis-period evaluation.
+
+win train end   test period              series                   train   test    gain   placebo    items+
+W1  2026-05-11  2026-05-12 to 2026-07-07 wholesale Pettah          1489    612   +1.1%     -2.2%     12/18
+W1  2026-05-11  2026-05-12 to 2026-07-07 retail Pettah             1532    595   +3.0%     -1.9%     11/17
+W1  2026-05-11  2026-05-12 to 2026-07-07 retail Narahenpita        1401    595   +8.8%     -1.1%     10/17
+W2  2026-07-07  2026-07-08 to 2026-09-02 wholesale Pettah          2118    649  +10.2%     -0.3%     13/18
+W2  2026-07-07  2026-07-08 to 2026-09-02 retail Pettah             2216    649   +9.7%     -0.5%     13/18
+W2  2026-07-07  2026-07-08 to 2026-09-02 retail Narahenpita        2059    643   +8.5%     -1.1%     13/18
+W3  2026-09-02  2026-09-03 to 2026-10-23 wholesale Pettah          2752    566  +14.3%     -0.3%     12/18
+W3  2026-09-02  2026-09-03 to 2026-10-23 retail Pettah             2850    599  +12.5%     +0.2%     13/19
+W3  2026-09-02  2026-09-03 to 2026-10-23 retail Narahenpita        2687    537  +13.1%     -0.3%     12/18
+
+Summary: 9/9 gains were positive; range +1.1% to +14.3%.
+Placebo: 8/9 were zero or negative; range -2.2% to +0.2%.
+A majority of items benefited in 9/9 market-window combinations.
+Interpretation: the recent lead-lag result is directionally stable across all three held-out windows,
+but this does not establish buyer savings or behaviour during the 2022 crisis.

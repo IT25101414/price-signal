@@ -4,7 +4,7 @@
 
 ModelX 2.0 (IEEE CIS Student Chapter, IIT) · Domain: Cost of living and everyday economics · Author: Nivetha, SLIIT
 
-**Status (19 Oct 2026):** functionality frozen at `v1.0.0-rc1`; the pipeline, model, safety guard, Streamlit dashboard and six-page Flask/SQLite website are built and tested. The current local build uses the 19 Oct report. Three consented buyer sessions are documented and their main comprehension problems have been addressed in the interface. The project is MIT-licensed and the report PDF reflects the current evidence; verified public hosting, insertion of its URL and recording the video remain open. See [`docs/submission/readiness.md`](docs/submission/readiness.md) for the live checklist.
+**Status (24 Oct 2026):** functionality is frozen; the pipeline, model, safety guard, Streamlit dashboard and six-page Flask/SQLite website are built and tested. The current local build uses the newest listed report, dated 23 Oct. Three consented buyer sessions are documented and their main comprehension problems have been addressed in the interface. The project is MIT-licensed; verified public hosting, insertion of its URL, final PDF regeneration and recording the video remain open. See [`docs/submission/readiness.md`](docs/submission/readiness.md) for the live checklist.
 
 ---
 
@@ -34,7 +34,7 @@ Gain is the share of squared forecast error removed, in percentage points, again
 
 **Finding 4: three buyers saw potential value but needed clearer uncertainty language.** A restaurant buyer, vegetable-shop buyer and hotel/catering buyer completed structured sessions on 16-17 Oct. Median ratings were 4/5 for understanding, trust as one input and usefulness. Two of three needed help with the possible range, all three needed help or could not complete the historical comparison, and two questioned blank weekly values. The site now explains these points in plain language. This small study measures comprehension and stated intent, not actual savings; details are in `docs/buyer-feedback/findings-summary.md`.
 
-**Finding 5: the lead-lag result survived a rolling-time stress check.** The same own-history and Dambulla models were refitted before three non-overlapping test windows from 5 May to 15 October 2026. Adding the matching Dambulla series improved the Colombo model in all 9 market-window combinations by +5.5 to +13.7 points; a deliberately wrong-item Dambulla placebo was zero or negative in all 9. A majority of individual items benefited in all 9 combinations. This recent-slice check strengthens temporal stability evidence but is not a 2022 crisis test; see `results_rolling_stress.txt`.
+**Finding 5: the lead-lag result survived a pre-declared rolling-time stress check.** With the evaluation fixed at 19 October 2026, the same own-history and Dambulla models were refitted before three non-overlapping test windows. Adding the matching Dambulla series improved the Colombo model in all 9 market-window combinations by +3.4 to +13.1 points; a deliberately wrong-item Dambulla placebo was zero or negative in all 9, and a majority of individual items benefited in all 9. A separate diagnostic through 23 October still has 9/9 positive gains, but one of nine placebos is slightly positive (+0.2 points); this is disclosed in `results_rolling_stress_latest.txt`. These checks support recent stability but are not a 2022 crisis test.
 
 **Limits, stated plainly:** the effect is modest (errors roughly 4 to 8% smaller than "no change"); it rests on one train and test split; horizons count report days, so a Monday spans a weekend; only 18 to 19 items have Dambulla wholesale prices; the rupee backtest assumes a purchase can be deferred at no cost; the test period (2024 on) is calm and the signal may weaken in a crisis such as 2022.
 
@@ -42,7 +42,7 @@ Gain is the share of squared forecast error removed, in percentage points, again
 
 | # | Work | Evidence in this repo |
 |---|---|---|
-| 1 | Downloader that obeys robots.txt (10-second crawl delay), downloads each PDF once and records a manifest. 2,276 records discovered through 19 Oct 2026; 2,275 downloads succeeded and one failed visibly. | `download_cbsl_reports.py`, `data/manifest.csv` |
+| 1 | Downloader that obeys robots.txt (10-second crawl delay), downloads each PDF once and records a manifest. 2,280 records discovered through 23 Oct 2026; 2,279 downloads succeeded and one failed visibly. | `download_cbsl_reports.py`, `data/manifest.csv` |
 | 2 | Position-based PDF table extractor. Reads each value by horizontal position, because the PDF text layer drops empty cells and splits numbers. Rejects any layout it was not built for instead of guessing. | `extract_prices.py` |
 | 3 | Extractor verification: repository-owned helper tests run in CI, and an optional local validation checks 125 extracted prices against figures quoted in the original reports' summary text. | `test_extract_prices_unit.py`, `validate_extract_prices_real.py` |
 | 4 | Full extraction run: **1,487 supported report days parsed from 28 Jul 2020 onward.** Older layouts and eight supported-layout exceptions are listed rather than guessed. | `failed_files.txt`, `coverage.py`, `coverage.csv` |
@@ -52,7 +52,7 @@ Gain is the share of squared forecast error removed, in percentage points, again
 | 8 | Written response received from CBSL on **12 Oct 2026**: the published data are publicly available, do not require specific approval for use, and should be attributed to the Statistics Department. CBSL does not endorse the project. | [`docs/cbsl_reply_2026-10-12.pdf`](docs/cbsl_reply_2026-10-12.pdf) |
 | 9 | Phase 1 project proposal completed against every required competition section. | `docs/submission/phase1-project-proposal.pdf` |
 | 10 | AI-use disclosure for every script and document. | `AI_USE.md` |
-| 11 | Functionality frozen and independently re-checked: the current 86 reproducible tests pass with no environment-dependent skips, 12 of 12 deliberate refusal cases pass, and all model self-tests pass. | `docs/functionality-freeze-2026-10-17.md` |
+| 11 | Functionality frozen and independently re-checked: the current 93 reproducible tests pass with no environment-dependent skips, 12 of 12 deliberate refusal cases pass, and all model self-tests pass. | `docs/functionality-freeze-2026-10-17.md` |
 | 12 | Three anonymous, consented buyer sessions completed; task results and individual ratings recorded; buyer-driven wording changes implemented. | `docs/buyer-feedback/findings-summary.md` |
 | 13 | Final technical report updated from the 17 Oct version; two-page summary and three-minute video script prepared from the saved evidence. | `docs/submission/` |
 | 14 | Rolling-origin stress test over three held-out 2026 windows, with wrong-item placebo. | `rolling_stress_check.py`, `results_rolling_stress.txt` |
@@ -63,9 +63,9 @@ Gain is the share of squared forecast error removed, in percentage points, again
 
 | | Count |
 |---|---|
-| Manifest records discovered | 2,274 |
-| Successful PDF downloads | 2,273 |
-| Parsed (supported layout) | 1,487 report days |
+| Manifest records discovered | 2,280 |
+| Successful PDF downloads | 2,279 |
+| Parsed (supported layout) | 1,495 report days |
 | Older layouts (2017 to mid-2020), rejected on purpose | 776 |
 | Scanned PDFs with no text layer (2022-03-16, 2025-09-24, 2025-09-25, 2026-04-15) | 4 |
 | Header names a weekday but no date (2026-04-02, 2026-05-29, 2026-07-30) | 3 |
@@ -134,6 +134,7 @@ python3 model_check.py prices_all.csv
 python3 leadlag_check.py prices_all.csv
 python3 robust_check.py prices_all.csv
 python3 decision_backtest.py prices_all.csv
+python3 rolling_stress_check.py data/recent_prices.csv --as-of 2026-10-19 --strict
 python3 rolling_stress_check.py data/recent_prices.csv
 
 # 5. Release checks
@@ -171,7 +172,7 @@ tail -n 50 automation/daily-refresh.log
 | `leadlag_check.py` | First lead-lag check |
 | `robust_check.py`, `results_leadlag.txt` | Robust lead-lag test with placebo and intervals |
 | `decision_backtest.py`, `results_decision.txt` | Rupee backtest of the buying decision |
-| `rolling_stress_check.py`, `results_rolling_stress.txt` | Three chronological recent-data tests with a wrong-item placebo |
+| `rolling_stress_check.py`, `results_rolling_stress*.txt` | Frozen release evaluation plus a latest-data diagnostic across three chronological windows, both with a wrong-item placebo |
 | `failed_files.txt` | Reports not parsed, with the reason |
 | `data/manifest.csv` | URL, date, file hash and download time of every report |
 | `AI_USE.md` | Which AI tool was used, for what |
@@ -220,7 +221,7 @@ python3 -m streamlit run app.py
 - **Website** in `web/` (Flask + SQLite, no build step). Run: `python3 model.py prices_all.csv`, `python3 web/build_db.py`, `python3 web/server.py`. See `web/README.md`. The server applies the same guard on every request and withholds numbers when a report is stale, unread or not ok.
 - **Public holidays:** `data/holidays.csv` (2026 public holidays, taken from a published calendar). Add `date,name` rows (YYYY-MM-DD) and the guard stops counting those days as working days. Override the file with `PRICE_SIGNAL_HOLIDAYS`.
 - **Refusal results:** `python3 refusal_report.py` runs 12 synthetic cases, each with one deliberate fault, and writes `results_refusal.txt`. These test the guard's logic, not any real report.
-- **CI:** `.github/workflows/tests.yml` runs the reproducible tests, refusal report, rolling stress analysis and accessibility regression on every push (Python 3.9). The verified local result on 18 Oct is **87 passed, 0 skipped**. The separate `validate_extract_prices_real.py` check uses git-ignored original PDFs and is invoked explicitly, so a fresh clone no longer reports environment-dependent skips.
+- **CI:** `.github/workflows/tests.yml` runs the reproducible tests, refusal report, frozen rolling stress evaluation and accessibility regression on every push (Python 3.9). The verified local result on 24 Oct is **93 passed, 0 skipped**. The separate `validate_extract_prices_real.py` check uses git-ignored original PDFs and is invoked explicitly, so a fresh clone no longer reports environment-dependent skips.
 - **Permission:** the Central Bank's Statistics Department replied on 12 Oct 2026 about use of the Daily Price Reports; page 1 of the reply is in `docs/cbsl_reply_2026-10-12.pdf` (contact details removed). This project is not endorsed by the Central Bank; the data is theirs, the analysis is ours.
 
 
@@ -230,5 +231,5 @@ python3 -m streamlit run app.py
 
 **Website pages (added 17 Oct 2026):** Welcome gives a plain-language introduction and a prominent independent-project notice. Visitors can choose English, Sinhala or Tamil on that page; the choice persists across the site, and the core welcome, navigation, status, safety and Today-summary wording follows it. Official item, market, date and source values remain unchanged. Today shows source health, a signal summary, an expected-change and uncertainty chart, the clearest-estimate list, filters, safe CSV export and detailed cards. Explore shows past prices of any item as a chart, with the difference between Dambulla and Colombo, 1 week to 1 year, rupees or indexed to 100. Reports offers strict Daily, Weekly, Monthly and Annual comparisons, with guarded CSV download and print-to-PDF output. How it works presents the evidence charts read from `results_*.txt`; Help explains the interface. Every past-price view obeys the same guard as the cards: nothing is shown when the report is stale or a newer one is unread, and an item with missing data shows no prices. `data/recent_prices.csv` (written by `export_recent.py`, run by `run_daily.sh`) is a small slice of the Central Bank's published prices, so a fresh clone still has charts; the Central Bank's reply of 12 Oct 2026 says the data are public and asks for attribution to the Statistics Department.
 
-**Advanced release checks (added 18 Oct 2026):** `rolling_stress_check.py` refits the three-day model before three non-overlapping recent test windows; all nine market-window gains were positive and all nine wrong-item placebo gains were non-positive. `web/accessibility_check.py` checks all six source pages and the principal light/dark contrast pairs in CI; the rendered pages were also inspected for accessible names and structure. `web/smoke_test.py` verifies `/healthz`, `/api/status` and every public page. The scheduled smoke workflow starts automatically after the repository owner sets the `PUBLIC_SITE_URL` repository variable. The verified local suite now reports **93 passed, 0 skipped**.
+**Advanced release checks (added 18 Oct 2026):** `rolling_stress_check.py` refits the three-day model before three non-overlapping recent test windows. The frozen 19 Oct release evaluation has nine positive market-window gains and nine non-positive wrong-item placebos. The 23 Oct diagnostic retains nine positive gains but has one small positive placebo (+0.2 points), which is reported rather than hidden. `web/accessibility_check.py` checks all six source pages and the principal light/dark contrast pairs in CI; the rendered pages were also inspected for accessible names and structure. `web/smoke_test.py` verifies `/healthz`, `/api/status` and every public page. The scheduled smoke workflow starts automatically after the repository owner sets the `PUBLIC_SITE_URL` repository variable. The verified local suite reports **93 passed, 0 skipped**.
 

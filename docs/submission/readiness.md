@@ -1,16 +1,16 @@
 # Implementation submission readiness
 
-Checked 18 October 2026 against the ModelX 2.0 implementation requirements. This file separates completed evidence from work that needs a real participant, the repository owner or a public service.
+Checked 24 October 2026 against the ModelX 2.0 implementation requirements. This file separates completed evidence from work that needs a real participant, the repository owner or a public service.
 
 | Requirement | State | Evidence / exact next action |
 |---|---|---|
 | Functionality frozen | Complete | `v1.0.0-rc1`; `docs/functionality-freeze-2026-10-17.md` |
 | Automated verification | Complete | 93 passed with no environment-dependent skips; 12/12 refusal cases and all three model self-tests passed. Original-report validation is an explicit local evidence check. |
-| Rolling-time stress test | Complete | Three non-overlapping 2026 test windows; 9/9 Dambulla gains positive, 9/9 wrong-item placebos non-positive; `results_rolling_stress.txt` |
+| Rolling-time stress test | Complete with latest diagnostic disclosed | Frozen 19 Oct evaluation: 9/9 Dambulla gains positive and 9/9 wrong-item placebos non-positive. Diagnostic through 23 Oct: 9/9 gains positive and 8/9 placebos non-positive; the remaining placebo is +0.2 points. |
 | Accessibility audit | Complete for automated scope | Six source pages and principal light/dark contrast pairs pass; rendered browser structure also checked; `results_accessibility.txt` |
 | Phase 1 proposal | Complete and reviewed | Every required proposal section is substantively answered; final PDF is `phase1-project-proposal.pdf` |
-| Real-data end-to-end product | Complete locally | Local cards dated 19 Oct 2026; Welcome, Today, Explore, four-period Reports, How it works and Help pages; persistent English, Sinhala and Tamil core interface |
-| Automatic source refresh | Implemented; local activation pending | No-cost macOS daily schedule is committed; activate only after private `prices_all.csv` is present |
+| Real-data end-to-end product | Complete locally | Local cards dated 23 Oct 2026; Welcome, Today, Explore, four-period Reports, How it works and Help pages; persistent English, Sinhala and Tamil core interface |
+| Automatic source refresh | Activated locally | No-cost macOS LaunchAgent is installed for 18:30 Sri Lanka time; private `prices_all.csv` is present. The first scheduled run is still to be observed. |
 | Data-use evidence | Complete | Redacted CBSL reply in `docs/cbsl_reply_2026-10-12.pdf`; attribution and non-endorsement wording included |
 | Buyer-feedback materials | Complete | Session guide, three anonymised response records and the findings summary are in `docs/buyer-feedback/` |
 | Real buyer feedback | Complete | Three consented anonymous sessions on 16-17 Oct; task counts, individual ratings, medians, decisions and limitations are in `findings-summary.md` |

@@ -30,12 +30,18 @@ MIN_TEST_ROWS = 100
 WINDOW_FRACTIONS = (0.55, 0.70, 0.85)
 
 
-def load_recent(path):
+def load_recent(path, as_of=None):
     raw = pd.read_csv(path)
     required = {"report_date", "item", "series", "price_rs"}
     missing = required - set(raw.columns)
     if missing:
         raise ValueError("recent-price input is missing: " + ", ".join(sorted(missing)))
+    if as_of is not None:
+        cutoff = pd.Timestamp(as_of)
+        dates = pd.to_datetime(raw["report_date"], errors="raise")
+        raw = raw.loc[dates <= cutoff].copy()
+        if raw.empty:
+            raise ValueError(f"no report dates exist on or before {cutoff.date().isoformat()}")
     split = raw["series"].str.split(" ", n=1, expand=True)
     if split.shape[1] != 2:
         raise ValueError("series must look like 'wholesale Dambulla' or 'retail Pettah'")
@@ -133,10 +139,11 @@ def run(frame):
     return rows
 
 
-def format_results(rows, source):
+def format_results(rows, source, as_of=None):
     lines = [
         "ROLLING-ORIGIN STRESS CHECK (3 REPORT DAYS)",
         f"source: {source}",
+        *([f"evaluation cutoff: {as_of}"] if as_of else []),
         "Model C = Colombo own history; Model D = Model C + matching Dambulla history.",
         "gain = Model D error reduction beyond Model C, as points of no-change squared error.",
         "placebo = the same calculation with another item's Dambulla series.",
@@ -173,14 +180,16 @@ def format_results(rows, source):
 def main(argv=None):
     parser = argparse.ArgumentParser()
     parser.add_argument("source", nargs="?", default="data/recent_prices.csv")
+    parser.add_argument("--as-of",
+                        help="use only report dates on or before this YYYY-MM-DD cutoff")
     parser.add_argument("--strict", action="store_true",
                         help="fail unless all gains are positive, all placebos are non-positive, and every comparison has a majority of items benefiting")
     args = parser.parse_args(argv)
     source = Path(args.source)
-    rows = run(load_recent(source))
+    rows = run(load_recent(source, args.as_of))
     if len(rows) != 9:
         raise SystemExit(f"expected 9 market-window results, got {len(rows)}")
-    print(format_results(rows, source.as_posix()), end="")
+    print(format_results(rows, source.as_posix(), args.as_of), end="")
     stable = (all(r["gain_pct"] > 0 for r in rows)
               and all(r["placebo_pct"] <= 0 for r in rows)
               and all(r["items_positive"] > r["items"] / 2 for r in rows))

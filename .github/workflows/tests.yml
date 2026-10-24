@@ -15,4 +15,4 @@ jobs:
       - run: python -m pytest -q
       - run: python refusal_report.py
       - run: python web/accessibility_check.py
-      - run: python rolling_stress_check.py data/recent_prices.csv --strict
+      - run: python rolling_stress_check.py data/recent_prices.csv --as-of 2026-10-19 --strict
